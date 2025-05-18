@@ -1,5 +1,6 @@
 import {
   _decorator,
+  Button,
   Component,
   instantiate,
   Node,
@@ -16,22 +17,22 @@ export class RailwayManager extends Component {
   @property({
     type: Prefab,
   })
-  railwayFlat: Prefab;
+  railwayFlat: Prefab = null;
 
   @property({
     type: Prefab,
   })
-  railwaySlopeUp: Prefab;
+  railwaySlopeUp: Prefab = null;
 
   @property({
     type: Prefab,
   })
-  railwaySlopeDown: Prefab;
+  railwaySlopeDown: Prefab = null;
 
   @property({
     type: Prefab,
   })
-  railwaySlopeUpAndDown: Prefab;
+  railwaySlopeUpAndDown: Prefab = null;
 
   @property()
   speed: number = 0;
@@ -42,14 +43,14 @@ export class RailwayManager extends Component {
 
   private pieces: Node[] = [];
 
-  private gamePlaytWith: number = 0;
+  private gamePlaytWidth: number = 0;
 
   private positionXStart: number = 0;
 
   private hasSpawnedNext = true;
 
   onLoad(): void {
-    this.gamePlaytWith =
+    this.gamePlaytWidth =
       this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
     this.spawnPiece(this.railwayFlat);
     this.spawnPiece(this.railwaySlopeUp);
@@ -76,7 +77,7 @@ export class RailwayManager extends Component {
     if (!this.hasSpawnedNext) return;
 
     const worldX = piece.getPosition().x;
-    if (worldX <= -(this.gamePlaytWith / 2)) {
+    if (worldX <= -(this.gamePlaytWidth / 2)) {
       this.spawnPiece(this.getRandomPrefab());
       this.hasSpawnedNext = false;
     }
@@ -120,7 +121,7 @@ export class RailwayManager extends Component {
 
     switch (length) {
       case 0: {
-        this.positionXStart = -(this.gamePlaytWith / 2 - width / 2);
+        this.positionXStart = -(this.gamePlaytWidth / 2 - width / 2);
         break;
       }
       case 1: {
@@ -132,15 +133,15 @@ export class RailwayManager extends Component {
           this.pieces[0].getComponent(UITransform)?.contentSize.width ?? 0;
         const railway2Width =
           this.pieces[1].getComponent(UITransform)?.contentSize.width ?? 0;
-        if (railway1Width / 2 > this.gamePlaytWith / 2) {
+        if (railway1Width / 2 > this.gamePlaytWidth / 2) {
           this.positionXStart =
             railway2Width +
-            (railway1Width / 2 - this.gamePlaytWith / 2) +
+            (railway1Width / 2 - this.gamePlaytWidth / 2) +
             width / 2;
         } else {
           this.positionXStart =
             railway2Width -
-            (this.gamePlaytWith / 2 - railway1Width / 2) +
+            (this.gamePlaytWidth / 2 - railway1Width / 2) +
             width / 2;
         }
         break;
@@ -176,5 +177,13 @@ export class RailwayManager extends Component {
 
     this.gamePlayNode.addChild(piece);
     this.pieces.push(piece);
+  }
+
+  public runSpeedUp(speedUp: number, time: number) {
+    const temp = this.speed;
+    this.speed = speedUp;
+    this.scheduleOnce(() => {
+      this.speed = temp;
+    }, time);
   }
 }
