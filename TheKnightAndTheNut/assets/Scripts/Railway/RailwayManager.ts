@@ -1,18 +1,24 @@
 import {
   _decorator,
-  Button,
   Component,
+  director,
   instantiate,
   Node,
   Prefab,
   UITransform,
 } from "cc";
+import { DataManager } from "../DataManager";
+import { KeyMission } from "../Mission/Mission";
+import { MissionManager } from "../Mission/MissionManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("RailwayManager")
 export class RailwayManager extends Component {
   @property(Node)
-  gamePlayNode: Node = null!;
+  eventManager: Node = null;
+
+  @property(Node)
+  gamePlayNode: Node = null;
 
   @property({
     type: Prefab,
@@ -49,11 +55,31 @@ export class RailwayManager extends Component {
 
   private hasSpawnedNext = true;
 
+  private key: string = "";
+
   onLoad(): void {
-    this.gamePlaytWidth =
-      this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
-    this.spawnPiece(this.railwayFlat);
-    this.spawnPiece(this.railwaySlopeUp);
+    this.key = DataManager.instance.getData();
+
+    switch (this.key) {
+      case KeyMission.MISSION_1: {
+        this.gamePlaytWidth =
+          this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
+        this.spawnPiece(this.railwayFlat);
+        this.spawnPiece(this.railwaySlopeUp);
+      }
+      case KeyMission.MISSION_2: {
+      }
+      case KeyMission.MISSION_3: {
+      }
+    }
+  }
+
+  finishMission() {
+    const stored = localStorage.getItem("FINISH_MISSION");
+    let mission: string[] = stored ? JSON.parse(stored) : [];
+    mission.push(this.key);
+    localStorage.setItem("FINISH_MISSION", JSON.stringify(mission));
+    director.loadScene("MenuScene");
   }
 
   start(): void {}
