@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "RailSlopeUp",
+    "_name": "RailwaySlopeUp",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_native": "",
@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "RailSlopeUp",
+    "_name": "RailwaySlopeUp",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -41,10 +41,13 @@
     "_components": [
       {
         "__id__": 59
+      },
+      {
+        "__id__": 61
       }
     ],
     "_prefab": {
-      "__id__": 61
+      "__id__": 63
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -871,6 +874,24 @@
   {
     "__type__": "cc.CompPrefabInfo",
     "fileId": "55kCL1r1dES5y5rO68rhWq"
+  },
+  {
+    "__type__": "37b5fOdq9JGb4luRx9O728b",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 62
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "bf7o4waG9M8qpnrGdd6b2+"
   },
   {
     "__type__": "cc.PrefabInfo",
