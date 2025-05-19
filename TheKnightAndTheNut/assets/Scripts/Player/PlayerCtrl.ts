@@ -12,12 +12,13 @@ enum ColliderGroup {
 export class PlayerCtrl extends Component {
     private isReverse: boolean = false;
     private anim: Animation;
+    private direction: Vec3;
+    private distanceRay: number = 1000;
 
     @property(Node)
     rayDrawerNode: Node;
 
     private graphics: Graphics = null;
-
     
     @property({
         type: Node,
@@ -43,59 +44,60 @@ export class PlayerCtrl extends Component {
     }
 
     railCheck(){
+        if(this.isReverse) this.direction = new Vec3(0, 1, 0); // ray up
+        else this.direction = new Vec3(0, -1, 0); // ray down
+
         // Convert world position về local của Graphics node
-        const originWorld = this.rayOrigin.worldPosition; // Vec3
-        const graphicsNode = this.rayDrawerNode;
-        const direction = new Vec3(0, -1, 0); // Vec3
-        const distance = 1000;
+        const originWorld = this.rayOrigin.worldPosition; 
 
-        // Tính điểm kết thúc (endPoint)
-        const endPoint = originWorld.clone().add(direction.multiplyScalar(distance));
+        // calculate endPoint
+        const endPoint = originWorld.clone().add(this.direction.multiplyScalar(this.distanceRay));
 
-        // Chuyển về local của graphics node
-        const localStart = graphicsNode.getComponent(UITransform).convertToNodeSpaceAR(originWorld);
-        const localEnd = graphicsNode.getComponent(UITransform).convertToNodeSpaceAR(endPoint);
-
-
-
+        // ray hit
         const hits = PhysicsSystem2D.instance.raycast(
             originWorld,
             endPoint,
-            ERaycast2DType.All,
+            ERaycast2DType.Closest,
             ColliderGroup.GROUND,
         );
-        // if (hit) {
-        //     console.log(hit[0].collider.name);
 
-        //     //create temp vector2 to store playerFeet position
-        //     let temp = this.node.getPosition();
-        //     //We get the y position of our raycast hit/ and set the y value of our temp vector2
-        //     temp.y = hit[0].collider.node.getPosition().y;
-        //     //we can now directly set our players position by setting it to our temp vector2 value that we adjusted.
-        //     this.node.setPosition(temp);
-        // }
+        // draw ray
+        this.drawRay(originWorld, endPoint);
 
-        // Vẽ bằng Graphics
+        if (hits.length > 0) {
+            //console.log(hits[0].collider.name);
+            const hit = hits[0];
+            const hitPoint = hit.point; // vị trí va chạm
+            //console.log(hitPoint.y);
+            this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
+
+            this.drawPoint(hitPoint);
+        }
+
+        //console.log("on checkk");
+    }
+
+    drawPoint(hitPoint){
+        // convert to world pos
+        const localPoint = this.rayDrawerNode
+        .getComponent(UITransform)
+        .convertToNodeSpaceAR(new Vec3(hitPoint.x, hitPoint.y, 0));
+
+        // draw point collide
+        this.graphics.circle(localPoint.x, localPoint.y, 5);
+        this.graphics.fillColor = Color.GREEN;
+        this.graphics.fill();
+    }
+
+    drawRay(originWorld, endPoint){
+        // Chuyển về local của graphics node
+        const localStart = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(originWorld);
+        const localEnd = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(endPoint);
         this.graphics.clear();
         this.graphics.moveTo(localStart.x, localStart.y);
         this.graphics.lineTo(localEnd.x, localEnd.y);
         this.graphics.strokeColor = Color.RED;
         this.graphics.stroke();
-
-        if (hits.length > 0) {
-            console.log(hits[0].collider.name);
-            const hit = hits[0];
-            const hitPoint = hit.point; // vị trí va chạm
-            console.log(hitPoint.y);
-            this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
-
-            // Vẽ điểm va chạm
-            this.graphics.circle(hitPoint.x, hitPoint.y, 5);
-            this.graphics.fillColor = Color.YELLOW;
-            this.graphics.fill();
-        }
-
-        console.log("on checkk");
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
@@ -115,6 +117,16 @@ export class PlayerCtrl extends Component {
         if (event.keyCode === KeyCode.KEY_D) { 
             this.dead();
         }
+    }
+
+    attack(){
+        // const pinkAttackState = this.anim.getState("pinkAttack");
+        // pinkAttackState.speed = 3;        
+        this.anim.play("pinkAttack");
+
+        this.anim.once(Animation.EventType.FINISHED, () => {
+            this.anim.play("pinkRun");
+        });
     }
 
     dead(){

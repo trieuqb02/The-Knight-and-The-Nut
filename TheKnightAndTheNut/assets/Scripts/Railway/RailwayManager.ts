@@ -55,20 +55,25 @@ export class RailwayManager extends Component {
   private key: string = "";
 
   onLoad(): void {
-    this.key = DataManager.instance.getData();
 
-    switch (this.key) {
-      case KeyMission.MISSION_1: {
-        this.gamePlaytWidth =
+    this.gamePlaytWidth =
           this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
         this.spawnPiece(this.railwayFlat);
         this.spawnPiece(this.railwaySlopeUp);
-      }
-      case KeyMission.MISSION_2: {
-      }
-      case KeyMission.MISSION_3: {
-      }
-    }
+    // this.key = DataManager.instance.getData();
+
+    // switch (this.key) {
+    //   case KeyMission.MISSION_1: {
+    //     this.gamePlaytWidth =
+    //       this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
+    //     this.spawnPiece(this.railwayFlat);
+    //     this.spawnPiece(this.railwaySlopeUp);
+    //   }
+    //   case KeyMission.MISSION_2: {
+    //   }
+    //   case KeyMission.MISSION_3: {
+    //   }
+    // }
   }
 
   finishMission() {
