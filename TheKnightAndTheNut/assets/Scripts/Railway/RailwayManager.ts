@@ -9,6 +9,8 @@ import {
 } from "cc";
 import { DataManager } from "../DataManager";
 import { KeyMission } from "../Mission/Mission";
+import { Railway } from "./Railway";
+import { PoollingRailway, RailwayPrefabName } from "./PoollingRailway";
 const { ccclass, property } = _decorator;
 
 @ccclass("RailwayManager")
@@ -17,28 +19,13 @@ export class RailwayManager extends Component {
   @property(Node)
   gamePlayNode: Node = null;
 
-  @property({
-    type: Prefab,
-  })
-  railwayFlat: Prefab = null;
-
-  @property({
-    type: Prefab,
-  })
-  railwaySlopeUp: Prefab = null;
-
-  @property({
-    type: Prefab,
-  })
-  railwaySlopeDown: Prefab = null;
-
-  @property({
-    type: Prefab,
-  })
-  railwaySlopeUpAndDown: Prefab = null;
+  @property(Node)
+  poolRailways: Node = null;
 
   @property()
   speed: number = 0;
+
+  private compPoll = null;
 
   private positionYOfRailSlopeUP: number = -15;
 
@@ -56,24 +43,22 @@ export class RailwayManager extends Component {
 
   onLoad(): void {
 
-    this.gamePlaytWidth =
-          this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
-        this.spawnPiece(this.railwayFlat);
-        this.spawnPiece(this.railwaySlopeUp);
-    // this.key = DataManager.instance.getData();
+    this.gamePlaytWidth = this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
 
-    // switch (this.key) {
-    //   case KeyMission.MISSION_1: {
-    //     this.gamePlaytWidth =
-    //       this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
-    //     this.spawnPiece(this.railwayFlat);
-    //     this.spawnPiece(this.railwaySlopeUp);
-    //   }
-    //   case KeyMission.MISSION_2: {
-    //   }
-    //   case KeyMission.MISSION_3: {
-    //   }
-    // }
+    this.compPoll = this.poolRailways.getComponent(PoollingRailway);
+
+    this.key = DataManager.instance.getData();
+
+    switch (this.key) {
+      case KeyMission.MISSION_1: {
+          this.spawnPiece(RailwayPrefabName.FLAT);
+          this.spawnPiece(RailwayPrefabName.UP);
+      }
+      case KeyMission.MISSION_2: {
+      }
+      case KeyMission.MISSION_3: {
+      }
+    }
   }
 
   finishMission() {
@@ -84,19 +69,11 @@ export class RailwayManager extends Component {
     director.loadScene("MenuScene");
   }
 
-  start(): void {}
+  start(): void { }
 
   update(deltaTime: number): void {
-    this.movePieces(deltaTime);
     this.checkSpawnNext();
     this.checkRemoveFirst();
-  }
-
-  private movePieces(dt: number) {
-    for (const piece of this.pieces) {
-      const pos = piece.getPosition();
-      piece.setPosition(pos.x - this.speed * dt, pos.y, pos.z);
-    }
   }
 
   private checkSpawnNext() {
@@ -106,7 +83,7 @@ export class RailwayManager extends Component {
 
     const worldX = piece.getPosition().x;
     if (worldX <= -(this.gamePlaytWidth / 2)) {
-      this.spawnPiece(this.getRandomPrefab());
+      this.spawnPiece(this.getRandomPrefabName());
       this.hasSpawnedNext = false;
     }
   }
@@ -121,26 +98,29 @@ export class RailwayManager extends Component {
     const worldRect = uiTransform.getBoundingBoxToWorld();
 
     if (worldRect.x <= -worldRect.width) {
-      piece.destroy();
+      this.compPoll.recycleNode(piece)
       this.pieces.shift();
       this.hasSpawnedNext = true;
     }
   }
 
-  private getRandomPrefab(): Prefab {
-    const prefabs = [
-      this.railwayFlat,
-      this.railwaySlopeUp,
-      this.railwaySlopeDown,
-      this.railwaySlopeUpAndDown,
-    ];
-    const index = Math.floor(Math.random() * prefabs.length);
-    return prefabs[index];
+  private RailwayPrefabValues: RailwayPrefabName[] = [
+    RailwayPrefabName.FLAT,
+    RailwayPrefabName.UP,
+    RailwayPrefabName.DOWN,
+    RailwayPrefabName.UP_AND_DOWN
+  ];
+
+  private getRandomPrefabName(): RailwayPrefabName {
+    return this.RailwayPrefabValues[Math.floor(Math.random() * this.RailwayPrefabValues.length)];
   }
 
-  private spawnPiece(prefab: Prefab) {
-    const piece = instantiate(prefab);
-    console.log(piece)
+  private spawnPiece(name: string) {
+
+    const piece = this.compPoll.getPrefabNode(name);
+
+    const compPiece = piece.getComponent(Railway);
+    compPiece.init(this.speed);
 
     const width = piece.getComponent(UITransform)?.contentSize.width ?? 0;
 
@@ -178,15 +158,15 @@ export class RailwayManager extends Component {
     }
 
     switch (namePrefab) {
-      case this.railwayFlat.name: {
+      case RailwayPrefabName.FLAT: {
         piece.setPosition(this.positionXStart, 0, 0);
         break;
       }
-      case this.railwaySlopeUp.name: {
+      case RailwayPrefabName.UP: {
         piece.setPosition(this.positionXStart, this.positionYOfRailSlopeUP, 0);
         break;
       }
-      case this.railwaySlopeDown.name: {
+      case RailwayPrefabName.DOWN: {
         piece.setPosition(
           this.positionXStart,
           this.positionYOfRailSlopeDown,
@@ -194,7 +174,7 @@ export class RailwayManager extends Component {
         );
         break;
       }
-      case this.railwaySlopeUpAndDown.name: {
+      case RailwayPrefabName.UP_AND_DOWN: {
         piece.setPosition(this.positionXStart, 0, 0);
         break;
       }
@@ -209,10 +189,8 @@ export class RailwayManager extends Component {
   }
 
   public runSpeedUp(speedUp: number, time: number) {
-    const temp = this.speed;
-    this.speed = speedUp;
-    this.scheduleOnce(() => {
-      this.speed = temp;
-    }, time);
+    this.pieces.forEach(piece => {
+      piece.getComponent(Railway).runSpeedUp(speedUp, time);
+    })
   }
 }
