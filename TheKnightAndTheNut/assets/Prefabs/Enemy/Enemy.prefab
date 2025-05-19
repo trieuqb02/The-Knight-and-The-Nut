@@ -42,7 +42,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 168.983,
-      "y": 86.328,
+      "y": 55.773,
       "z": 0
     },
     "_lrot": {
@@ -187,10 +187,10 @@
     "__prefab": {
       "__id__": 9
     },
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
     "awakeOnLoad": true,
-    "_group": 4,
+    "_group": 1,
     "_type": 1,
     "_allowSleep": true,
     "_gravityScale": 0,
@@ -221,7 +221,8 @@
     "__prefab": {
       "__id__": 11
     },
-    "speed": 150,
+    "speed": 0,
+    "startingHealth": 1,
     "_id": ""
   },
   {

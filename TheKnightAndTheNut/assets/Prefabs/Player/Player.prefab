@@ -189,8 +189,8 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
+      "x": 10.663,
+      "y": 8.202,
       "z": 0
     },
     "_lrot": {
@@ -230,8 +230,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 100
+      "width": 0,
+      "height": 0
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -473,9 +473,15 @@
     "__prefab": {
       "__id__": 23
     },
+    "bulletPrefab": {
+      "__uuid__": "2284b79a-a4ed-419e-8642-46044d03faf5",
+      "__expectedType__": "cc.Prefab"
+    },
     "fireOrigin": {
       "__id__": 6
     },
+    "bulletSpawn": null,
+    "fireRate": 15,
     "_id": ""
   },
   {

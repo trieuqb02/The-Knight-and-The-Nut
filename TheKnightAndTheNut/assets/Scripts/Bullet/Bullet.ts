@@ -1,4 +1,5 @@
-import { _decorator, Component, Node, RigidBody, RigidBody2D, Vec2 } from 'cc';
+import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact, Node, RigidBody, RigidBody2D, Vec2 } from 'cc';
+import { EnemyCtrl } from '../Enemy/EnemyCtrl';
 const { ccclass, property } = _decorator;
 
 @ccclass('Bullet')
@@ -12,12 +13,22 @@ export class Bullet extends Component {
     @property
     private speed: number = 10;
 
+    @property
+    private dame: number = 1;
+
 
     protected onLoad(): void {
         this.rb = this.node.getComponent(RigidBody2D);
+
+        const collider = this.getComponent(Collider2D);
+        if (collider) {
+            collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+        }
     }
 
     start() {
+        
+        
         this.move();
         // destroy after timeLife
         this.selfDestroy();
@@ -25,6 +36,19 @@ export class Bullet extends Component {
 
     update(deltaTime: number) {
         
+    }
+
+    onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        console.log("Bullet collide enemy");
+        const enemy = otherCollider.node.getComponent(EnemyCtrl);
+        if (enemy) {
+            console.log("get enemy success");
+            enemy.takeDame(this.dame); 
+
+            this.scheduleOnce(() => {
+                this.node.destroy();
+            }, 0);
+        }
     }
 
     move(){

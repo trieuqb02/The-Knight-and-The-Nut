@@ -16,7 +16,7 @@ export class PlayerAttack extends Component {
     private nextTimeToFire: number = 0;
 
     @property
-    private fireRate: number = 15;
+    private fireRate: number;
     private playerCtrl;
 
     protected onLoad(): void {

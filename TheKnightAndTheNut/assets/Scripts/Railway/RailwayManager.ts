@@ -46,19 +46,23 @@ export class RailwayManager extends Component {
     this.gamePlaytWidth = this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
 
     this.compPoll = this.poolRailways.getComponent(PoollingRailway);
+    this.compPoll.initPrefabs()
 
-    this.key = DataManager.instance.getData();
+    this.spawnPiece(RailwayPrefabName.FLAT);
+    this.spawnPiece(RailwayPrefabName.UP);
 
-    switch (this.key) {
-      case KeyMission.MISSION_1: {
-          this.spawnPiece(RailwayPrefabName.FLAT);
-          this.spawnPiece(RailwayPrefabName.UP);
-      }
-      case KeyMission.MISSION_2: {
-      }
-      case KeyMission.MISSION_3: {
-      }
-    }
+    // this.key = DataManager.instance.getData();
+
+    // switch (this.key) {
+    //   case KeyMission.MISSION_1: {
+    //       this.spawnPiece(RailwayPrefabName.FLAT);
+    //       this.spawnPiece(RailwayPrefabName.UP);
+    //   }
+    //   case KeyMission.MISSION_2: {
+    //   }
+    //   case KeyMission.MISSION_3: {
+    //   }
+    // }
   }
 
   finishMission() {

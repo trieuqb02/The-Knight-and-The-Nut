@@ -57,9 +57,15 @@ export class PlayerCtrl extends Component {
         const hits = PhysicsSystem2D.instance.raycast(
             originWorld,
             endPoint,
-            ERaycast2DType.Closest,
+            ERaycast2DType.All,
             ColliderGroup.GROUND,
         );
+
+        // if (hits.length > 0) {
+        //     const lastHit = hits[hits.length - 1];
+        //     const hitNode = lastHit.collider.node;
+        //     console.log("Ray hit last object:", hitNode.name);
+        // }
 
         // draw ray
         this.drawRay(originWorld, endPoint);

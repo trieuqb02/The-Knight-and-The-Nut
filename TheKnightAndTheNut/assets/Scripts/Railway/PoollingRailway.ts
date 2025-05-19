@@ -81,7 +81,6 @@ export class PoollingRailway extends Component {
     }
 
     recycleNode(railway: Node) {
-
         railway.active = false;
         switch (railway.name) {
             case  RailwayPrefabName.FLAT: {
@@ -103,9 +102,9 @@ export class PoollingRailway extends Component {
         }
     }
 
-    protected onLoad(): void {
-        this.initPrefabs()
-    }
+    // protected onLoad(): void {
+    //     this.initPrefabs()
+    // }
 
 }
 
