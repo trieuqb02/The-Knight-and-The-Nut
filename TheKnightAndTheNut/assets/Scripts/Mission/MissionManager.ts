@@ -34,10 +34,10 @@ export class MissionManager extends Component {
   @property({ type: Prefab })
   missionPrefab: Prefab = null;
 
-  private missions: { key: string; islocked: boolean }[] = [
-    { key: KeyMission.MISSION_1, islocked: false },
-    { key: KeyMission.MISSION_2, islocked: true },
-    { key: KeyMission.MISSION_3, islocked: true },
+  private missions: { key: string; islocked: boolean; score: number }[] = [
+    { key: KeyMission.MISSION_1, islocked: false, score: 500 },
+    { key: KeyMission.MISSION_2, islocked: true, score: 700 },
+    { key: KeyMission.MISSION_3, islocked: true, score: 800 },
   ];
 
   protected onLoad(): void {
