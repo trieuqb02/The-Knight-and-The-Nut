@@ -34,7 +34,8 @@ export class Mission extends Component {
 
   playMission() {
     if (this.islocked) return;
-    DataManager.instance.setData(this.key);
+    const image = this.node.getChildByName("image");
+    DataManager.instance.setData({key: this.key, spriteFrame: image.getComponent(Sprite).spriteFrame});
     director.loadScene("MainScene");
   }
 }

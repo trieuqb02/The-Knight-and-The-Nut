@@ -46,8 +46,6 @@ export class MissionManager extends Component {
       ? JSON.parse(finishMissionStr)
       : [];
 
-    console.log(finishMission);
-
     if (finishMission.length > 0) {
       finishMission.forEach((key) => {
         this.openMissionNext(key);
