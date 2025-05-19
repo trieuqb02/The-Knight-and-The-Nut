@@ -9,13 +9,10 @@ import {
 } from "cc";
 import { DataManager } from "../DataManager";
 import { KeyMission } from "../Mission/Mission";
-import { MissionManager } from "../Mission/MissionManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("RailwayManager")
 export class RailwayManager extends Component {
-  @property(Node)
-  eventManager: Node = null;
 
   @property(Node)
   gamePlayNode: Node = null;
@@ -138,6 +135,7 @@ export class RailwayManager extends Component {
 
   private spawnPiece(prefab: Prefab) {
     const piece = instantiate(prefab);
+    console.log(piece)
 
     const width = piece.getComponent(UITransform)?.contentSize.width ?? 0;
 
