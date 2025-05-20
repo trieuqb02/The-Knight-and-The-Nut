@@ -39,9 +39,11 @@ export class RailwayManager extends Component {
   private isRunning: boolean = false;
 
   onLoad(): void {
+
     this.gamePlaytWidth = this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
 
     this.compPoll = this.poolRailways.getComponent(PoollingRailway);
+
   }
 
   startRailway(key: string) {
@@ -64,6 +66,7 @@ export class RailwayManager extends Component {
         break
       }
     }
+
   }
 
   endRailway() {

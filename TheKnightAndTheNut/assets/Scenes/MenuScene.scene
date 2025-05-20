@@ -189,6 +189,7 @@
     "_fov": 45,
     "_fovAxis": 0,
     "_orthoHeight": 422.33062330623306,
+
     "_near": 0,
     "_far": 2000,
     "_color": {
@@ -541,7 +542,9 @@
     "_string": "Mission",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
+
     "_actualFontSize": 23.0625,
+
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -976,6 +979,7 @@
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 23.0625,
+
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1287,7 +1291,9 @@
     "_string": "PvP",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
+
     "_actualFontSize": 23.0625,
+
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
