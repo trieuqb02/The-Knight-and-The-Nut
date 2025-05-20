@@ -145,7 +145,7 @@ export class GameManager extends Component {
     if (this.totalScore > this.winScore) {
       this.saveLocalData()
     }
-    director.loadScene("MenuScene");
+    director.loadScene("LoadingScene");
   }
 
   onClickButton() {

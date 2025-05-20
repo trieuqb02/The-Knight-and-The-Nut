@@ -1,4 +1,4 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, director, Node } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('LoadingManager')
@@ -9,6 +9,10 @@ export class LoadingManager extends Component {
 
     update(deltaTime: number) {
         
+    }
+
+    loadHome(){
+        director.loadScene("MenuScene");
     }
 }
 
