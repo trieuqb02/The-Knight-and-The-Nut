@@ -1,7 +1,8 @@
 import { _decorator, Component, EventKeyboard, Input, input, Animation, KeyCode, Node, Collider2D, IPhysics2DContact, Contact2DType, PhysicsSystem2D, Vec2, ERaycast2DType, Graphics, Color, UITransform, Vec3 } from 'cc';
+import { EnemyCtrl } from '../Enemy/EnemyCtrl';
 const { ccclass, property } = _decorator;
 
-enum ColliderGroup {
+export enum ColliderGroup {
     DEFAULT = 1 << 0,
     PLAYER = 1 << 1,
     ENEMY = 1 << 2,
@@ -16,31 +17,69 @@ export class PlayerCtrl extends Component {
     private distanceRay: number = 1000;
 
     @property(Node)
+    railwayManagerNode: Node;
+
+    @property(Node)
     rayDrawerNode: Node;
 
+    // node for draw ray
     private graphics: Graphics = null;
     
-    @property({
-        type: Node,
-    })
+    @property({type: Node,})
     rayOrigin: Node; 
+
+    @property
+    startingHealth: number = 3;
+    private curHealth: number;
+    @property
+    bodyDame: number = 1;
+
+    private coinNumber: number = 0;
+
+    @property
+    isGodState: boolean = false;
+    private railwayManager;
 
     onLoad(){
         this.graphics = this.rayDrawerNode.getComponent(Graphics);
         this.anim = this.getComponent(Animation);
+        this.railwayManager = this.railwayManagerNode.getComponent('RailwayManager');
 
         const collider = this.getComponent(Collider2D);
         if (collider) {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+            collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
     }
 
     start() {
+        // init health
+        this.curHealth = this.startingHealth;
+
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
+
+        this.scheduleOnce(()=>{
+            this.onGod();
+        }, 3);
     }
 
     update(deltaTime: number) {
         this.railCheck();
+    }
+
+    onGod(){
+        // speed up
+        this.railwayManager.runSpeedUp(500, 5);
+        // set speed animation
+        const pinkAttackState = this.anim.getState("pinkRun");
+        pinkAttackState.speed = 3;     
+        // shield
+    }
+
+    collect(amount)
+    {
+        this.coinNumber += amount;
+        console.log("Coin: " + this.coinNumber);
     }
 
     railCheck(){
@@ -57,7 +96,7 @@ export class PlayerCtrl extends Component {
         const hits = PhysicsSystem2D.instance.raycast(
             originWorld,
             endPoint,
-            ERaycast2DType.All,
+            ERaycast2DType.Closest,
             ColliderGroup.GROUND,
         );
 
@@ -71,16 +110,12 @@ export class PlayerCtrl extends Component {
         this.drawRay(originWorld, endPoint);
 
         if (hits.length > 0) {
-            //console.log(hits[0].collider.name);
             const hit = hits[0];
-            const hitPoint = hit.point; // vị trí va chạm
-            //console.log(hitPoint.y);
+            const hitPoint = hit.point; // collide point
             this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
 
             this.drawPoint(hitPoint);
         }
-
-        //console.log("on checkk");
     }
 
     drawPoint(hitPoint){
@@ -96,7 +131,7 @@ export class PlayerCtrl extends Component {
     }
 
     drawRay(originWorld, endPoint){
-        // Chuyển về local của graphics node
+        // to local graphics node
         const localStart = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(originWorld);
         const localEnd = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(endPoint);
         this.graphics.clear();
@@ -107,9 +142,16 @@ export class PlayerCtrl extends Component {
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        // player dead after collide enemy
         if (otherCollider.group === ColliderGroup.ENEMY) {
-            this.dead();
+            const enemy = otherCollider.node.getComponent(EnemyCtrl);
+            if (enemy) {
+                enemy.takeDame(this.bodyDame); 
+            }
+        }
+    }
+
+    onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        if (otherCollider.group === ColliderGroup.ENEMY) {
         }
     }
 
@@ -137,6 +179,10 @@ export class PlayerCtrl extends Component {
 
     dead(){
         this.anim.play("pinkDead");
+        // disable detect
+         this.anim.once(Animation.EventType.FINISHED, () => {
+            this.node.destroy();
+        });
     }
 
     hurt(){
@@ -151,6 +197,17 @@ export class PlayerCtrl extends Component {
     reverse(){
         this.isReverse = !this.isReverse;
         this.node.setScale(this.node.scale.x, -this.node.scale.y, this.node.scale.z);
+    }
+
+    takeDame(dame)
+    {
+        this.curHealth -= dame;
+
+        if (this.curHealth <= 0){
+            this.dead();
+            return;
+        }
+        this.hurt();
     }
 }
 

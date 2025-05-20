@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "2bed70b3-9325-4cec-9848-75d29cf242b2",
+  "uuid": "f655ac0c-5333-4abf-ad08-b366d88dd01f",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "Enemy"
+    "syncNodeName": "Mushroom Enemy"
   }
 }

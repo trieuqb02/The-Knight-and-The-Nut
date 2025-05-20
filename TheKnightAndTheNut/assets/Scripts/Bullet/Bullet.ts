@@ -5,17 +5,14 @@ const { ccclass, property } = _decorator;
 @ccclass('Bullet')
 export class Bullet extends Component {
     private rb: RigidBody2D;
-    private timmer: number = 0;
 
     @property
     private timeLife: number = 2;
 
     @property
     private speed: number = 10;
-
     @property
     private dame: number = 1;
-
 
     protected onLoad(): void {
         this.rb = this.node.getComponent(RigidBody2D);
@@ -27,22 +24,14 @@ export class Bullet extends Component {
     }
 
     start() {
-        
-        
         this.move();
         // destroy after timeLife
         this.selfDestroy();
     }
 
-    update(deltaTime: number) {
-        
-    }
-
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        console.log("Bullet collide enemy");
         const enemy = otherCollider.node.getComponent(EnemyCtrl);
         if (enemy) {
-            console.log("get enemy success");
             enemy.takeDame(this.dame); 
 
             this.scheduleOnce(() => {
