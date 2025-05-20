@@ -29,7 +29,7 @@ export class PoollingRailway extends Component {
     initPrefabs(): void {
         this.railwayPrefabs.forEach(railwayPrefab => {
             const arr:Node[] = [];
-            for( let i = 0; i < 5; i++){
+            for( let i = 0; i < 20; i++){
                 const piece = instantiate(railwayPrefab.prefab);
                 piece.active = false;
                 arr.push(piece);
@@ -81,7 +81,6 @@ export class PoollingRailway extends Component {
     }
 
     recycleNode(railway: Node) {
-
         railway.active = false;
         switch (railway.name) {
             case  RailwayPrefabName.FLAT: {

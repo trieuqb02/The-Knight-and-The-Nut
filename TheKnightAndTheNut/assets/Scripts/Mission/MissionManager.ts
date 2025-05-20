@@ -36,9 +36,9 @@ export class MissionManager extends Component {
   missionPrefab: Prefab = null;
 
   private missions: { key: string; islocked: boolean; score: number, image: SpriteFrame, time: number }[] = [
-    { key: KeyMission.MISSION_1, islocked: false, score: 500, image: null, time: 5 },
-    { key: KeyMission.MISSION_2, islocked: true, score: 700, image: null, time: 6 },
-    { key: KeyMission.MISSION_3, islocked: true, score: 800, image: null, time: 7 },
+    { key: KeyMission.MISSION_1, islocked: false, score: 500, image: null, time: 30 },
+    { key: KeyMission.MISSION_2, islocked: true, score: 700, image: null, time: 40 },
+    { key: KeyMission.MISSION_3, islocked: true, score: 800, image: null, time: 50 },
   ];
 
   protected onLoad(): void {

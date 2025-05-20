@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "2bed70b3-9325-4cec-9848-75d29cf242b2",
+  "uuid": "2284b79a-a4ed-419e-8642-46044d03faf5",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "Enemy"
+    "syncNodeName": "Pink Fire Bullet"
   }
 }
