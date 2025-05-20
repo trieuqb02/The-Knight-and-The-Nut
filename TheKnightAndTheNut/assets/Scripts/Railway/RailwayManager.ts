@@ -38,6 +38,8 @@ export class RailwayManager extends Component {
 
   private isRunning: boolean = false;
 
+  private isSpeedUp: boolean = false;
+
   onLoad(): void {
 
     this.gamePlaytWidth = this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
@@ -82,6 +84,11 @@ export class RailwayManager extends Component {
     if (this.isRunning) {
       this.checkSpawnNext();
       this.checkRemoveFirst();
+      if(!this.isSpeedUp){
+        this.pieces.forEach(piece => {
+          piece.getComponent(Railway).init(this.speed);
+        })
+      }
     }
   }
 
@@ -198,8 +205,15 @@ export class RailwayManager extends Component {
   }
 
   public runSpeedUp(speedUp: number, time: number) {
+    this.isSpeedUp = true;
+    const temp = this.speed;
+    this.speed = speedUp;
     this.pieces.forEach(piece => {
       piece.getComponent(Railway).runSpeedUp(speedUp, time);
     })
+    this.scheduleOnce(() => {
+      this.speed = temp;
+      this.isSpeedUp = false;
+    }, time);
   }
 }
