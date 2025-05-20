@@ -200,6 +200,7 @@ export class RailwayManager extends Component {
   public runSpeedUp(speedUp: number, time: number) {
     this.pieces.forEach(piece => {
       piece.getComponent(Railway).runSpeedUp(speedUp, time);
+      this.speed = speedUp;
     })
   }
 }

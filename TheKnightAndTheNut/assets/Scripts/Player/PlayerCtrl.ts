@@ -19,11 +19,11 @@ export class PlayerCtrl extends Component {
     @property(Node)
     railwayManagerNode: Node;
 
-    @property(Node)
-    rayDrawerNode: Node;
+    // @property(Node)
+    // rayDrawerNode: Node;
 
     // node for draw ray
-    private graphics: Graphics = null;
+    //private graphics: Graphics = null;
     
     @property({type: Node,})
     rayOrigin: Node; 
@@ -38,10 +38,16 @@ export class PlayerCtrl extends Component {
 
     @property
     isGodState: boolean = false;
+    @property
+    timingGod: number = 5;
     private railwayManager;
+    @property
+    nitroToGod: number = 3;
+    private curNitroNumber: number = 0;
 
     onLoad(){
-        this.graphics = this.rayDrawerNode.getComponent(Graphics);
+        //this.graphics = this.rayDrawerNode.getComponent(Graphics);
+
         this.anim = this.getComponent(Animation);
         this.railwayManager = this.railwayManagerNode.getComponent('RailwayManager');
 
@@ -57,10 +63,6 @@ export class PlayerCtrl extends Component {
         this.curHealth = this.startingHealth;
 
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
-
-        this.scheduleOnce(()=>{
-            this.onGod();
-        }, 3);
     }
 
     update(deltaTime: number) {
@@ -68,18 +70,30 @@ export class PlayerCtrl extends Component {
     }
 
     onGod(){
+        this.isGodState = true;
+        let pinkAttackState = this.anim.getState("pinkRun");
         // speed up
-        this.railwayManager.runSpeedUp(500, 5);
+        this.railwayManager.runSpeedUp(500, this.timingGod);
         // set speed animation
-        const pinkAttackState = this.anim.getState("pinkRun");
-        pinkAttackState.speed = 3;     
+        pinkAttackState.speed = 3; 
+        // reset after time
+        this.scheduleOnce(()=>{
+            pinkAttackState.speed = 1; 
+            this.isGodState = false;
+        }, this.timingGod);
+
         // shield
     }
 
     collect(amount)
     {
         this.coinNumber += amount;
-        console.log("Coin: " + this.coinNumber);
+        // add nitro after collect coin
+        this.curNitroNumber += 1;
+
+        if(this.curNitroNumber >= this.nitroToGod){
+            this.onGod();
+        }
     }
 
     railCheck(){
@@ -120,25 +134,25 @@ export class PlayerCtrl extends Component {
 
     drawPoint(hitPoint){
         // convert to world pos
-        const localPoint = this.rayDrawerNode
-        .getComponent(UITransform)
-        .convertToNodeSpaceAR(new Vec3(hitPoint.x, hitPoint.y, 0));
+        // const localPoint = this.rayDrawerNode
+        // .getComponent(UITransform)
+        // .convertToNodeSpaceAR(new Vec3(hitPoint.x, hitPoint.y, 0));
 
         // draw point collide
-        this.graphics.circle(localPoint.x, localPoint.y, 5);
-        this.graphics.fillColor = Color.GREEN;
-        this.graphics.fill();
+        // this.graphics.circle(localPoint.x, localPoint.y, 5);
+        // this.graphics.fillColor = Color.GREEN;
+        // this.graphics.fill();
     }
 
     drawRay(originWorld, endPoint){
         // to local graphics node
-        const localStart = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(originWorld);
-        const localEnd = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(endPoint);
-        this.graphics.clear();
-        this.graphics.moveTo(localStart.x, localStart.y);
-        this.graphics.lineTo(localEnd.x, localEnd.y);
-        this.graphics.strokeColor = Color.RED;
-        this.graphics.stroke();
+        // const localStart = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(originWorld);
+        // const localEnd = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(endPoint);
+        // this.graphics.clear();
+        // this.graphics.moveTo(localStart.x, localStart.y);
+        // this.graphics.lineTo(localEnd.x, localEnd.y);
+        // this.graphics.strokeColor = Color.RED;
+        // this.graphics.stroke();
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
@@ -168,8 +182,6 @@ export class PlayerCtrl extends Component {
     }
 
     attack(){
-        // const pinkAttackState = this.anim.getState("pinkAttack");
-        // pinkAttackState.speed = 3;        
         this.anim.play("pinkAttack");
 
         this.anim.once(Animation.EventType.FINISHED, () => {
@@ -201,9 +213,10 @@ export class PlayerCtrl extends Component {
 
     takeDame(dame)
     {
+        if(this.isGodState) return;
         this.curHealth -= dame;
 
-        if (this.curHealth <= 0){
+        if (this.curHealth <= 0){   
             this.dead();
             return;
         }
