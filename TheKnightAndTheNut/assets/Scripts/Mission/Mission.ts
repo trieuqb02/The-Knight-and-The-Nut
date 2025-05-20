@@ -13,21 +13,24 @@ export class Mission extends Component {
   key: string = "";
   islocked: boolean = false;
   score: number = 0;
+  image: SpriteFrame = null;
+  time: number = 0;
 
   init(
-    data: { key: string; islocked: boolean; score: number },
-    spriteFrame: SpriteFrame
+    data: { key: string; islocked: boolean; score: number,image: SpriteFrame, time: number },
   ) {
     this.key = data.key;
     this.islocked = data.islocked;
     this.score = data.score;
+    this.image = data.image;
+    this.time = data.time;
 
     const image = this.node.getChildByName("image");
     const overlay = this.node.getChildByName("overlay");
     const lock = this.node.getChildByName("lock");
     const playBtn = this.node.getChildByName("playBtn");
 
-    image.getComponent(Sprite).spriteFrame = spriteFrame;
+    image.getComponent(Sprite).spriteFrame = this.image;
 
     if (!this.islocked) {
       playBtn.active = true;
@@ -42,8 +45,9 @@ export class Mission extends Component {
     const image = this.node.getChildByName("image");
     DataManager.instance.setData({
       key: this.key,
-      spriteFrame: image.getComponent(Sprite).spriteFrame,
+      image: image.getComponent(Sprite).spriteFrame,
       score: this.score,
+      time: this.time
     });
     director.loadScene("MainScene");
   }

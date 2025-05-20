@@ -9,6 +9,7 @@ import {
 } from "cc";
 import { EventEnum } from "../EventManager";
 import { KeyMission, Mission } from "./Mission";
+import { DataManager } from "../DataManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("ImageMission")
@@ -34,10 +35,10 @@ export class MissionManager extends Component {
   @property({ type: Prefab })
   missionPrefab: Prefab = null;
 
-  private missions: { key: string; islocked: boolean; score: number }[] = [
-    { key: KeyMission.MISSION_1, islocked: false, score: 500 },
-    { key: KeyMission.MISSION_2, islocked: true, score: 700 },
-    { key: KeyMission.MISSION_3, islocked: true, score: 800 },
+  private missions: { key: string; islocked: boolean; score: number, image: SpriteFrame, time: number }[] = [
+    { key: KeyMission.MISSION_1, islocked: false, score: 500, image: null, time: 5 },
+    { key: KeyMission.MISSION_2, islocked: true, score: 700, image: null, time: 6 },
+    { key: KeyMission.MISSION_3, islocked: true, score: 800, image: null, time: 7 },
   ];
 
   protected onLoad(): void {
@@ -71,10 +72,12 @@ export class MissionManager extends Component {
       const imageItem = this.imageMission.find(
         (img) => img.key === mission.key
       );
-      compMission.init(mission, imageItem.spriteFrame);
+      mission.image = imageItem.spriteFrame;
+      compMission.init(mission);
       this.missionList.content.addChild(missionP);
       this.missionList.addPage(missionP);
     });
+    DataManager.instance.setMissionList(this.missions)
   }
 
   openMissionNext(key: string) {

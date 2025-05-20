@@ -68,7 +68,10 @@ export class RailwayManager extends Component {
 
   endRailway() {
     this.isRunning = false;
-    director.pause();
+    this.pieces.forEach(piece => {
+      const compPiece = piece.getComponent(Railway);
+      compPiece.init(0);
+    })
   }
 
   start(): void { }

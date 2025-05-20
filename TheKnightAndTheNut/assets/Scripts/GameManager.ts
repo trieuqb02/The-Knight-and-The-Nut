@@ -38,8 +38,8 @@ export class GameManager extends Component {
   @property(SpriteFrame)
   loseSpriteFrame: SpriteFrame = null;
 
-  @property(Prefab)
-  btn: Prefab = null;
+  @property(SpriteFrame)
+  replaySpriteFrame: SpriteFrame = null;
 
   timerProgress = null;
 
@@ -47,13 +47,13 @@ export class GameManager extends Component {
 
   private key: string = "";
 
-  private totalTime: number = 10;
+  private totalTime: number = 0;
 
   private timeLeft: number = 0;
 
   private railwayComp = null;
 
-  private totalScore: number = 0;
+  private totalScore: number = 1000;
 
   private winScore: number = 0;
 
@@ -73,24 +73,26 @@ export class GameManager extends Component {
     this.gamePlay.addChild(timer);
   }
 
-  resetTimer() {
+  reset() {
+    const data = DataManager.instance.getData();
+    this.totalTime = data.time;
+    this.winScore = data.score;
     this.timeLeft = this.totalTime;
     this.timerProgress.progress = this.totalTime;
     this.scoreLB.string = `${this.totalScore}`;
+    this.key = data.key;
+    const gamePlayComp = this.gamePlay.getComponent(Sprite);
+    gamePlayComp.spriteFrame = data.image;
+
   }
 
   protected onLoad(): void {
     this.init();
-    this.resetTimer();
-    this.railwayComp = this.railwayManager.getComponent(RailwayManager);
+    this.reset();
   }
 
   protected start(): void {
-    const data = DataManager.instance.getData();
-    this.key = data.key;
-    this.winScore = data.score;
-    const gamePlayComp = this.gamePlay.getComponent(Sprite);
-    gamePlayComp.spriteFrame = data.spriteFrame;
+    this.railwayComp = this.railwayManager.getComponent(RailwayManager);
     this.railwayComp.startRailway(this.key);
   }
 
@@ -121,8 +123,12 @@ export class GameManager extends Component {
     const button = result.getChildByName("Button").getComponent(Button);
     const buttonHome = result.getChildByName("HomeBtn").getComponent(Button);
 
+    const missionList = DataManager.instance.getMissionList();
+    const index = missionList.findIndex(item => item.key === this.key);
     if (this.totalScore < this.winScore) {
-      button.node.getComponent(Sprite).spriteFrame = this.loseSpriteFrame;
+      button.node.getComponent(Sprite).spriteFrame = this.replaySpriteFrame;
+    } else if(index == missionList.length - 1){
+      button.node.getComponent(Sprite).spriteFrame = this.replaySpriteFrame;
     }
     button.node.on(Button.EventType.CLICK, this.onClickButton, this);
     buttonHome.node.on(Button.EventType.CLICK, this.onClickHome, this);
@@ -136,15 +142,44 @@ export class GameManager extends Component {
 
   onClickHome() {
     if (this.totalScore > this.winScore) {
-      const stored = localStorage.getItem("FINISH_MISSION");
-      let mission: string[] = stored ? JSON.parse(stored) : [];
-      mission.push(this.key);
-      localStorage.setItem("FINISH_MISSION", JSON.stringify(mission));
+      this.saveLocalData()
     }
     director.loadScene("MenuScene");
   }
 
   onClickButton() {
-    console.log(1);
+    const missionList = DataManager.instance.getMissionList();
+    const index = missionList.findIndex(item => item.key === this.key);
+    if(index == missionList.length - 1){
+      this.saveLocalData();
+      const currentScene = director.getScene();
+      const sceneName = currentScene.name;
+      director.loadScene(sceneName);
+    }
+
+    if (this.totalScore > this.winScore) {
+      missionList.forEach((mission, index) => {
+        if (mission.key === this.key) {
+          if (index != missionList.length - 1) {
+            DataManager.instance.setData(missionList[index + 1]);
+            this.saveLocalData();
+            const currentScene = director.getScene();
+            const sceneName = currentScene.name;
+            director.loadScene(sceneName);
+          }
+        }
+      })
+    } else {
+      const currentScene = director.getScene();
+      const sceneName = currentScene.name;
+      director.loadScene(sceneName);
+    }
+  }
+
+  saveLocalData(){
+    const stored = localStorage.getItem("FINISH_MISSION");
+    let mission: string[] = stored ? JSON.parse(stored) : [];
+    mission.push(this.key);
+    localStorage.setItem("FINISH_MISSION", JSON.stringify(mission));
   }
 }
