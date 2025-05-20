@@ -48,7 +48,6 @@ export class RailwayManager extends Component {
 
   startRailway(key: string) {
     this.isRunning = true;
-    console.log(key)
     switch (key) {
       case KeyMission.MISSION_1: {
         this.spawnPiece(RailwayPrefabName.FLAT);

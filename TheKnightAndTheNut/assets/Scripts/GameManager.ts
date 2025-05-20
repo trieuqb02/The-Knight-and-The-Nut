@@ -75,6 +75,7 @@ export class GameManager extends Component {
 
   reset() {
     const data = DataManager.instance.getData();
+    console.log(data)
     this.totalTime = data.time;
     this.winScore = data.score;
     this.timeLeft = this.totalTime;

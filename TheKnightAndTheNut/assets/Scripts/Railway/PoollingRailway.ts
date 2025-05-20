@@ -102,9 +102,9 @@ export class PoollingRailway extends Component {
         }
     }
 
-    // protected onLoad(): void {
-    //     this.initPrefabs()
-    // }
+    protected onLoad(): void {
+        this.initPrefabs()
+    }
 
 }
 
