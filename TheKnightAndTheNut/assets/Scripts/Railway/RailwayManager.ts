@@ -2,12 +2,9 @@ import {
   _decorator,
   Component,
   director,
-  instantiate,
   Node,
-  Prefab,
   UITransform,
 } from "cc";
-import { DataManager } from "../DataManager";
 import { KeyMission } from "../Mission/Mission";
 import { Railway } from "./Railway";
 import { PoollingRailway, RailwayPrefabName } from "./PoollingRailway";
@@ -39,40 +36,51 @@ export class RailwayManager extends Component {
 
   private hasSpawnedNext = true;
 
-  private key: string = "";
+  private isRunning: boolean = false;
 
   onLoad(): void {
     this.gamePlaytWidth = this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
 
     this.compPoll = this.poolRailways.getComponent(PoollingRailway);
+  }
 
-    this.key = DataManager.instance.getData();
-
-    switch (this.key) {
+  startRailway(key: string) {
+    this.isRunning = true;
+    console.log(key)
+    switch (key) {
       case KeyMission.MISSION_1: {
-          this.spawnPiece(RailwayPrefabName.FLAT);
-          this.spawnPiece(RailwayPrefabName.UP);
+        this.spawnPiece(RailwayPrefabName.FLAT);
+        this.spawnPiece(RailwayPrefabName.UP);
+        break
       }
       case KeyMission.MISSION_2: {
+        this.spawnPiece(RailwayPrefabName.FLAT);
+        this.spawnPiece(RailwayPrefabName.UP);
+        break
       }
       case KeyMission.MISSION_3: {
+        this.spawnPiece(RailwayPrefabName.FLAT);
+        this.spawnPiece(RailwayPrefabName.UP);
+        break
       }
     }
   }
 
-  finishMission() {
-    const stored = localStorage.getItem("FINISH_MISSION");
-    let mission: string[] = stored ? JSON.parse(stored) : [];
-    mission.push(this.key);
-    localStorage.setItem("FINISH_MISSION", JSON.stringify(mission));
-    director.loadScene("MenuScene");
+  endRailway() {
+    this.isRunning = false;
+    this.pieces.forEach(piece => {
+      const compPiece = piece.getComponent(Railway);
+      compPiece.init(0);
+    })
   }
 
   start(): void { }
 
   update(deltaTime: number): void {
-    this.checkSpawnNext();
-    this.checkRemoveFirst();
+    if (this.isRunning) {
+      this.checkSpawnNext();
+      this.checkRemoveFirst();
+    }
   }
 
   private checkSpawnNext() {
