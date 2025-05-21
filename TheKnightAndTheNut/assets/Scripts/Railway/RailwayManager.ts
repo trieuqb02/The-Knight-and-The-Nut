@@ -67,11 +67,7 @@ export class RailwayManager extends Component {
   }
 
   endRailway() {
-    this.isRunning = false;
-    this.pieces.forEach(piece => {
-      const compPiece = piece.getComponent(Railway);
-      compPiece.init(0);
-    })
+    this.isRunning = false
   }
 
   start(): void { }
@@ -179,11 +175,7 @@ export class RailwayManager extends Component {
         break;
       }
       case RailwayPrefabName.DOWN: {
-        piece.setPosition(
-          this.positionXStart,
-          0,
-          0
-        );
+        piece.setPosition(this.positionXStart, 0, 0);
         break;
       }
       case RailwayPrefabName.UP_AND_DOWN: {
@@ -202,7 +194,7 @@ export class RailwayManager extends Component {
 
   public runSpeedUp(speedUp: number, time: number) {
     this.isSpeedUp = true;
-    const temp = this.speed;
+    let temp = this.speed;
     this.speed = speedUp;
     this.pieces.forEach(piece => {
       piece.getComponent(Railway).runSpeedUp(speedUp, time);
