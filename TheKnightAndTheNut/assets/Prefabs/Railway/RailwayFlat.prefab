@@ -22,7 +22,6 @@
         "__id__": 2
       },
       {
-
         "__id__": 13
       },
       {
@@ -61,7 +60,6 @@
     ],
     "_prefab": {
       "__id__": 89
-
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -150,12 +148,12 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "Mushroom Enemy-001"
+    "value": "Railway"
   },
   {
     "__type__": "cc.TargetInfo",
     "localID": [
-      "8fDRxNRnpBX4FKVbygcoua"
+      "91d099I9NAJ66o3vQB53z1"
     ]
   },
   {
@@ -306,7 +304,6 @@
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-
       "__id__": 17
     },
     "propertyPath": [
@@ -1299,19 +1296,6 @@
         "__id__": 61
       },
       {
-        "__id__": 36
-      },
-      {
-        "__id__": 2
-      },
-      {
-        "__id__": 23
-      },
-      {
-        "__id__": 15
-      },
-      {
-        "__id__": 7
         "__id__": 53
       },
       {
