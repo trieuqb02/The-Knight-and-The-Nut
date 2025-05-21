@@ -14,16 +14,16 @@ export class PlayerCtrl extends Component {
     private isReverse: boolean = false;
     private anim: Animation;
     private direction: Vec3;
-    private distanceRay: number = 1000;
+    private distanceRay: number = 200;
 
     @property(Node)
     railwayManagerNode: Node;
 
-    // @property(Node)
-    // rayDrawerNode: Node;
+    @property(Node)
+    rayDrawerNode: Node;
 
     // node for draw ray
-    //private graphics: Graphics = null;
+    private graphics: Graphics = null;
     
     @property({type: Node,})
     rayOrigin: Node; 
@@ -44,17 +44,18 @@ export class PlayerCtrl extends Component {
     @property
     nitroToGod: number = 3;
     private curNitroNumber: number = 0;
+    private collider;
 
     onLoad(){
-        //this.graphics = this.rayDrawerNode.getComponent(Graphics);
+        this.graphics = this.rayDrawerNode.getComponent(Graphics);
 
         this.anim = this.getComponent(Animation);
         this.railwayManager = this.railwayManagerNode.getComponent('RailwayManager');
 
-        const collider = this.getComponent(Collider2D);
-        if (collider) {
-            collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-            collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
+        this.collider = this.getComponent(Collider2D);
+        if (this.collider) {
+            this.collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+            this.collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
     }
 
@@ -66,7 +67,7 @@ export class PlayerCtrl extends Component {
     }
 
     update(deltaTime: number) {
-        this.railCheck();
+        this.railCheckTest();//↓
     }
 
     onGod(){
@@ -96,6 +97,56 @@ export class PlayerCtrl extends Component {
         }
     }
 
+    railCheckTest() {
+        this.direction = this.isReverse ? new Vec3(0, 1, 0) : new Vec3(0, -1, 0);
+
+        const originWorld = this.rayOrigin.worldPosition;
+        const endPoint = originWorld.clone().add(this.direction.multiplyScalar(this.distanceRay));
+
+        let hits = PhysicsSystem2D.instance.raycast(
+            originWorld,
+            endPoint,
+            ERaycast2DType.All
+        );
+
+        this.drawRay(originWorld, endPoint);
+
+        // Tạo bản sao để sort
+        let hitsArr = [...hits];
+
+        if (hitsArr.length === 0) return;
+
+        // Sắp xếp theo khoảng cách
+        hitsArr.sort((a, b) => {
+            const distA = Vec2.distance(a.point, new Vec2(originWorld.x, originWorld.y));
+            const distB = Vec2.distance(b.point, new Vec2(originWorld.x, originWorld.y));
+            return distA - distB;
+        });
+
+        // Tìm ground THỨ HAI (bỏ qua ground hiện tại)
+        const minDistance = 70; // khoảng cách để bỏ qua ground hiện tại
+        let found = 0;
+
+        for (const hit of hitsArr) {
+            if (hit.collider.group === ColliderGroup.GROUND) {
+                const dist = Vec2.distance(hit.point, new Vec2(originWorld.x, originWorld.y));
+                if (dist > minDistance) {
+                    found++;
+                    if (found === 1) {
+                        // chọn ground THỨ HAI
+                        const hitPoint = hit.point;
+                        this.node.worldPosition = new Vec3(
+                            this.node.worldPosition.x,
+                            hitPoint.y,
+                            this.node.worldPosition.z
+                        );
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     railCheck(){
         if(this.isReverse) this.direction = new Vec3(0, 1, 0); // ray up
         else this.direction = new Vec3(0, -1, 0); // ray down
@@ -114,45 +165,39 @@ export class PlayerCtrl extends Component {
             ColliderGroup.GROUND,
         );
 
-        // if (hits.length > 0) {
-        //     const lastHit = hits[hits.length - 1];
-        //     const hitNode = lastHit.collider.node;
-        //     console.log("Ray hit last object:", hitNode.name);
-        // }
-
         // draw ray
-        this.drawRay(originWorld, endPoint);
+        //this.drawRay(originWorld, endPoint);
 
         if (hits.length > 0) {
             const hit = hits[0];
             const hitPoint = hit.point; // collide point
             this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
 
-            this.drawPoint(hitPoint);
+            //this.drawPoint(hitPoint);
         }
     }
 
     drawPoint(hitPoint){
         // convert to world pos
-        // const localPoint = this.rayDrawerNode
-        // .getComponent(UITransform)
-        // .convertToNodeSpaceAR(new Vec3(hitPoint.x, hitPoint.y, 0));
+        const localPoint = this.rayDrawerNode
+        .getComponent(UITransform)
+        .convertToNodeSpaceAR(new Vec3(hitPoint.x, hitPoint.y, 0));
 
         // draw point collide
-        // this.graphics.circle(localPoint.x, localPoint.y, 5);
-        // this.graphics.fillColor = Color.GREEN;
-        // this.graphics.fill();
+        this.graphics.circle(localPoint.x, localPoint.y, 5);
+        this.graphics.fillColor = Color.GREEN;
+        this.graphics.fill();
     }
 
     drawRay(originWorld, endPoint){
         // to local graphics node
-        // const localStart = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(originWorld);
-        // const localEnd = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(endPoint);
-        // this.graphics.clear();
-        // this.graphics.moveTo(localStart.x, localStart.y);
-        // this.graphics.lineTo(localEnd.x, localEnd.y);
-        // this.graphics.strokeColor = Color.RED;
-        // this.graphics.stroke();
+        const localStart = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(originWorld);
+        const localEnd = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(endPoint);
+        this.graphics.clear();
+        this.graphics.moveTo(localStart.x, localStart.y);
+        this.graphics.lineTo(localEnd.x, localEnd.y);
+        this.graphics.strokeColor = Color.RED;
+        this.graphics.stroke();
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
@@ -208,7 +253,11 @@ export class PlayerCtrl extends Component {
 
     reverse(){
         this.isReverse = !this.isReverse;
-        this.node.setScale(this.node.scale.x, -this.node.scale.y, this.node.scale.z);
+        if(this.isReverse)
+            this.node.angle = 180;
+        else this.node.angle = 0;
+        
+        this.node.setScale(-this.node.scale.x, this.node.scale.y, this.node.scale.z);
     }
 
     takeDame(dame)
