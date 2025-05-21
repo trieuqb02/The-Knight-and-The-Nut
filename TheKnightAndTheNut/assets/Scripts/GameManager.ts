@@ -57,6 +57,8 @@ export class GameManager extends Component {
 
   private winScore: number = 0;
 
+  private isPlay: boolean = false;
+
   init() {
     const score = instantiate(this.scorePrefab);
     this.scoreLB = score.getChildByName("Label").getComponent(Label);
@@ -71,11 +73,14 @@ export class GameManager extends Component {
 
     this.gamePlay.addChild(score);
     this.gamePlay.addChild(timer);
+    console.log(this.isPlay)
+    if(!this.isPlay){
+      director.resume()
+    }
   }
 
   reset() {
     const data = DataManager.instance.getData();
-    console.log(data)
     this.totalTime = data.time;
     this.winScore = data.score;
     this.timeLeft = this.totalTime;
@@ -84,6 +89,7 @@ export class GameManager extends Component {
     this.key = data.key;
     const gamePlayComp = this.gamePlay.getComponent(Sprite);
     gamePlayComp.spriteFrame = data.image;
+    this.isPlay = true;
 
   }
 
@@ -98,12 +104,16 @@ export class GameManager extends Component {
   }
 
   protected update(dt: number): void {
-    this.timeLeft -= dt;
-    const progress = this.timeLeft / this.totalTime;
-    this.timerProgress.progress = progress;
-
-    if (this.timeLeft <= 0) {
-      this.onTimeUp();
+    if(this.isPlay){
+      this.timeLeft -= dt;
+      const progress = this.timeLeft / this.totalTime;
+      this.timerProgress.progress = progress;
+  
+      if (this.timeLeft <= 0) {
+        director.pause();
+        this.onTimeUp();
+        this.isPlay = false;
+      }
     }
   }
 
@@ -145,6 +155,7 @@ export class GameManager extends Component {
     if (this.totalScore > this.winScore) {
       this.saveLocalData()
     }
+    director.resume()
     director.loadScene("LoadingScene");
   }
 
@@ -175,6 +186,7 @@ export class GameManager extends Component {
       const sceneName = currentScene.name;
       director.loadScene(sceneName);
     }
+    director.resume()
   }
 
   saveLocalData(){
