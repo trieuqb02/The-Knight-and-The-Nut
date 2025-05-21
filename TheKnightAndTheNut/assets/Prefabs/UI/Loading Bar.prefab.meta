@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "b0ad18ac-a8a9-4f53-bd85-a22417ac3014",
+  "uuid": "5c474ce1-90f0-4ac9-b19c-07a15b1ddb5e",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "Boss"
+    "syncNodeName": "Loading Bar"
   }
 }

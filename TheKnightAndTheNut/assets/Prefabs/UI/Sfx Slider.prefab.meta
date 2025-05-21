@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "b0ad18ac-a8a9-4f53-bd85-a22417ac3014",
+  "uuid": "f1c75a4b-99d0-426d-8716-6ffe8fe706bf",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "Boss"
+    "syncNodeName": "Sfx Slider"
   }
 }

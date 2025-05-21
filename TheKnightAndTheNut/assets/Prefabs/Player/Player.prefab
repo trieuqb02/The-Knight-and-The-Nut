@@ -105,7 +105,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 4.656,
-      "y": 1.42,
+      "y": 12.417,
       "z": 0
     },
     "_lrot": {
@@ -518,12 +518,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": -0.3,
-      "y": 15.5
+      "y": 13.4
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 12.3,
-      "height": 12.7
+      "height": 16.9
     },
     "_id": ""
   },
@@ -601,7 +601,6 @@
       "__id__": 0
     },
     "fileId": "1bU4Em+6hDtayV9UH8JgYQ",
-    "instance": null,
     "targetOverrides": []
   }
 ]
