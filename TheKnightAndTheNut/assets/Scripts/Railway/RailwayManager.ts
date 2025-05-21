@@ -49,17 +49,17 @@ export class RailwayManager extends Component {
     switch (key) {
       case KeyMission.MISSION_1: {
         this.spawnPiece(RailwayPrefabName.FLAT);
-        this.spawnPiece(RailwayPrefabName.UP);
+        this.spawnPiece(RailwayPrefabName.FLAT);
         break
       }
       case KeyMission.MISSION_2: {
         this.spawnPiece(RailwayPrefabName.FLAT);
-        this.spawnPiece(RailwayPrefabName.UP);
+        this.spawnPiece(RailwayPrefabName.FLAT);
         break
       }
       case KeyMission.MISSION_3: {
         this.spawnPiece(RailwayPrefabName.FLAT);
-        this.spawnPiece(RailwayPrefabName.UP);
+        this.spawnPiece(RailwayPrefabName.FLAT);
         break
       }
     }

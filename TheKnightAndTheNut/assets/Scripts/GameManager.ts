@@ -10,9 +10,12 @@ import {
   ProgressBar,
   Sprite,
   SpriteFrame,
+  Animation,
+  AnimationClip
 } from "cc";
 import { DataManager } from "./DataManager";
 import { RailwayManager } from "./Railway/RailwayManager";
+import { KeyMission } from "./Mission/Mission";
 const { ccclass, property } = _decorator;
 
 @ccclass("GameManager")
@@ -40,6 +43,18 @@ export class GameManager extends Component {
 
   @property(SpriteFrame)
   replaySpriteFrame: SpriteFrame = null;
+
+  @property(Node)
+  background: Node = null;
+
+  @property(AnimationClip)
+  bg1Clip: AnimationClip;
+
+  @property(AnimationClip)
+  bg2Clip: AnimationClip;
+
+  @property(AnimationClip)
+  bg3Clip: AnimationClip;
 
   timerProgress = null;
 
@@ -73,7 +88,6 @@ export class GameManager extends Component {
 
     this.gamePlay.addChild(score);
     this.gamePlay.addChild(timer);
-    console.log(this.isPlay)
     if(!this.isPlay){
       director.resume()
     }
@@ -87,8 +101,29 @@ export class GameManager extends Component {
     this.timerProgress.progress = this.totalTime;
     this.scoreLB.string = `${this.totalScore}`;
     this.key = data.key;
-    const gamePlayComp = this.gamePlay.getComponent(Sprite);
-    gamePlayComp.spriteFrame = data.image;
+    const backgroundComp = this.background.getComponent(Sprite);
+    backgroundComp.spriteFrame = data.image;
+
+    const animationComponent = this.background.addComponent(Animation);
+
+    switch (this.key){
+      case KeyMission.MISSION_1 : {
+        animationComponent.addClip(this.bg1Clip,'bg1')
+        animationComponent.play("bg1");
+        break
+      }
+      case KeyMission.MISSION_2 : {
+        animationComponent.addClip(this.bg2Clip,'bg2')
+        animationComponent.play("bg2");
+        break
+      }
+      case KeyMission.MISSION_3 : {
+        animationComponent.addClip(this.bg3Clip,'bg3')
+        animationComponent.play("bg3");
+        break
+      }
+    }
+
     this.isPlay = true;
 
   }
