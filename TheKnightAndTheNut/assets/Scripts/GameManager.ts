@@ -114,12 +114,7 @@ export class GameManager extends Component {
 
     const power = instantiate(this.powerPrefab);
 
-    console.log(power);
-
-
     this.powerComp = power.getComponent(Sprite);
-
-    console.log(this.powerComp.spriteFrame);
 
     this.powerComp.spriteFrame = this.power0;
 
@@ -127,7 +122,7 @@ export class GameManager extends Component {
     timer.setPosition(400, 280);
     power.setPosition(0, -300);
 
-    this.gamePlay.addChild(power)
+    this.gamePlay.addChild(power);
     this.gamePlay.addChild(score);
     this.gamePlay.addChild(timer);
     if (!this.idlPlayer) {
@@ -139,7 +134,8 @@ export class GameManager extends Component {
     if (this.isHealthInit) {
       for (let index = 1; index <= curHealth; index++) {
         const health = instantiate(this.healthPrefab);
-        const withGamePlay = this.gamePlay.getComponent(UITransform)?.contentSize.width ?? 0;
+        const withGamePlay =
+          this.gamePlay.getComponent(UITransform)?.contentSize.width ?? 0;
         health.setPosition(-(withGamePlay / 2) + index * 40, 300);
         this.gamePlay.addChild(health);
         this.healthArr.push(health);
@@ -151,27 +147,36 @@ export class GameManager extends Component {
     }
   }
 
-  displayPower(curPower: number){
-    console.log(curPower)
-    switch (curPower){
+  displayPower(curPower: number) {
+    switch (curPower) {
       case 1: {
         this.powerComp.spriteFrame = this.power1;
-        break
+        break;
       }
       case 2: {
-        console.log(this.powerComp.spriteFrame)
         this.powerComp.spriteFrame = this.power2;
-        break
+        break;
       }
       case 3: {
         this.powerComp.spriteFrame = this.power3;
-        break
+        break;
       }
       case 4: {
         this.powerComp.spriteFrame = this.power4;
-        break
+        break;
       }
     }
+  }
+
+  playPower(time: number) {
+    const anim = this.powerComp.node.getComponent(Animation);
+    const [idleClip] = anim.clips;
+    const idleState = anim.getState(idleClip.name);
+    const clipDuration = idleState.duration;
+    const targetDuration = time;
+    idleState.speed = clipDuration / targetDuration;
+    anim.play("power-bar");
+    this.powerComp.spriteFrame = this.power0;
   }
 
   gameOver() {
@@ -225,13 +230,13 @@ export class GameManager extends Component {
   }
 
   protected update(dt: number): void {
-    if(this.isPlay){
+    if (this.isPlay) {
       this.timeLeft -= dt;
       const progress = this.timeLeft / this.totalTime;
       this.timerProgress.progress = progress;
-  
+
       if (this.timeLeft <= 0) {
-        this.isPlay = false
+        this.isPlay = false;
         this.onTimeUp();
       }
     }
@@ -262,13 +267,13 @@ export class GameManager extends Component {
 
     if (this.totalScore < this.winScore) {
       button.node.getChildByName("Label").getComponent(Label).string = "Replay";
-    } 
-    
+    }
+
     if (index == missionList.length - 1) {
       button.node.getChildByName("Label").getComponent(Label).string = "Next";
     }
-    
-    if (this.idlPlayer){
+
+    if (this.idlPlayer) {
       button.node.getChildByName("Label").getComponent(Label).string = "Replay";
     }
 

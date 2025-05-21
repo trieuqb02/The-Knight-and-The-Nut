@@ -23,7 +23,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 84
+      "__id__": 77
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -54,7 +54,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 91
+      "__id__": 84
     },
     "_id": "f98aec09-4400-4a4c-a917-1f91fde7393c"
   },
@@ -89,31 +89,28 @@
         "__id__": 36
       },
       {
-        "__id__": 41
+        "__id__": 42
       },
       {
-        "__id__": 49
+        "__id__": 50
       },
       {
-        "__id__": 57
+        "__id__": 58
       },
       {
-        "__id__": 65
-      },
-      {
-        "__id__": 73
+        "__id__": 66
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 81
+        "__id__": 74
       },
       {
-        "__id__": 82
+        "__id__": 75
       },
       {
-        "__id__": 83
+        "__id__": 76
       }
     ],
     "_prefab": null,
@@ -205,7 +202,7 @@
     "_priority": 0,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 360,
+    "_orthoHeight": 366.810551558753,
     "_near": 0,
     "_far": 2000,
     "_color": {
@@ -705,6 +702,9 @@
       },
       {
         "__id__": 40
+      },
+      {
+        "__id__": 41
       }
     ],
     "removedComponents": []
@@ -991,50 +991,60 @@
     "value": 3
   },
   {
+    "__type__": "CCPropertyOverrideInfo",
+    "targetInfo": {
+      "__id__": 32
+    },
+    "propertyPath": [
+      "nitroToGod"
+    ],
+    "value": 4
+  },
+  {
     "__type__": "cc.Node",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
     },
     "_prefab": {
-      "__id__": 42
+      "__id__": 43
     },
     "__editorExtras__": {}
   },
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 41
+      "__id__": 42
     },
     "asset": {
-      "__uuid__": "f655ac0c-5333-4abf-ad08-b366d88dd01f",
+      "__uuid__": "8104f262-2c0f-4bfe-9f25-a404aad9660c",
       "__expectedType__": "cc.Prefab"
     },
-    "fileId": "8fDRxNRnpBX4FKVbygcoua",
+    "fileId": "a9nXacMZFD77C1MWcWiyWY",
     "instance": {
-      "__id__": 43
+      "__id__": 44
     },
     "targetOverrides": null,
     "nestedPrefabInstanceRoots": null
   },
   {
     "__type__": "cc.PrefabInstance",
-    "fileId": "4cUCVgeFtNra90o7toFGvV",
+    "fileId": "6d2byfGGVCmZnXMLXCUyyZ",
     "prefabRootNode": null,
     "mountedChildren": [],
     "mountedComponents": [],
     "propertyOverrides": [
       {
-        "__id__": 44
-      },
-      {
-        "__id__": 46
+        "__id__": 45
       },
       {
         "__id__": 47
       },
       {
         "__id__": 48
+      },
+      {
+        "__id__": 49
       }
     ],
     "removedComponents": []
@@ -1042,38 +1052,38 @@
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 45
+      "__id__": 46
     },
     "propertyPath": [
       "_name"
     ],
-    "value": "Mushroom Enemy"
+    "value": "Coin"
   },
   {
     "__type__": "cc.TargetInfo",
     "localID": [
-      "8fDRxNRnpBX4FKVbygcoua"
+      "a9nXacMZFD77C1MWcWiyWY"
     ]
   },
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 45
+      "__id__": 46
     },
     "propertyPath": [
       "_lpos"
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": 542.8,
-      "y": 68.443,
+      "x": 191.12,
+      "y": 58.167,
       "z": 0
     }
   },
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 45
+      "__id__": 46
     },
     "propertyPath": [
       "_lrot"
@@ -1089,7 +1099,7 @@
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 45
+      "__id__": 46
     },
     "propertyPath": [
       "_euler"
@@ -1108,44 +1118,44 @@
       "__id__": 2
     },
     "_prefab": {
-      "__id__": 50
+      "__id__": 51
     },
     "__editorExtras__": {}
   },
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 49
+      "__id__": 50
     },
     "asset": {
-      "__uuid__": "f655ac0c-5333-4abf-ad08-b366d88dd01f",
+      "__uuid__": "8104f262-2c0f-4bfe-9f25-a404aad9660c",
       "__expectedType__": "cc.Prefab"
     },
-    "fileId": "8fDRxNRnpBX4FKVbygcoua",
+    "fileId": "a9nXacMZFD77C1MWcWiyWY",
     "instance": {
-      "__id__": 51
+      "__id__": 52
     },
     "targetOverrides": null,
     "nestedPrefabInstanceRoots": null
   },
   {
     "__type__": "cc.PrefabInstance",
-    "fileId": "d3Q9UzNn1L4pTBf2QsxmCY",
+    "fileId": "49HRiDastKcZw01mzJEba5",
     "prefabRootNode": null,
     "mountedChildren": [],
     "mountedComponents": [],
     "propertyOverrides": [
       {
-        "__id__": 52
-      },
-      {
-        "__id__": 54
+        "__id__": 53
       },
       {
         "__id__": 55
       },
       {
         "__id__": 56
+      },
+      {
+        "__id__": 57
       }
     ],
     "removedComponents": []
@@ -1153,38 +1163,38 @@
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 53
+      "__id__": 54
     },
     "propertyPath": [
       "_name"
     ],
-    "value": "Mushroom Enemy-001"
+    "value": "Coin"
   },
   {
     "__type__": "cc.TargetInfo",
     "localID": [
-      "8fDRxNRnpBX4FKVbygcoua"
+      "a9nXacMZFD77C1MWcWiyWY"
     ]
   },
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 53
+      "__id__": 54
     },
     "propertyPath": [
       "_lpos"
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": 445.871,
-      "y": 68.443,
+      "x": 0,
+      "y": 54.222,
       "z": 0
     }
   },
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 53
+      "__id__": 54
     },
     "propertyPath": [
       "_lrot"
@@ -1200,7 +1210,7 @@
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 53
+      "__id__": 54
     },
     "propertyPath": [
       "_euler"
@@ -1219,44 +1229,44 @@
       "__id__": 2
     },
     "_prefab": {
-      "__id__": 58
+      "__id__": 59
     },
     "__editorExtras__": {}
   },
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 57
+      "__id__": 58
     },
     "asset": {
-      "__uuid__": "f655ac0c-5333-4abf-ad08-b366d88dd01f",
+      "__uuid__": "8104f262-2c0f-4bfe-9f25-a404aad9660c",
       "__expectedType__": "cc.Prefab"
     },
-    "fileId": "8fDRxNRnpBX4FKVbygcoua",
+    "fileId": "a9nXacMZFD77C1MWcWiyWY",
     "instance": {
-      "__id__": 59
+      "__id__": 60
     },
     "targetOverrides": null,
     "nestedPrefabInstanceRoots": null
   },
   {
     "__type__": "cc.PrefabInstance",
-    "fileId": "3eON8qGu5PpbPyeB+ZCAy8",
+    "fileId": "80K+2S25hNL7gtlq4LdzsJ",
     "prefabRootNode": null,
     "mountedChildren": [],
     "mountedComponents": [],
     "propertyOverrides": [
       {
-        "__id__": 60
-      },
-      {
-        "__id__": 62
+        "__id__": 61
       },
       {
         "__id__": 63
       },
       {
         "__id__": 64
+      },
+      {
+        "__id__": 65
       }
     ],
     "removedComponents": []
@@ -1264,38 +1274,38 @@
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 61
+      "__id__": 62
     },
     "propertyPath": [
       "_name"
     ],
-    "value": "Mushroom Enemy-002"
+    "value": "Coin"
   },
   {
     "__type__": "cc.TargetInfo",
     "localID": [
-      "8fDRxNRnpBX4FKVbygcoua"
+      "a9nXacMZFD77C1MWcWiyWY"
     ]
   },
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 61
+      "__id__": 62
     },
     "propertyPath": [
       "_lpos"
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": -96.929,
-      "y": 64.566,
+      "x": 362.077,
+      "y": 51.592,
       "z": 0
     }
   },
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 61
+      "__id__": 62
     },
     "propertyPath": [
       "_lrot"
@@ -1311,7 +1321,7 @@
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 61
+      "__id__": 62
     },
     "propertyPath": [
       "_euler"
@@ -1330,44 +1340,44 @@
       "__id__": 2
     },
     "_prefab": {
-      "__id__": 66
+      "__id__": 67
     },
     "__editorExtras__": {}
   },
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 65
+      "__id__": 66
     },
     "asset": {
-      "__uuid__": "f655ac0c-5333-4abf-ad08-b366d88dd01f",
+      "__uuid__": "8104f262-2c0f-4bfe-9f25-a404aad9660c",
       "__expectedType__": "cc.Prefab"
     },
-    "fileId": "8fDRxNRnpBX4FKVbygcoua",
+    "fileId": "a9nXacMZFD77C1MWcWiyWY",
     "instance": {
-      "__id__": 67
+      "__id__": 68
     },
     "targetOverrides": null,
     "nestedPrefabInstanceRoots": null
   },
   {
     "__type__": "cc.PrefabInstance",
-    "fileId": "77XvFMTeRLuajZ1ALJtc2t",
+    "fileId": "84bd/eJv1MY6w8+2gh1LqD",
     "prefabRootNode": null,
     "mountedChildren": [],
     "mountedComponents": [],
     "propertyOverrides": [
       {
-        "__id__": 68
-      },
-      {
-        "__id__": 70
+        "__id__": 69
       },
       {
         "__id__": 71
       },
       {
         "__id__": 72
+      },
+      {
+        "__id__": 73
       }
     ],
     "removedComponents": []
@@ -1375,38 +1385,38 @@
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 69
+      "__id__": 70
     },
     "propertyPath": [
       "_name"
     ],
-    "value": "Mushroom Enemy-003"
+    "value": "Coin"
   },
   {
     "__type__": "cc.TargetInfo",
     "localID": [
-      "8fDRxNRnpBX4FKVbygcoua"
+      "a9nXacMZFD77C1MWcWiyWY"
     ]
   },
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 69
+      "__id__": 70
     },
     "propertyPath": [
       "_lpos"
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": 244.26,
-      "y": 41.303,
+      "x": 543.992,
+      "y": 55.975,
       "z": 0
     }
   },
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 69
+      "__id__": 70
     },
     "propertyPath": [
       "_lrot"
@@ -1422,118 +1432,7 @@
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 69
-    },
-    "propertyPath": [
-      "_euler"
-    ],
-    "value": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    }
-  },
-  {
-    "__type__": "cc.Node",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 2
-    },
-    "_prefab": {
-      "__id__": 74
-    },
-    "__editorExtras__": {}
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 73
-    },
-    "asset": {
-      "__uuid__": "f655ac0c-5333-4abf-ad08-b366d88dd01f",
-      "__expectedType__": "cc.Prefab"
-    },
-    "fileId": "8fDRxNRnpBX4FKVbygcoua",
-    "instance": {
-      "__id__": 75
-    },
-    "targetOverrides": null,
-    "nestedPrefabInstanceRoots": null
-  },
-  {
-    "__type__": "cc.PrefabInstance",
-    "fileId": "dcNEsNzspEpa/7U+ywjUME",
-    "prefabRootNode": null,
-    "mountedChildren": [],
-    "mountedComponents": [],
-    "propertyOverrides": [
-      {
-        "__id__": 76
-      },
-      {
-        "__id__": 78
-      },
-      {
-        "__id__": 79
-      },
-      {
-        "__id__": 80
-      }
-    ],
-    "removedComponents": []
-  },
-  {
-    "__type__": "CCPropertyOverrideInfo",
-    "targetInfo": {
-      "__id__": 77
-    },
-    "propertyPath": [
-      "_name"
-    ],
-    "value": "Mushroom Enemy-004"
-  },
-  {
-    "__type__": "cc.TargetInfo",
-    "localID": [
-      "8fDRxNRnpBX4FKVbygcoua"
-    ]
-  },
-  {
-    "__type__": "CCPropertyOverrideInfo",
-    "targetInfo": {
-      "__id__": 77
-    },
-    "propertyPath": [
-      "_lpos"
-    ],
-    "value": {
-      "__type__": "cc.Vec3",
-      "x": 112.437,
-      "y": 72.32,
-      "z": 0
-    }
-  },
-  {
-    "__type__": "CCPropertyOverrideInfo",
-    "targetInfo": {
-      "__id__": 77
-    },
-    "propertyPath": [
-      "_lrot"
-    ],
-    "value": {
-      "__type__": "cc.Quat",
-      "x": 0,
-      "y": 0,
-      "z": 0,
-      "w": 1
-    }
-  },
-  {
-    "__type__": "CCPropertyOverrideInfo",
-    "targetInfo": {
-      "__id__": 77
+      "__id__": 70
     },
     "propertyPath": [
       "_euler"
@@ -1621,10 +1520,10 @@
     "instance": null,
     "targetOverrides": [
       {
-        "__id__": 85
+        "__id__": 78
       },
       {
-        "__id__": 88
+        "__id__": 81
       }
     ],
     "nestedPrefabInstanceRoots": [
@@ -1632,19 +1531,16 @@
         "__id__": 18
       },
       {
-        "__id__": 41
+        "__id__": 42
       },
       {
-        "__id__": 49
+        "__id__": 50
       },
       {
-        "__id__": 57
+        "__id__": 58
       },
       {
-        "__id__": 65
-      },
-      {
-        "__id__": 73
+        "__id__": 66
       }
     ]
   },
@@ -1654,7 +1550,7 @@
       "__id__": 18
     },
     "sourceInfo": {
-      "__id__": 86
+      "__id__": 79
     },
     "propertyPath": [
       "fireOrigin"
@@ -1663,7 +1559,7 @@
       "__id__": 18
     },
     "targetInfo": {
-      "__id__": 87
+      "__id__": 80
     }
   },
   {
@@ -1684,7 +1580,7 @@
       "__id__": 18
     },
     "sourceInfo": {
-      "__id__": 89
+      "__id__": 82
     },
     "propertyPath": [
       "rayOrigin"
@@ -1693,7 +1589,7 @@
       "__id__": 18
     },
     "targetInfo": {
-      "__id__": 90
+      "__id__": 83
     }
   },
   {
@@ -1711,28 +1607,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 92
+      "__id__": 85
     },
     "shadows": {
-      "__id__": 93
+      "__id__": 86
     },
     "_skybox": {
-      "__id__": 94
+      "__id__": 87
     },
     "fog": {
-      "__id__": 95
+      "__id__": 88
     },
     "octree": {
-      "__id__": 96
+      "__id__": 89
     },
     "skin": {
-      "__id__": 97
+      "__id__": 90
     },
     "lightProbeInfo": {
-      "__id__": 98
+      "__id__": 91
     },
     "postSettings": {
-      "__id__": 99
+      "__id__": 92
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

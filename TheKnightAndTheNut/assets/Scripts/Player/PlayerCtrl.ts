@@ -83,6 +83,7 @@ export class PlayerCtrl extends Component {
         let pinkAttackState = this.anim.getState("pinkRun");
         // speed up
         this.railwayManager.runSpeedUp(500, this.timingGod);
+        this.gameManager.playPower(this.timingGod);
         // set speed animation
         pinkAttackState.speed = 3; 
         // reset after time
@@ -99,6 +100,7 @@ export class PlayerCtrl extends Component {
         this.coinNumber += amount;
         // add nitro after collect coin
         this.curNitroNumber += 1;
+         this.gameManager.displayPower(this.curNitroNumber)
 
         if(this.curNitroNumber >= this.nitroToGod){
             this.onGod();
@@ -273,8 +275,7 @@ export class PlayerCtrl extends Component {
     {
         if(this.isGodState) return;
         this.curHealth -= dame;
-        // this.gameManager.displayHealth(this.curHealth);
-        this.gameManager.displayPower(this.curHealth)
+        this.gameManager.displayHealth(this.curHealth);
 
         if (this.curHealth <= 0){   
             this.dead();
