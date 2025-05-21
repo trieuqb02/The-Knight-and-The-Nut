@@ -57,6 +57,8 @@ export class GameManager extends Component {
 
   private winScore: number = 0;
 
+  private isPlay: boolean = false;
+
   init() {
     const score = instantiate(this.scorePrefab);
     this.scoreLB = score.getChildByName("Label").getComponent(Label);
@@ -84,6 +86,7 @@ export class GameManager extends Component {
     this.key = data.key;
     const gamePlayComp = this.gamePlay.getComponent(Sprite);
     gamePlayComp.spriteFrame = data.image;
+    this.isPlay = true;
 
   }
 
@@ -98,12 +101,15 @@ export class GameManager extends Component {
   }
 
   protected update(dt: number): void {
-    this.timeLeft -= dt;
-    const progress = this.timeLeft / this.totalTime;
-    this.timerProgress.progress = progress;
-
-    if (this.timeLeft <= 0) {
-      this.onTimeUp();
+    if(this.isPlay){
+      this.timeLeft -= dt;
+      const progress = this.timeLeft / this.totalTime;
+      this.timerProgress.progress = progress;
+  
+      if (this.timeLeft <= 0) {
+        this.onTimeUp();
+        this.isPlay = false;
+      }
     }
   }
 
