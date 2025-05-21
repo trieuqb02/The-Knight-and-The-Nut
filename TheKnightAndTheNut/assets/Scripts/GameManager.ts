@@ -11,7 +11,8 @@ import {
   Sprite,
   SpriteFrame,
   Animation,
-  AnimationClip
+  AnimationClip,
+  UITransform,
 } from "cc";
 import { DataManager } from "./DataManager";
 import { RailwayManager } from "./Railway/RailwayManager";
@@ -26,6 +27,9 @@ export class GameManager extends Component {
   @property(Node)
   gamePlay: Node = null;
 
+  @property(Node)
+  player: Node = null;
+
   @property(Prefab)
   scorePrefab: Prefab = null;
 
@@ -35,14 +39,17 @@ export class GameManager extends Component {
   @property(Prefab)
   resultPrefab: Prefab = null;
 
+  @property(Prefab)
+  healthPrefab: Prefab = null;
+
+  @property(Prefab)
+  powerPrefab: Prefab = null;
+
   @property(SpriteFrame)
   winPriteFrame: SpriteFrame = null;
 
   @property(SpriteFrame)
   loseSpriteFrame: SpriteFrame = null;
-
-  @property(SpriteFrame)
-  replaySpriteFrame: SpriteFrame = null;
 
   @property(Node)
   background: Node = null;
@@ -56,6 +63,22 @@ export class GameManager extends Component {
   @property(AnimationClip)
   bg3Clip: AnimationClip;
 
+  @property(SpriteFrame)
+  blackHeald: SpriteFrame = null;
+
+  @property(SpriteFrame)
+  power0: SpriteFrame = null;
+  @property(SpriteFrame)
+  power1: SpriteFrame = null;
+  @property(SpriteFrame)
+  power2: SpriteFrame = null;
+  @property(SpriteFrame)
+  power3: SpriteFrame = null;
+  @property(SpriteFrame)
+  power4: SpriteFrame = null;
+
+  powerComp = null;
+
   timerProgress = null;
 
   scoreLB = null;
@@ -68,9 +91,15 @@ export class GameManager extends Component {
 
   private railwayComp = null;
 
-  private totalScore: number = 1000;
+  private totalScore: number = 0;
 
   private winScore: number = 0;
+
+  private idlPlayer: boolean = false;
+
+  private isHealthInit: boolean = true;
+
+  private healthArr: any[] = [];
 
   private isPlay: boolean = false;
 
@@ -83,14 +112,74 @@ export class GameManager extends Component {
       .getChildByName("TimerProgressBar")
       .getComponent(ProgressBar);
 
+    const power = instantiate(this.powerPrefab);
+
+    console.log(power);
+
+
+    this.powerComp = power.getComponent(Sprite);
+
+    console.log(this.powerComp.spriteFrame);
+
+    this.powerComp.spriteFrame = this.power0;
+
     score.setPosition(0, 280);
     timer.setPosition(400, 280);
+    power.setPosition(0, -300);
 
+    this.gamePlay.addChild(power)
     this.gamePlay.addChild(score);
     this.gamePlay.addChild(timer);
-    if(!this.isPlay){
-      director.resume()
+    if (!this.idlPlayer) {
+      director.resume();
     }
+  }
+
+  displayHealth(curHealth: number) {
+    if (this.isHealthInit) {
+      for (let index = 1; index <= curHealth; index++) {
+        const health = instantiate(this.healthPrefab);
+        const withGamePlay = this.gamePlay.getComponent(UITransform)?.contentSize.width ?? 0;
+        health.setPosition(-(withGamePlay / 2) + index * 40, 300);
+        this.gamePlay.addChild(health);
+        this.healthArr.push(health);
+      }
+      this.isHealthInit = false;
+    } else {
+      this.healthArr[curHealth].getComponent(Sprite).spriteFrame =
+        this.blackHeald;
+    }
+  }
+
+  displayPower(curPower: number){
+    console.log(curPower)
+    switch (curPower){
+      case 1: {
+        this.powerComp.spriteFrame = this.power1;
+        break
+      }
+      case 2: {
+        console.log(this.powerComp.spriteFrame)
+        this.powerComp.spriteFrame = this.power2;
+        break
+      }
+      case 3: {
+        this.powerComp.spriteFrame = this.power3;
+        break
+      }
+      case 4: {
+        this.powerComp.spriteFrame = this.power4;
+        break
+      }
+    }
+  }
+
+  gameOver() {
+    this.idlPlayer = true;
+    this.isPlay = false;
+    this.scheduleOnce(() => {
+      this.onTimeUp();
+    }, 2);
   }
 
   reset() {
@@ -105,27 +194,23 @@ export class GameManager extends Component {
     backgroundComp.spriteFrame = data.image;
 
     const animationComponent = this.background.addComponent(Animation);
-
-    switch (this.key){
-      case KeyMission.MISSION_1 : {
-        animationComponent.addClip(this.bg1Clip,'bg1')
+    switch (this.key) {
+      case KeyMission.MISSION_1: {
+        animationComponent.addClip(this.bg1Clip, "bg1");
         animationComponent.play("bg1");
-        break
+        break;
       }
-      case KeyMission.MISSION_2 : {
-        animationComponent.addClip(this.bg2Clip,'bg2')
+      case KeyMission.MISSION_2: {
+        animationComponent.addClip(this.bg2Clip, "bg2");
         animationComponent.play("bg2");
-        break
+        break;
       }
-      case KeyMission.MISSION_3 : {
-        animationComponent.addClip(this.bg3Clip,'bg3')
+      case KeyMission.MISSION_3: {
+        animationComponent.addClip(this.bg3Clip, "bg3");
         animationComponent.play("bg3");
-        break
+        break;
       }
     }
-
-    this.isPlay = true;
-
   }
 
   protected onLoad(): void {
@@ -136,6 +221,7 @@ export class GameManager extends Component {
   protected start(): void {
     this.railwayComp = this.railwayManager.getComponent(RailwayManager);
     this.railwayComp.startRailway(this.key);
+    this.isPlay = true;
   }
 
   protected update(dt: number): void {
@@ -145,9 +231,8 @@ export class GameManager extends Component {
       this.timerProgress.progress = progress;
   
       if (this.timeLeft <= 0) {
-        director.pause();
+        this.isPlay = false
         this.onTimeUp();
-        this.isPlay = false;
       }
     }
   }
@@ -158,10 +243,13 @@ export class GameManager extends Component {
   }
 
   protected onTimeUp() {
+    director.pause();
     this.railwayComp.endRailway();
     const result = instantiate(this.resultPrefab);
-    if (this.totalScore > this.winScore) {
+    if (this.totalScore > this.winScore && !this.idlPlayer) {
       result.getComponent(Sprite).spriteFrame = this.winPriteFrame;
+    } else if (this.totalScore > this.winScore && this.idlPlayer) {
+      result.getComponent(Sprite).spriteFrame = this.loseSpriteFrame;
     } else {
       result.getComponent(Sprite).spriteFrame = this.loseSpriteFrame;
     }
@@ -170,12 +258,20 @@ export class GameManager extends Component {
     const buttonHome = result.getChildByName("HomeBtn").getComponent(Button);
 
     const missionList = DataManager.instance.getMissionList();
-    const index = missionList.findIndex(item => item.key === this.key);
+    const index = missionList.findIndex((item) => item.key === this.key);
+
     if (this.totalScore < this.winScore) {
-      button.node.getComponent(Sprite).spriteFrame = this.replaySpriteFrame;
-    } else if(index == missionList.length - 1){
-      button.node.getComponent(Sprite).spriteFrame = this.replaySpriteFrame;
+      button.node.getChildByName("Label").getComponent(Label).string = "Replay";
+    } 
+    
+    if (index == missionList.length - 1) {
+      button.node.getChildByName("Label").getComponent(Label).string = "Next";
     }
+    
+    if (this.idlPlayer){
+      button.node.getChildByName("Label").getComponent(Label).string = "Replay";
+    }
+
     button.node.on(Button.EventType.CLICK, this.onClickButton, this);
     buttonHome.node.on(Button.EventType.CLICK, this.onClickHome, this);
 
@@ -188,23 +284,24 @@ export class GameManager extends Component {
 
   onClickHome() {
     if (this.totalScore > this.winScore) {
-      this.saveLocalData()
+      this.saveLocalData();
     }
-    director.resume()
+    director.resume();
     director.loadScene("LoadingScene");
   }
 
   onClickButton() {
+    director.resume();
     const missionList = DataManager.instance.getMissionList();
-    const index = missionList.findIndex(item => item.key === this.key);
-    if(index == missionList.length - 1){
+    const index = missionList.findIndex((item) => item.key === this.key);
+    if (index == missionList.length - 1) {
       this.saveLocalData();
       const currentScene = director.getScene();
       const sceneName = currentScene.name;
       director.loadScene(sceneName);
     }
 
-    if (this.totalScore > this.winScore) {
+    if (this.totalScore > this.winScore && !this.idlPlayer) {
       missionList.forEach((mission, index) => {
         if (mission.key === this.key) {
           if (index != missionList.length - 1) {
@@ -215,16 +312,15 @@ export class GameManager extends Component {
             director.loadScene(sceneName);
           }
         }
-      })
+      });
     } else {
       const currentScene = director.getScene();
       const sceneName = currentScene.name;
       director.loadScene(sceneName);
     }
-    director.resume()
   }
 
-  saveLocalData(){
+  saveLocalData() {
     const stored = localStorage.getItem("FINISH_MISSION");
     let mission: string[] = stored ? JSON.parse(stored) : [];
     mission.push(this.key);

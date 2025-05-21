@@ -1,5 +1,6 @@
 import { _decorator, Component, EventKeyboard, Input, input, Animation, KeyCode, Node, Collider2D, IPhysics2DContact, Contact2DType, PhysicsSystem2D, Vec2, ERaycast2DType, Graphics, Color, UITransform, Vec3 } from 'cc';
 import { EnemyCtrl } from '../Enemy/EnemyCtrl';
+import { GameManager } from '../GameManager';
 const { ccclass, property } = _decorator;
 
 export enum ColliderGroup {
@@ -15,6 +16,9 @@ export class PlayerCtrl extends Component {
     private anim: Animation;
     private direction: Vec3;
     private distanceRay: number = 200;
+
+    @property(Node)
+    gameManagerNode: Node;
 
     @property(Node)
     railwayManagerNode: Node;
@@ -41,6 +45,7 @@ export class PlayerCtrl extends Component {
     @property
     timingGod: number = 5;
     private railwayManager;
+    private gameManager;
     @property
     nitroToGod: number = 3;
     private curNitroNumber: number = 0;
@@ -52,6 +57,8 @@ export class PlayerCtrl extends Component {
         this.anim = this.getComponent(Animation);
         this.railwayManager = this.railwayManagerNode.getComponent('RailwayManager');
 
+        this.gameManager = this.gameManagerNode.getComponent('GameManager');
+
         this.collider = this.getComponent(Collider2D);
         if (this.collider) {
             this.collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
@@ -62,6 +69,7 @@ export class PlayerCtrl extends Component {
     start() {
         // init health
         this.curHealth = this.startingHealth;
+        this.gameManager.displayHealth(this.curHealth)
 
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }
@@ -240,6 +248,7 @@ export class PlayerCtrl extends Component {
          this.anim.once(Animation.EventType.FINISHED, () => {
             this.node.destroy();
         });
+        this.gameManager.gameOver();
     }
 
     hurt(){
@@ -264,6 +273,8 @@ export class PlayerCtrl extends Component {
     {
         if(this.isGodState) return;
         this.curHealth -= dame;
+        // this.gameManager.displayHealth(this.curHealth);
+        this.gameManager.displayPower(this.curHealth)
 
         if (this.curHealth <= 0){   
             this.dead();
