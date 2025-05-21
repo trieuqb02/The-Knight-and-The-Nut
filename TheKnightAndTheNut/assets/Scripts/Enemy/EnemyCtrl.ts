@@ -15,14 +15,15 @@ export class EnemyCtrl extends Component {
     private curHealth: number;
 
     private anim: Animation;
+    private collider;
 
     onLoad() {
         this.anim = this.getComponent(Animation);
 
-        const collider = this.getComponent(Collider2D);
-        if (collider) {
-            collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-            collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
+        this.collider = this.getComponent(Collider2D);
+        if (this.collider) {
+            this.collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+            this.collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
     }
 
@@ -72,6 +73,7 @@ export class EnemyCtrl extends Component {
     dead()
     {
         this.anim.play("mushroomDie");
+        this.collider.enabled = false;
 
         this.anim.once(Animation.EventType.FINISHED, () => {
             this.node.destroy();
