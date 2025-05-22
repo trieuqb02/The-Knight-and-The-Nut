@@ -11,23 +11,22 @@ export class EventManager extends Component {
   protected onLoad(): void {}
 
   @property(AudioClip)
-    clickSound: AudioClip = null!;
+  clickSound: AudioClip = null!;
 
   emitOpenMissionList() {
-    console.log(AudioManager.instance.bgmSource)
     AudioManager.instance.playSFX(this.clickSound);
     this.node.emit(EventEnum.EVENT_OPEN_MISSION_LIST);
   }
 
-  emitOpenSetting(){
+  emitOpenSetting() {
     AudioManager.instance.playSFX(this.clickSound);
   }
 
-  emitOpenPvP(){
+  emitOpenPvP() {
     AudioManager.instance.playSFX(this.clickSound);
   }
 
-  emitOpenQuit(){
+  emitOpenQuit() {
     AudioManager.instance.playSFX(this.clickSound);
   }
 }

@@ -35,10 +35,34 @@ export class MissionManager extends Component {
   @property({ type: Prefab })
   missionPrefab: Prefab = null;
 
-  private missions: { key: string; islocked: boolean; score: number, image: SpriteFrame, time: number }[] = [
-    { key: KeyMission.MISSION_1, islocked: false, score: 500, image: null, time: 10 },
-    { key: KeyMission.MISSION_2, islocked: true, score: 700, image: null, time: 10 },
-    { key: KeyMission.MISSION_3, islocked: true, score: 800, image: null, time: 10 },
+  private missions: {
+    key: string;
+    islocked: boolean;
+    score: number;
+    image: SpriteFrame;
+    time: number;
+  }[] = [
+    {
+      key: KeyMission.MISSION_1,
+      islocked: false,
+      score: 500,
+      image: null,
+      time: 70,
+    },
+    {
+      key: KeyMission.MISSION_2,
+      islocked: true,
+      score: 700,
+      image: null,
+      time: 70,
+    },
+    {
+      key: KeyMission.MISSION_3,
+      islocked: true,
+      score: 800,
+      image: null,
+      time: 10,
+    },
   ];
 
   protected onLoad(): void {
@@ -61,7 +85,7 @@ export class MissionManager extends Component {
   }
 
   openMissionList() {
-    if(!this.missionList.node.active){
+    if (!this.missionList.node.active) {
       this.missionList.node.active = true;
       this.init();
     }
@@ -79,7 +103,7 @@ export class MissionManager extends Component {
       this.missionList.content.addChild(missionP);
       this.missionList.addPage(missionP);
     });
-    DataManager.instance.setMissionList(this.missions)
+    DataManager.instance.setMissionList(this.missions);
   }
 
   openMissionNext(key: string) {

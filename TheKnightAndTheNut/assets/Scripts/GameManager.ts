@@ -33,6 +33,9 @@ export class GameManager extends Component {
   @property(Node)
   player: Node = null;
 
+  @property(Node)
+  boss: Node = null;
+
   @property(Prefab)
   scorePrefab: Prefab = null;
 
@@ -91,7 +94,7 @@ export class GameManager extends Component {
 
   private railwayComp = null;
 
-  private totalScore: number = 0;
+  private totalScore: number = 3000;
 
   private winScore: number = 0;
 
@@ -102,6 +105,8 @@ export class GameManager extends Component {
   private healthArr: any[] = [];
 
   private isPlay: boolean = false;
+
+  private isBoss: boolean = false;
 
   init() {
     AudioManager.instance.stopBGM();
@@ -138,7 +143,7 @@ export class GameManager extends Component {
         const health = instantiate(this.healthPrefab);
         const withGamePlay =
           this.gamePlay.getComponent(UITransform)?.contentSize.width ?? 0;
-        health.setPosition(-(withGamePlay / 2) + index * 40, 280  );
+        health.setPosition(-(withGamePlay / 2) + index * 40, 280);
         this.gamePlay.addChild(health);
         this.healthArr.push(health);
       }
@@ -191,7 +196,7 @@ export class GameManager extends Component {
 
   reset() {
     const data = DataManager.instance.getData();
-    AudioManager.instance.playBGM(this.gamePlayAudioClip)
+    AudioManager.instance.playBGM(this.gamePlayAudioClip);
     this.totalTime = data.time;
     this.winScore = data.score;
     this.timeLeft = this.totalTime;
@@ -219,6 +224,13 @@ export class GameManager extends Component {
       this.timeLeft -= dt;
       const progress = this.timeLeft / this.totalTime;
       this.timerProgress.progress = progress;
+
+      if (this.key == KeyMission.MISSION_3 && !this.isBoss) {
+        if (this.totalScore >= 3000) {
+          this.boss.active = true;
+          this.isBoss = true;
+        }
+      }
 
       if (this.timeLeft <= 0) {
         this.isPlay = false;
@@ -255,7 +267,7 @@ export class GameManager extends Component {
     }
 
     if (index == missionList.length - 1) {
-      button.node.getChildByName("Label").getComponent(Label).string = "Next";
+      button.node.getChildByName("Label").getComponent(Label).string = "Replay";
     }
 
     if (this.idlPlayer) {
@@ -276,7 +288,7 @@ export class GameManager extends Component {
     if (this.totalScore > this.winScore) {
       this.saveLocalData();
     }
-    SceneTransitionManager.setNextScene("MenuScene")
+    SceneTransitionManager.setNextScene("MenuScene");
     director.resume();
     director.loadScene("LoadingScene");
   }

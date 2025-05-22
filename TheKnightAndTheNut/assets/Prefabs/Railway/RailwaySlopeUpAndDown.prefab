@@ -272,7 +272,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "Railway-001"
+    "value": "Railway"
   },
   {
     "__type__": "cc.TargetInfo",
@@ -514,7 +514,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "Railway-002"
+    "value": "Railway"
   },
   {
     "__type__": "cc.TargetInfo",
@@ -626,7 +626,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "Railway-003"
+    "value": "Railway"
   },
   {
     "__type__": "cc.TargetInfo",
@@ -738,7 +738,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "Railway-004"
+    "value": "Railway"
   },
   {
     "__type__": "cc.TargetInfo",
@@ -853,7 +853,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "RailwayR-001"
+    "value": "RailwayR"
   },
   {
     "__type__": "cc.TargetInfo",
@@ -980,7 +980,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "Railway-005"
+    "value": "Railway"
   },
   {
     "__type__": "cc.TargetInfo",
@@ -1092,7 +1092,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "Railway-006"
+    "value": "Railway"
   },
   {
     "__type__": "cc.TargetInfo",
@@ -1207,7 +1207,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "RailwayR-002"
+    "value": "RailwayR"
   },
   {
     "__type__": "cc.TargetInfo",
@@ -1334,7 +1334,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "Railway-009"
+    "value": "Railway"
   },
   {
     "__type__": "cc.TargetInfo",
@@ -1446,7 +1446,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "Railway-010"
+    "value": "Railway"
   },
   {
     "__type__": "cc.TargetInfo",
@@ -1558,7 +1558,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "Railway-011"
+    "value": "Railway"
   },
   {
     "__type__": "cc.TargetInfo",
@@ -1673,7 +1673,7 @@
     "propertyPath": [
       "_name"
     ],
-    "value": "RailwayR-003"
+    "value": "RailwayR"
   },
   {
     "__type__": "cc.TargetInfo",

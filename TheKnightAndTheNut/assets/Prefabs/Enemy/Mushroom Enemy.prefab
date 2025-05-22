@@ -190,7 +190,7 @@
     "__prefab": {
       "__id__": 9
     },
-    "speed": 80,
+    "speed": 0,
     "dame": 1,
     "startingHealth": 1,
     "_id": ""
@@ -240,7 +240,7 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": false,
+    "_enabled": true,
     "__prefab": {
       "__id__": 13
     },
