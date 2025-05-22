@@ -13,11 +13,13 @@ import {
   Animation,
   AnimationClip,
   UITransform,
+  AudioClip,
 } from "cc";
 import { DataManager } from "./DataManager";
 import { RailwayManager } from "./Railway/RailwayManager";
 import { KeyMission } from "./Mission/Mission";
 import { SceneTransitionManager } from "./SceneTransitionManager";
+import { AudioManager } from "./AudioManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("GameManager")
@@ -69,6 +71,12 @@ export class GameManager extends Component {
   @property(SpriteFrame)
   power4: SpriteFrame = null;
 
+  @property(AudioClip)
+  gamePlayAudioClip: AudioClip = null;
+
+  @property(AudioClip)
+  audioBGClip: AudioClip = null;
+
   powerComp = null;
 
   timerProgress = null;
@@ -96,6 +104,8 @@ export class GameManager extends Component {
   private isPlay: boolean = false;
 
   init() {
+    AudioManager.instance.stopBGM();
+    AudioManager.instance.playBGM(this.audioBGClip);
     const score = instantiate(this.scorePrefab);
     this.scoreLB = score.getChildByName("Label").getComponent(Label);
 
@@ -181,6 +191,7 @@ export class GameManager extends Component {
 
   reset() {
     const data = DataManager.instance.getData();
+    AudioManager.instance.playBGM(this.gamePlayAudioClip)
     this.totalTime = data.time;
     this.winScore = data.score;
     this.timeLeft = this.totalTime;
