@@ -75,9 +75,6 @@ export class GameManager extends Component {
   power4: SpriteFrame = null;
 
   @property(AudioClip)
-  gamePlayAudioClip: AudioClip = null;
-
-  @property(AudioClip)
   audioBGClip: AudioClip = null;
 
   powerComp = null;
@@ -196,7 +193,6 @@ export class GameManager extends Component {
 
   reset() {
     const data = DataManager.instance.getData();
-    AudioManager.instance.playBGM(this.gamePlayAudioClip);
     this.totalTime = data.time;
     this.winScore = data.score;
     this.timeLeft = this.totalTime;
