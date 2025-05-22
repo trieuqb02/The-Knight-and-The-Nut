@@ -46,6 +46,8 @@ export class RailwayManager extends Component {
 
   private key: string = "";
 
+  private render: number = 0;
+
   onLoad(): void {
     this.gamePlaytWidth =
       this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
@@ -143,7 +145,6 @@ export class RailwayManager extends Component {
 
     const coinsArr = piece.getComponentsInChildren(Collectible);
     if (coinsArr.length > 0) {
-      console.log(1);
       for (let index = 0; index < coinsArr.length; index++) {
         const element = coinsArr[index];
         element.node.destroy();
@@ -164,24 +165,26 @@ export class RailwayManager extends Component {
 
     const namePrefab = piece.name;
 
-    let rand = Math.floor(Math.random() * 100) + 1;
-
-    if (this.key == KeyMission.MISSION_1) {
-      rand = 1;
-    }
-
     const arr = [];
-    if (rand % 2 != 0) {
-      for (let i = 1; i <= 3; i++) {
-        const coin = instantiate(this.coinPrefab);
-        arr.push(coin);
+    let rand = Math.floor(Math.random() * 100) + 1;
+    if (this.render >= 3) {
+      if (this.key == KeyMission.MISSION_1) {
+        rand = 1;
       }
-    } else {
-      for (let i = 1; i <= 3; i++) {
-        const enemy = instantiate(this.enemyPrefab);
-        arr.push(enemy);
+
+      if (rand % 2 != 0) {
+        for (let i = 1; i <= 3; i++) {
+          const coin = instantiate(this.coinPrefab);
+          arr.push(coin);
+        }
+      } else {
+        for (let i = 1; i <= 3; i++) {
+          const enemy = instantiate(this.enemyPrefab);
+          arr.push(enemy);
+        }
       }
     }
+    this.render++;
 
     switch (length) {
       case 0: {
@@ -225,11 +228,11 @@ export class RailwayManager extends Component {
             }
           } else {
             if (index == 0) {
-              coin.setPosition(150, 30);
+              coin.setPosition(150, 25);
             } else if (index % 2) {
-              coin.setPosition(0, 30);
+              coin.setPosition(0, 25);
             } else {
-              coin.setPosition(-150, 30);
+              coin.setPosition(-150, 25);
             }
           }
           piece.addChild(coin);
@@ -241,19 +244,19 @@ export class RailwayManager extends Component {
         arr.forEach((coin, index) => {
           if (rand % 2 != 0) {
             if (index == 0) {
-              coin.setPosition(0, 140);
+              coin.setPosition(0, 130);
             } else if (index % 2) {
-              coin.setPosition(-400, 70);
+              coin.setPosition(-400, 60);
             } else {
-              coin.setPosition(400, 70);
+              coin.setPosition(400, 60);
             }
           } else {
             if (index == 0) {
-              coin.setPosition(-378, 30);
+              coin.setPosition(-378, 25);
             } else if (index % 2) {
-              coin.setPosition(0, 100);
+              coin.setPosition(0, 90);
             } else {
-              coin.setPosition(378, 30);
+              coin.setPosition(378, 25);
             }
           }
           piece.addChild(coin);
@@ -265,19 +268,19 @@ export class RailwayManager extends Component {
         arr.forEach((coin, index) => {
           if (rand % 2 != 0) {
             if (index == 0) {
-              coin.setPosition(-370, 70);
+              coin.setPosition(-370, 60);
             } else if (index % 2) {
-              coin.setPosition(0, 0);
+              coin.setPosition(0, -10);
             } else {
-              coin.setPosition(370, 70);
+              coin.setPosition(370, 60);
             }
           } else {
             if (index == 0) {
-              coin.setPosition(-378, 36);
+              coin.setPosition(-378, 25);
             } else if (index % 2) {
-              coin.setPosition(0, -36);
+              coin.setPosition(0, -45);
             } else {
-              coin.setPosition(378, 36);
+              coin.setPosition(378, 25);
             }
           }
           piece.addChild(coin);
@@ -289,19 +292,19 @@ export class RailwayManager extends Component {
         arr.forEach((coin, index) => {
           if (rand % 2 != 0) {
             if (index == 0) {
-              coin.setPosition(-370, 70);
+              coin.setPosition(-370, 60);
             } else if (index % 2) {
-              coin.setPosition(0, 130);
+              coin.setPosition(0, 120);
             } else {
-              coin.setPosition(370, 70);
+              coin.setPosition(370, 60);
             }
           } else {
             if (index == 0) {
-              coin.setPosition(-378, 30);
+              coin.setPosition(-378, 25);
             } else if (index % 2) {
-              coin.setPosition(0, 90);
+              coin.setPosition(0, 85);
             } else {
-              coin.setPosition(378, 30);
+              coin.setPosition(378, 25);
             }
           }
           piece.addChild(coin);

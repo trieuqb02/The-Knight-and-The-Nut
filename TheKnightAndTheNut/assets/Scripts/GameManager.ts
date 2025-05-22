@@ -91,7 +91,7 @@ export class GameManager extends Component {
 
   private railwayComp = null;
 
-  private totalScore: number = 3000;
+  private totalScore: number = 0;
 
   private winScore: number = 0;
 
