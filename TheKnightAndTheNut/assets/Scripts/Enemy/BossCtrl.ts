@@ -103,9 +103,8 @@ export class BossCtrl extends Component {
         const targetPos = bossPos.clone();
         targetPos.y = playerY;
 
-        // Di chuyển mượt về phía playerY
         const smoothPos = new Vec3();
-        Vec3.lerp(smoothPos, bossPos, targetPos, this.speed * deltaTime / 100); // scale nhỏ để mượt hơn
+        Vec3.lerp(smoothPos, bossPos, targetPos, this.speed * deltaTime / 100);
 
         this.node.setWorldPosition(smoothPos);
     }

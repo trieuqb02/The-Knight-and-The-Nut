@@ -182,7 +182,7 @@ export class PlayerCtrl extends Component {
             ERaycast2DType.Closest,
             ColliderGroup.GROUND,
         );
-        const hitsArr = [...hits];
+        //const hitsArr = [...hits];
 
         const hits2 = PhysicsSystem2D.instance.raycast(
             originWorld2,
@@ -190,25 +190,25 @@ export class PlayerCtrl extends Component {
             ERaycast2DType.Closest,
             ColliderGroup.GROUND,
         );
-        const hitsArr2 = [...hits2];
+        //const hitsArr2 = [...hits2];
 
         // draw ray
         //this.drawRay(originWorld, endPoint);
         //this.drawRay(originWorld2, endPoint2);
 
         // hit up
-        if (hitsArr.length > 0) {
+        if (hits.length > 0) {
             //console.log("hit uppp");
-            const hit = hitsArr[0];
+            const hit = hits[0];
             const hitPoint = hit.point; // collide point
             this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
             //this.drawPoint(hitPoint);
             return;
         }
         // hit down
-        if (hitsArr2.length > 0) {
+        if (hits2.length > 0) {
             //console.log("hit down");
-            const hit = hitsArr2[0];
+            const hit = hits2[0];
             const hitPoint = hit.point; // collide point
             this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
             //this.drawPoint(hitPoint);

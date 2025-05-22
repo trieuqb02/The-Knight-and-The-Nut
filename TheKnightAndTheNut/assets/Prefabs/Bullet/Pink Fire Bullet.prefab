@@ -253,7 +253,7 @@
     "__prefab": {
       "__id__": 13
     },
-    "timeLife": 5,
+    "timeLife": 3,
     "speed": 40,
     "dame": 1,
     "ownerTag": "player",
