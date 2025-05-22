@@ -1,5 +1,6 @@
-import { _decorator, Component, director, Node, ProgressBar } from "cc";
+import { _decorator, AudioClip, Component, director, Node, ProgressBar } from "cc";
 import { SceneTransitionManager } from "./SceneTransitionManager";
+import { AudioManager } from "./AudioManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("LoadingManager")
@@ -10,7 +11,12 @@ export class LoadingManager extends Component {
   @property(ProgressBar)
   progressBar: ProgressBar = null;
 
+  @property(AudioClip)
+  audioBGClip: AudioClip = null;
+
   protected start(): void {
+    AudioManager.instance.stopBGM();
+    AudioManager.instance.playBGM(this.audioBGClip);
     const nextScene = SceneTransitionManager.getNextScene();
     this.loadSceneWithLoading(nextScene);
   }

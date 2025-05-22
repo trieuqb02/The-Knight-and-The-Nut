@@ -1,8 +1,8 @@
-import { _decorator, Component, director, Node, Sprite, SpriteFrame } from "cc";
-const { ccclass } = _decorator;
+import { _decorator, AudioClip, Component, director, Sprite, SpriteFrame } from "cc";
+const { ccclass , property} = _decorator;
 import { DataManager } from "../DataManager";
-import { LoadingManager } from "../LoadingManager";
 import { SceneTransitionManager } from "../SceneTransitionManager";
+import { AudioManager } from "../AudioManager";
 
 export enum KeyMission {
   MISSION_1 = "mission1",
@@ -12,6 +12,7 @@ export enum KeyMission {
 
 @ccclass("Mission")
 export class Mission extends Component {
+
   key: string = "";
   islocked: boolean = false;
   score: number = 0;

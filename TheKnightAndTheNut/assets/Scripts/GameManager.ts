@@ -13,11 +13,13 @@ import {
   Animation,
   AnimationClip,
   UITransform,
+  AudioClip,
 } from "cc";
 import { DataManager } from "./DataManager";
 import { RailwayManager } from "./Railway/RailwayManager";
 import { KeyMission } from "./Mission/Mission";
 import { SceneTransitionManager } from "./SceneTransitionManager";
+import { AudioManager } from "./AudioManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("GameManager")
@@ -55,15 +57,6 @@ export class GameManager extends Component {
   @property(Node)
   background: Node = null;
 
-  @property(AnimationClip)
-  bg1Clip: AnimationClip;
-
-  @property(AnimationClip)
-  bg2Clip: AnimationClip;
-
-  @property(AnimationClip)
-  bg3Clip: AnimationClip;
-
   @property(SpriteFrame)
   blackHeald: SpriteFrame = null;
 
@@ -77,6 +70,12 @@ export class GameManager extends Component {
   power3: SpriteFrame = null;
   @property(SpriteFrame)
   power4: SpriteFrame = null;
+
+  @property(AudioClip)
+  gamePlayAudioClip: AudioClip = null;
+
+  @property(AudioClip)
+  audioBGClip: AudioClip = null;
 
   powerComp = null;
 
@@ -105,6 +104,8 @@ export class GameManager extends Component {
   private isPlay: boolean = false;
 
   init() {
+    AudioManager.instance.stopBGM();
+    AudioManager.instance.playBGM(this.audioBGClip);
     const score = instantiate(this.scorePrefab);
     this.scoreLB = score.getChildByName("Label").getComponent(Label);
 
@@ -190,33 +191,16 @@ export class GameManager extends Component {
 
   reset() {
     const data = DataManager.instance.getData();
+    AudioManager.instance.playBGM(this.gamePlayAudioClip)
     this.totalTime = data.time;
     this.winScore = data.score;
     this.timeLeft = this.totalTime;
     this.timerProgress.progress = this.totalTime;
     this.scoreLB.string = `${this.totalScore}`;
     this.key = data.key;
+
     const backgroundComp = this.background.getComponent(Sprite);
     backgroundComp.spriteFrame = data.image;
-
-    const animationComponent = this.background.addComponent(Animation);
-    switch (this.key) {
-      case KeyMission.MISSION_1: {
-        animationComponent.addClip(this.bg1Clip, "bg1");
-        animationComponent.play("bg1");
-        break;
-      }
-      case KeyMission.MISSION_2: {
-        animationComponent.addClip(this.bg2Clip, "bg2");
-        animationComponent.play("bg2");
-        break;
-      }
-      case KeyMission.MISSION_3: {
-        animationComponent.addClip(this.bg3Clip, "bg3");
-        animationComponent.play("bg3");
-        break;
-      }
-    }
   }
 
   protected onLoad(): void {

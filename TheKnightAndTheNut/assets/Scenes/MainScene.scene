@@ -483,18 +483,6 @@
     "background": {
       "__id__": 34
     },
-    "bg1Clip": {
-      "__uuid__": "cc1208ce-be52-42ba-8325-34c1553a32c5",
-      "__expectedType__": "cc.AnimationClip"
-    },
-    "bg2Clip": {
-      "__uuid__": "c4900865-f65e-466e-87ed-10b84d8ba8fc",
-      "__expectedType__": "cc.AnimationClip"
-    },
-    "bg3Clip": {
-      "__uuid__": "7e473da0-7461-4f98-b9e3-1e44ae78f601",
-      "__expectedType__": "cc.AnimationClip"
-    },
     "blackHeald": {
       "__uuid__": "e50219bc-ea56-45ca-9f40-902222620d85@1b610",
       "__expectedType__": "cc.SpriteFrame"
@@ -518,6 +506,14 @@
     "power4": {
       "__uuid__": "577c0c5f-b4a2-415b-8a8e-dc435a6ed7c7@abbe1",
       "__expectedType__": "cc.SpriteFrame"
+    },
+    "gamePlayAudioClip": {
+      "__uuid__": "77eca33f-e444-47d8-94e8-02926ae5151d",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "audioBGClip": {
+      "__uuid__": "77eca33f-e444-47d8-94e8-02926ae5151d",
+      "__expectedType__": "cc.AudioClip"
     },
     "_id": "abCQ6WGMlN/rDDsogMle0m"
   },
