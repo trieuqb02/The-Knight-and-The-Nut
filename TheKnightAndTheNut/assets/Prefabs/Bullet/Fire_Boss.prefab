@@ -254,7 +254,7 @@
       "__id__": 13
     },
     "timeLife": 5,
-    "speed": 10,
+    "speed": 40,
     "dame": 1,
     "ownerTag": "enemy",
     "dir": {
@@ -277,6 +277,7 @@
       "__id__": 0
     },
     "fileId": "5fFrQsnrNNmLAZZWxwaEvn",
+    "instance": null,
     "targetOverrides": null
   }
 ]

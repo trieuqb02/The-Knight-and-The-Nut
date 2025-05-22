@@ -84,6 +84,10 @@ export class PlayerCtrl extends Component {
         this.railCheck();
     }
 
+    getOrigin(){
+        return this.rayOrigin;
+    }
+
     onGod(){
         this.isGodState = true;
         let pinkAttackState = this.anim.getState("pinkRun");
