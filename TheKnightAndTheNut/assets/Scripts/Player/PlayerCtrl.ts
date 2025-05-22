@@ -1,5 +1,6 @@
 import { _decorator, Component, EventKeyboard, Input, input, Animation, KeyCode, Node, Collider2D, IPhysics2DContact, Contact2DType, PhysicsSystem2D, Vec2, ERaycast2DType, Graphics, Color, UITransform, Vec3 } from 'cc';
 import { EnemyCtrl } from '../Enemy/EnemyCtrl';
+import { GameManager } from '../GameManager';
 const { ccclass, property } = _decorator;
 
 export enum ColliderGroup {
@@ -11,6 +12,8 @@ export enum ColliderGroup {
 
 @ccclass('PlayerCtrl')
 export class PlayerCtrl extends Component {
+    public static Instance: PlayerCtrl = null; // singleton
+
     private isHoldingSpace: boolean = false;
     private isReverse: boolean = false;
     private isClimb: boolean = false;
@@ -54,6 +57,9 @@ export class PlayerCtrl extends Component {
     private spacePressTimer;
 
     onLoad(){
+        if (PlayerCtrl.Instance === null) PlayerCtrl.Instance = this; // singleton
+
+        this.node.getComponent(UITransform).priority = 10; // set sorting layer for Player
         this.graphics = this.rayDrawerNode.getComponent(Graphics);
 
         this.anim = this.getComponent(Animation);
@@ -76,6 +82,10 @@ export class PlayerCtrl extends Component {
 
     update(deltaTime: number) {
         this.railCheck();
+    }
+
+    getOrigin(){
+        return this.rayOrigin;
     }
 
     onGod(){
@@ -105,54 +115,6 @@ export class PlayerCtrl extends Component {
         }
     }
 
-    railCheckTest() {
-        this.direction = this.isReverse ? new Vec3(0, 1, 0) : new Vec3(0, -1, 0);
-
-        const originWorld = this.rayOrigin.worldPosition;
-        const endPoint = originWorld.clone().add(this.direction.multiplyScalar(this.distanceRay));
-
-        let hits = PhysicsSystem2D.instance.raycast(
-            originWorld,
-            endPoint,
-            ERaycast2DType.All
-        );
-
-        this.drawRay(originWorld, endPoint);
-
-        // strore to arr
-        let hitsArr = [...hits];
-
-        if (hitsArr.length === 0) return;
-
-        hitsArr.sort((a, b) => {
-            const distA = Vec2.distance(a.point, new Vec2(originWorld.x, originWorld.y));
-            const distB = Vec2.distance(b.point, new Vec2(originWorld.x, originWorld.y));
-            return distA - distB;
-        });
-
-        // second ground
-        const minDistance = 70; // dis for ingnore
-        let found = 0;
-
-        for (const hit of hitsArr) {
-            if (hit.collider.group === ColliderGroup.GROUND) {
-                const dist = Vec2.distance(hit.point, new Vec2(originWorld.x, originWorld.y));
-                if (dist > minDistance) {
-                    found++;
-                    if (found === 1) {
-                        const hitPoint = hit.point;
-                        this.node.worldPosition = new Vec3(
-                            this.node.worldPosition.x,
-                            hitPoint.y,
-                            this.node.worldPosition.z
-                        );
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
     railCheck(){
         this.direction = new Vec3(0, 1, 0); // ray up
         this.direction2 = new Vec3(0, -1, 0); // ray down
@@ -171,7 +133,7 @@ export class PlayerCtrl extends Component {
             originWorld,
             endPoint,
             ERaycast2DType.Closest,
-            ColliderGroup.GROUND,
+            //ColliderGroup.GROUND,
         );
         const hitsArr = [...hits];
 
@@ -179,32 +141,29 @@ export class PlayerCtrl extends Component {
             originWorld2,
             endPoint2,
             ERaycast2DType.Closest,
-            ColliderGroup.GROUND,
         );
         const hitsArr2 = [...hits2];
 
         // draw ray
         this.drawRay(originWorld, endPoint);
-        this.drawRay(originWorld2, endPoint2);
+        //this.drawRay(originWorld2, endPoint2);
 
         // hit up
         if (hitsArr.length > 0) {
-            console.log("hit uppp");
+            //console.log("hit uppp");
             const hit = hitsArr[0];
             const hitPoint = hit.point; // collide point
             this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
-
             this.drawPoint(hitPoint);
             return;
         }
         // hit down
         if (hitsArr2.length > 0) {
-            console.log("hit down");
+            //console.log("hit down");
             const hit = hitsArr2[0];
             const hitPoint = hit.point; // collide point
             this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
-
-            this.drawPoint(hitPoint);
+            //this.drawPoint(hitPoint);
             return;
         }
     }
@@ -248,9 +207,9 @@ export class PlayerCtrl extends Component {
 
     onKeyUp(event: EventKeyboard){
         if(event.keyCode == KeyCode.SPACE){
-            //this.collider.enabled = true;
+            this.collider.enabled = true;
             this.isHoldingSpace = false;
-            //this.isClimb = false;
+            this.isClimb = false;
 
             if (this.spacePressTimer !== null) {
                 this.unschedule(this.spacePressTimer);
@@ -282,12 +241,13 @@ export class PlayerCtrl extends Component {
     }
 
     climb(){
-        //this.isClimb = true;
-        //this.collider.enabled = false;
+        this.isClimb = true;
+        this.collider.enabled = false;
         this.anim.play("pinkClimb");
     }
 
     attack(){
+        if(this.isClimb) return;
         this.anim.play("pinkAttack");
 
         this.anim.once(Animation.EventType.FINISHED, () => {
@@ -321,8 +281,7 @@ export class PlayerCtrl extends Component {
         this.node.setScale(-this.node.scale.x, this.node.scale.y, this.node.scale.z);
     }
 
-    takeDame(dame)
-    {
+    takeDame(dame){
         if(this.isGodState) return;
         this.curHealth -= dame;
 
@@ -331,6 +290,15 @@ export class PlayerCtrl extends Component {
             return;
         }
         this.hurt();
+    }
+
+    getPlayerNode(){
+        return this.node;
+    }
+
+    onDestroy() {
+        if (PlayerCtrl.Instance === this) 
+            PlayerCtrl.Instance = null;
     }
 }
 
