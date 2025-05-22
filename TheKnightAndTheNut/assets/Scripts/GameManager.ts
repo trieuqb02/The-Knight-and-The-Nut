@@ -292,7 +292,7 @@ export class GameManager extends Component {
     if (this.totalScore > this.winScore) {
       this.saveLocalData();
     }
-    SceneTransitionManager.setNextScene("MeneScene")
+    SceneTransitionManager.setNextScene("MenuScene")
     director.resume();
     director.loadScene("LoadingScene");
   }
