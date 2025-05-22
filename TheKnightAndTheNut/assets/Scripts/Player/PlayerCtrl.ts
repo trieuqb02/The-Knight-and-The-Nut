@@ -1,4 +1,4 @@
-import { _decorator, Component, EventKeyboard, Input, input, Animation, KeyCode, Node, Collider2D, IPhysics2DContact, Contact2DType, PhysicsSystem2D, Vec2, ERaycast2DType, Graphics, Color, UITransform, Vec3 } from 'cc';
+import { _decorator, Component, EventKeyboard, Input, input, Animation, KeyCode, Node, Collider2D, IPhysics2DContact, Contact2DType, PhysicsSystem2D, Vec2, ERaycast2DType, Graphics, Color, UITransform, Vec3, Prefab, instantiate } from 'cc';
 import { EnemyCtrl } from '../Enemy/EnemyCtrl';
 import { GameManager } from '../GameManager';
 const { ccclass, property } = _decorator;
@@ -46,6 +46,7 @@ export class PlayerCtrl extends Component {
     bodyDame: number = 1;
 
     private coinNumber: number = 0;
+    private score: number = 0;
 
     @property
     isGodState: boolean = false;
@@ -54,11 +55,15 @@ export class PlayerCtrl extends Component {
     private railwayManager;
     private gameManager;
     @property
-    nitroToGod: number = 3;
+    nitroToGod: number = 5;
     private curNitroNumber: number = 0;
     private collider;
 
     private spacePressTimer;
+    @property({type: Node,})
+    speedUpEffect: Node; 
+    @property({type: Prefab,})
+    reverseEffect: Prefab; 
 
     onLoad(){
         if (PlayerCtrl.Instance === null) PlayerCtrl.Instance = this; // singleton
@@ -76,6 +81,8 @@ export class PlayerCtrl extends Component {
             this.collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
             this.collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
+
+        this.speedUpEffect.active = false;
     }
 
     start() {
@@ -85,6 +92,10 @@ export class PlayerCtrl extends Component {
 
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
         input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
+
+        // this.scheduleOnce(()=>{
+        //     this.onGod();
+        // }, 3);
     }
 
     update(deltaTime: number) {
@@ -97,6 +108,7 @@ export class PlayerCtrl extends Component {
 
     onGod(){
         this.isGodState = true;
+        this.speedUpEffect.active = true;
         let pinkAttackState = this.anim.getState("pinkRun");
         // speed up
         this.railwayManager.runSpeedUp(500, this.timingGod);
@@ -107,21 +119,41 @@ export class PlayerCtrl extends Component {
         this.scheduleOnce(()=>{
             pinkAttackState.speed = 1; 
             this.isGodState = false;
+            this.speedUpEffect.active = false;
         }, this.timingGod);
 
         // shield
     }
 
+    createEffect(){
+        let exp = instantiate(this.reverseEffect);
+
+        exp.parent = this.node.parent;
+
+        const localPos = exp.parent
+            .getComponent(UITransform)
+            .convertToNodeSpaceAR(this.node.worldPosition);
+
+        exp.setPosition(localPos);
+    }
+
     collect(amount)
     {
         this.coinNumber += amount;
+        this.score += 50;
         // add nitro after collect coin
-        this.curNitroNumber += 1;
+        if(this.coinNumber % 10 == 0)
+            this.curNitroNumber += 1;
+
          this.gameManager.displayPower(this.curNitroNumber)
 
         if(this.curNitroNumber >= this.nitroToGod){
             this.onGod();
         }
+    }
+
+    addScore(score){
+        this.score += score;
     }
 
     railCheck(){
@@ -154,7 +186,7 @@ export class PlayerCtrl extends Component {
         const hitsArr2 = [...hits2];
 
         // draw ray
-        this.drawRay(originWorld, endPoint);
+        //this.drawRay(originWorld, endPoint);
         //this.drawRay(originWorld2, endPoint2);
 
         // hit up
@@ -163,7 +195,7 @@ export class PlayerCtrl extends Component {
             const hit = hitsArr[0];
             const hitPoint = hit.point; // collide point
             this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
-            this.drawPoint(hitPoint);
+            //this.drawPoint(hitPoint);
             return;
         }
         // hit down
@@ -266,6 +298,7 @@ export class PlayerCtrl extends Component {
 
     dead(){
         this.anim.play("pinkDead");
+        this.collider.enabled = false;
         // disable detect
          this.anim.once(Animation.EventType.FINISHED, () => {
             this.node.destroy();
@@ -284,6 +317,7 @@ export class PlayerCtrl extends Component {
 
     reverse(){
         this.isReverse = !this.isReverse;
+        this.createEffect();
         if(this.isReverse)
             this.node.angle = 180;
         else this.node.angle = 0;

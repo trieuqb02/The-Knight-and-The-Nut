@@ -254,13 +254,17 @@
       "__id__": 13
     },
     "timeLife": 5,
-    "speed": 10,
+    "speed": 40,
     "dame": 1,
     "ownerTag": "player",
     "dir": {
       "__type__": "cc.Vec2",
       "x": 1,
       "y": 0
+    },
+    "explosionPrefab": {
+      "__uuid__": "89e3f7be-43c3-4482-8ca5-149d679581f1",
+      "__expectedType__": "cc.Prefab"
     },
     "_id": ""
   },

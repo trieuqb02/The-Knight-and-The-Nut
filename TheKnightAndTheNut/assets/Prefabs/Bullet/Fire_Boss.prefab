@@ -262,6 +262,10 @@
       "x": -1,
       "y": 0
     },
+    "explosionPrefab": {
+      "__uuid__": "976677b4-af20-4fc9-b2dd-b216c04a4a67",
+      "__expectedType__": "cc.Prefab"
+    },
     "_id": ""
   },
   {

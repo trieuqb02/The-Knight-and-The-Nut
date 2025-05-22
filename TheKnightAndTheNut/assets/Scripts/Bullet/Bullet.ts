@@ -1,6 +1,7 @@
-import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact, Node, RigidBody, RigidBody2D, Vec2 } from 'cc';
+import { _decorator, Collider2D, Component, Contact2DType, instantiate, IPhysics2DContact, Node, Prefab, RigidBody, RigidBody2D, UITransform, Vec2 } from 'cc';
 import { EnemyCtrl } from '../Enemy/EnemyCtrl';
 import { PlayerCtrl } from '../Player/PlayerCtrl';
+import { BossCtrl } from '../Enemy/BossCtrl';
 const { ccclass, property } = _decorator;
 
 @ccclass('Bullet')
@@ -20,6 +21,8 @@ export class Bullet extends Component {
 
     @property(Vec2)
     private dir: Vec2 = new Vec2();
+    @property(Prefab)
+    private explosionPrefab: Prefab;
 
     protected onLoad(): void {
         this.rb = this.node.getComponent(RigidBody2D);
@@ -39,11 +42,22 @@ export class Bullet extends Component {
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         if (this.ownerTag === 'player') {
             const enemy = otherCollider.node.getComponent(EnemyCtrl);
+            const boss = otherCollider.node.getComponent(BossCtrl);
+            // detect enemy
             if (enemy) {
                 enemy.takeDame(this.dame);
                 this.scheduleOnce(() => {
                     this.node.destroy();
                 }, 0);
+                this.createEffect();
+            }
+            // detect boss
+            else if (boss) {
+                boss.takeDame(this.dame);
+                this.scheduleOnce(() => {
+                    this.node.destroy();
+                }, 0);
+                this.createEffect();
             }
         } else if (this.ownerTag === 'enemy') {
             const player = otherCollider.node.getComponent(PlayerCtrl);
@@ -52,8 +66,21 @@ export class Bullet extends Component {
                 this.scheduleOnce(() => {
                     this.node.destroy();
                 }, 0);
+                this.createEffect();
             }
         }
+    }
+
+    createEffect(){
+        let exp = instantiate(this.explosionPrefab);
+
+        exp.parent = this.node.parent;
+
+        const localPos = exp.parent
+            .getComponent(UITransform)
+            .convertToNodeSpaceAR(this.node.worldPosition);
+
+        exp.setPosition(localPos);
     }
 
     setOwnerTag(tag) {

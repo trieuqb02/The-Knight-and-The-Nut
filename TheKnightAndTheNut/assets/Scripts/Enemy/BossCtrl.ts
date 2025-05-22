@@ -1,4 +1,4 @@
-import { _decorator, Component, instantiate, Node, Prefab, UITransform, Animation, input, Input, KeyCode, EventKeyboard, Vec3, PhysicsSystem2D, ERaycast2DType, Graphics, Color, Vec2, PhysicsGroup } from 'cc';
+import { _decorator, Component, instantiate, Node, Prefab, UITransform, Animation, input, Input, KeyCode, EventKeyboard, Vec3, PhysicsSystem2D, ERaycast2DType, Graphics, Color, Vec2, PhysicsGroup, Contact2DType, IPhysics2DContact, Collider2D } from 'cc';
 import { PlayerCtrl } from '../Player/PlayerCtrl';
 const { ccclass, property } = _decorator;
 
@@ -31,8 +31,12 @@ export class BossCtrl extends Component {
 
     private scanInterval: number = 3;
     private scanTimer: number = 0;
-    private isPlayerVisible: boolean = false;
 
+    @property
+    startingHealth: number = 1;
+    private curHealth: number;
+    private isHurting: boolean = false;
+    private isDead: boolean = false;
     
     protected onLoad(): void {
         this.node.getComponent(UITransform).priority = 10; // set sorting layer for Boss
@@ -41,6 +45,7 @@ export class BossCtrl extends Component {
     }
 
     start() {
+        this.curHealth = this.startingHealth;
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }
 
@@ -51,11 +56,44 @@ export class BossCtrl extends Component {
             this.moveTowardsPlayerY(deltaTime);
             this.checkRaycast();
         }
+    }
 
-        // if (!this.isPlayerVisible) {
-        //     //this.updateDirectionToPlayer();
-        //     this.move(deltaTime);
-        // }
+    hurt(){
+        this.isHurting = true;
+        this.anim.play("bossHurt");
+
+        // play run anim after hurt anim
+        this.anim.once(Animation.EventType.FINISHED, () => {
+            this.isHurting = false;
+            this.anim.play("bossIdle");
+        });
+    }
+
+    takeDame(dame)
+    {
+        this.curHealth -= dame;
+        console.log("Hp Boss: " + this.curHealth);
+        //this.gameManager.displayHealth(this.curHealth);
+
+        if (this.curHealth <= 0){   
+            console.log("Boss Dead " + this.curHealth);
+
+            this.dead();
+            return;
+        }
+        this.hurt();
+    }
+
+    dead()
+    {
+        PlayerCtrl.Instance.addScore(3000);
+        if(this.isDead) return;
+        this.isDead = true;
+        this.anim.play("bossDead");
+
+        this.anim.once(Animation.EventType.FINISHED, () => {
+            this.node.destroy();
+        });
     }
 
     moveTowardsPlayerY(deltaTime: number) {
@@ -72,62 +110,9 @@ export class BossCtrl extends Component {
         this.node.setWorldPosition(smoothPos);
     }
 
-
-
-    updateDirectionToPlayer() {
-        const playerY = PlayerCtrl.Instance.getPlayerNode().getChildByName("Origin").worldPosition.y;
-        const bossY = this.rayOrigin.worldPosition.y;
-
-        if (playerY > bossY) {
-            this.dir = new Vec3(0, 1, 0); // Lên
-        } else if (playerY < bossY) {
-            this.dir = new Vec3(0, -1, 0); // Xuống
-        } else {
-            this.dir = new Vec3(0, 0, 0); // Dừng nếu gần
-        }
-    }
-
-
-    scanForPlayer() {
-        const originWorld = this.rayOrigin.worldPosition;
-        const direction = new Vec3(-1, 0, 0); // Raycast qua trái
-        const endPoint = originWorld.clone().add(direction.multiplyScalar(this.distanceRay));
-
-        const origin2D = new Vec2(originWorld.x, originWorld.y);
-        const end2D = new Vec2(endPoint.x, endPoint.y);
-
-        const hits = PhysicsSystem2D.instance.raycast(origin2D, end2D, ERaycast2DType.Closest);
-
-        if (hits.length > 0 && hits[0].collider.node === PlayerCtrl.Instance.getPlayerNode()) {
-            console.log("Hittt " + hits[0].collider.name);
-            this.isPlayerVisible = true;
-            this.dir = new Vec3(0, 0, 0); // Dừng lại
-            this.drawPoint(hits[0].point);
-        } else {
-            this.isPlayerVisible = false;
-        }
-
-        this.drawRay(originWorld, endPoint);
-    }
-
-
     move(deltaTime){
-        // Tính vector di chuyển dựa vào hướng và thời gian
         const movement = this.dir.clone().normalize().multiplyScalar(this.speed * deltaTime);
-
-        // Di chuyển node
         this.node.position = this.node.position.add(movement);
-    }
-
-    getYDirection(nodeA, nodeB) {
-        const posA = nodeA.worldPosition;
-        const posB = nodeB.worldPosition;
-
-        const deltaY = posB.y - posA.y;
-
-        if (deltaY > 0) return 1;
-        else if (deltaY < 0) return -1;
-        else return 0;
     }
 
     checkRaycast() {
@@ -149,11 +134,11 @@ export class BossCtrl extends Component {
                 console.log("Hitttt " + hit.collider.name);
                 this.scanTimer = 0;
                 this.fire();
-                this.drawPoint(hit.point);
+                //this.drawPoint(hit.point);
             }
         }
 
-        this.drawRay(originWorld, endPoint);
+        //this.drawRay(originWorld, endPoint);
     }
 
     drawPoint(hitPoint){
@@ -187,6 +172,7 @@ export class BossCtrl extends Component {
     }
 
     fire(){
+        if(this.isHurting) return;
         // play animation attack
         // call instanceBullet() in event animation
         this.anim.play("bossAttack1");
