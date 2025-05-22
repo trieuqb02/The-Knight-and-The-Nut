@@ -73,6 +73,7 @@ export class EnemyCtrl extends Component {
     dead()
     {
         PlayerCtrl.Instance.addScore(50);
+        
         this.anim.play("mushroomDie");
         this.collider.enabled = false;
 
