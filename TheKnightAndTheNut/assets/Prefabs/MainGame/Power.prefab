@@ -150,7 +150,7 @@
     "__prefab": {
       "__id__": 7
     },
-    "playOnLoad": true,
+    "playOnLoad": false,
     "_clips": [
       {
         "__uuid__": "a7883c28-6bd4-4886-a288-c2a004c3b260",

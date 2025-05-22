@@ -29,7 +29,7 @@ export class PoollingRailway extends Component {
     initPrefabs(): void {
         this.railwayPrefabs.forEach(railwayPrefab => {
             const arr:Node[] = [];
-            for( let i = 0; i < 20; i++){
+            for( let i = 0; i < 5; i++){
                 const piece = instantiate(railwayPrefab.prefab);
                 piece.active = false;
                 arr.push(piece);

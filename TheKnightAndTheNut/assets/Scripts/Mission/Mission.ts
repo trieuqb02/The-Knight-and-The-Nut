@@ -1,6 +1,8 @@
 import { _decorator, Component, director, Node, Sprite, SpriteFrame } from "cc";
 const { ccclass } = _decorator;
 import { DataManager } from "../DataManager";
+import { LoadingManager } from "../LoadingManager";
+import { SceneTransitionManager } from "../SceneTransitionManager";
 
 export enum KeyMission {
   MISSION_1 = "mission1",
@@ -49,6 +51,7 @@ export class Mission extends Component {
       score: this.score,
       time: this.time
     });
-    director.loadScene("MainScene");
+    SceneTransitionManager.setNextScene("MainScene");
+    director.loadScene("LoadingScene");
   }
 }

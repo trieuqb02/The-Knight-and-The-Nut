@@ -17,6 +17,7 @@ import {
 import { DataManager } from "./DataManager";
 import { RailwayManager } from "./Railway/RailwayManager";
 import { KeyMission } from "./Mission/Mission";
+import { SceneTransitionManager } from "./SceneTransitionManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("GameManager")
@@ -118,9 +119,9 @@ export class GameManager extends Component {
 
     this.powerComp.spriteFrame = this.power0;
 
-    score.setPosition(0, 280);
+    score.setPosition(-350, 280);
     timer.setPosition(400, 280);
-    power.setPosition(0, -300);
+    power.setPosition(-20, 280);
 
     this.gamePlay.addChild(power);
     this.gamePlay.addChild(score);
@@ -136,7 +137,7 @@ export class GameManager extends Component {
         const health = instantiate(this.healthPrefab);
         const withGamePlay =
           this.gamePlay.getComponent(UITransform)?.contentSize.width ?? 0;
-        health.setPosition(-(withGamePlay / 2) + index * 40, 300);
+        health.setPosition(-(withGamePlay / 2) + index * 40, 280  );
         this.gamePlay.addChild(health);
         this.healthArr.push(health);
       }
@@ -291,6 +292,7 @@ export class GameManager extends Component {
     if (this.totalScore > this.winScore) {
       this.saveLocalData();
     }
+    SceneTransitionManager.setNextScene("MeneScene")
     director.resume();
     director.loadScene("LoadingScene");
   }

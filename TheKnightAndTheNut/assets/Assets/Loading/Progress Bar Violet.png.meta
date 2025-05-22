@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "c91b7171-6622-47f2-89c0-017d4c160e7e",
+  "uuid": "edf0474f-1459-4278-8972-f92962426b44",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "c91b7171-6622-47f2-89c0-017d4c160e7e@6c48a",
-      "displayName": "UI - 72",
+      "uuid": "edf0474f-1459-4278-8972-f92962426b44@6c48a",
+      "displayName": "Progress Bar Violet",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "c91b7171-6622-47f2-89c0-017d4c160e7e",
+        "imageUuidOrDatabaseUri": "edf0474f-1459-4278-8972-f92962426b44",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,8 +34,8 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "c91b7171-6622-47f2-89c0-017d4c160e7e@f9941",
-      "displayName": "UI - 72",
+      "uuid": "edf0474f-1459-4278-8972-f92962426b44@f9941",
+      "displayName": "Progress Bar Violet",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
@@ -46,10 +46,10 @@
         "offsetY": 0,
         "trimX": 0,
         "trimY": 0,
-        "width": 16,
-        "height": 16,
-        "rawWidth": 16,
-        "rawHeight": 16,
+        "width": 512,
+        "height": 64,
+        "rawWidth": 512,
+        "rawHeight": 64,
         "borderTop": 0,
         "borderBottom": 0,
         "borderLeft": 0,
@@ -61,17 +61,17 @@
         "meshType": 0,
         "vertices": {
           "rawPosition": [
-            -8,
-            -8,
+            -256,
+            -32,
             0,
-            8,
-            -8,
+            256,
+            -32,
             0,
-            -8,
-            8,
+            -256,
+            32,
             0,
-            8,
-            8,
+            256,
+            32,
             0
           ],
           "indexes": [
@@ -84,12 +84,12 @@
           ],
           "uv": [
             0,
-            16,
-            16,
-            16,
+            64,
+            512,
+            64,
             0,
             0,
-            16,
+            512,
             0
           ],
           "nuv": [
@@ -103,18 +103,18 @@
             1
           ],
           "minPos": [
-            -8,
-            -8,
+            -256,
+            -32,
             0
           ],
           "maxPos": [
-            8,
-            8,
+            256,
+            32,
             0
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "c91b7171-6622-47f2-89c0-017d4c160e7e@6c48a",
+        "imageUuidOrDatabaseUri": "edf0474f-1459-4278-8972-f92962426b44@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -127,8 +127,8 @@
   },
   "userData": {
     "type": "sprite-frame",
-    "hasAlpha": true,
+    "hasAlpha": false,
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "c91b7171-6622-47f2-89c0-017d4c160e7e@6c48a"
+    "redirect": "edf0474f-1459-4278-8972-f92962426b44@6c48a"
   }
 }
