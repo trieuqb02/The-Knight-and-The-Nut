@@ -12,9 +12,14 @@ export enum ColliderGroup {
 
 @ccclass('PlayerCtrl')
 export class PlayerCtrl extends Component {
+    public static Instance: PlayerCtrl = null; // singleton
+
+    private isHoldingSpace: boolean = false;
     private isReverse: boolean = false;
+    private isClimb: boolean = false;
     private anim: Animation;
     private direction: Vec3;
+    private direction2: Vec3;
     private distanceRay: number = 200;
 
     @property(Node)
@@ -31,6 +36,8 @@ export class PlayerCtrl extends Component {
     
     @property({type: Node,})
     rayOrigin: Node; 
+    @property({type: Node,})
+    rayOrigin2: Node; 
 
     @property
     startingHealth: number = 3;
@@ -51,7 +58,12 @@ export class PlayerCtrl extends Component {
     private curNitroNumber: number = 0;
     private collider;
 
+    private spacePressTimer;
+
     onLoad(){
+        if (PlayerCtrl.Instance === null) PlayerCtrl.Instance = this; // singleton
+
+        this.node.getComponent(UITransform).priority = 10; // set sorting layer for Player
         this.graphics = this.rayDrawerNode.getComponent(Graphics);
 
         this.anim = this.getComponent(Animation);
@@ -72,10 +84,15 @@ export class PlayerCtrl extends Component {
         this.gameManager.displayHealth(this.curHealth)
 
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
+        input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
     }
 
     update(deltaTime: number) {
-        this.railCheckTest();//↓
+        this.railCheck();
+    }
+
+    getOrigin(){
+        return this.rayOrigin;
     }
 
     onGod(){
@@ -107,83 +124,56 @@ export class PlayerCtrl extends Component {
         }
     }
 
-    railCheckTest() {
-        this.direction = this.isReverse ? new Vec3(0, 1, 0) : new Vec3(0, -1, 0);
-
-        const originWorld = this.rayOrigin.worldPosition;
-        const endPoint = originWorld.clone().add(this.direction.multiplyScalar(this.distanceRay));
-
-        let hits = PhysicsSystem2D.instance.raycast(
-            originWorld,
-            endPoint,
-            ERaycast2DType.All
-        );
-
-        this.drawRay(originWorld, endPoint);
-
-        // Tạo bản sao để sort
-        let hitsArr = [...hits];
-
-        if (hitsArr.length === 0) return;
-
-        // Sắp xếp theo khoảng cách
-        hitsArr.sort((a, b) => {
-            const distA = Vec2.distance(a.point, new Vec2(originWorld.x, originWorld.y));
-            const distB = Vec2.distance(b.point, new Vec2(originWorld.x, originWorld.y));
-            return distA - distB;
-        });
-
-        // Tìm ground THỨ HAI (bỏ qua ground hiện tại)
-        const minDistance = 70; // khoảng cách để bỏ qua ground hiện tại
-        let found = 0;
-
-        for (const hit of hitsArr) {
-            if (hit.collider.group === ColliderGroup.GROUND) {
-                const dist = Vec2.distance(hit.point, new Vec2(originWorld.x, originWorld.y));
-                if (dist > minDistance) {
-                    found++;
-                    if (found === 1) {
-                        // chọn ground THỨ HAI
-                        const hitPoint = hit.point;
-                        this.node.worldPosition = new Vec3(
-                            this.node.worldPosition.x,
-                            hitPoint.y,
-                            this.node.worldPosition.z
-                        );
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
     railCheck(){
-        if(this.isReverse) this.direction = new Vec3(0, 1, 0); // ray up
-        else this.direction = new Vec3(0, -1, 0); // ray down
+        this.direction = new Vec3(0, 1, 0); // ray up
+        this.direction2 = new Vec3(0, -1, 0); // ray down
 
         // Convert world position về local của Graphics node
         const originWorld = this.rayOrigin.worldPosition; 
-
+        const originWorld2 = this.rayOrigin2.worldPosition; 
         // calculate endPoint
         const endPoint = originWorld.clone().add(this.direction.multiplyScalar(this.distanceRay));
+
+        // calculate endPoint
+        const endPoint2 = originWorld2.clone().add(this.direction2.multiplyScalar(this.distanceRay));
 
         // ray hit
         const hits = PhysicsSystem2D.instance.raycast(
             originWorld,
             endPoint,
             ERaycast2DType.Closest,
-            ColliderGroup.GROUND,
+            //ColliderGroup.GROUND,
         );
+        const hitsArr = [...hits];
+
+        const hits2 = PhysicsSystem2D.instance.raycast(
+            originWorld2,
+            endPoint2,
+            ERaycast2DType.Closest,
+        );
+        const hitsArr2 = [...hits2];
 
         // draw ray
-        //this.drawRay(originWorld, endPoint);
+        this.drawRay(originWorld, endPoint);
+        //this.drawRay(originWorld2, endPoint2);
 
-        if (hits.length > 0) {
-            const hit = hits[0];
+        // hit up
+        if (hitsArr.length > 0) {
+            //console.log("hit uppp");
+            const hit = hitsArr[0];
             const hitPoint = hit.point; // collide point
             this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
-
+            this.drawPoint(hitPoint);
+            return;
+        }
+        // hit down
+        if (hitsArr2.length > 0) {
+            //console.log("hit down");
+            const hit = hitsArr2[0];
+            const hitPoint = hit.point; // collide point
+            this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
             //this.drawPoint(hitPoint);
+            return;
         }
     }
 
@@ -224,9 +214,32 @@ export class PlayerCtrl extends Component {
         }
     }
 
+    onKeyUp(event: EventKeyboard){
+        if(event.keyCode == KeyCode.SPACE){
+            this.collider.enabled = true;
+            this.isHoldingSpace = false;
+            this.isClimb = false;
+
+            if (this.spacePressTimer !== null) {
+                this.unschedule(this.spacePressTimer);
+                this.spacePressTimer = null;
+            }
+
+            this.anim.play("pinkRun");
+            this.reverse();
+        }
+    }
+    
     onKeyDown(event: EventKeyboard){
         if(event.keyCode == KeyCode.SPACE){
-            this.reverse();
+            if(this.isHoldingSpace) return;
+            this.isHoldingSpace = true;
+
+            this.spacePressTimer = this.scheduleOnce(() => {
+                if (this.isHoldingSpace) {
+                    this.climb();
+                }
+            }, 0.15);
         }
         if (event.keyCode === KeyCode.KEY_A) { 
             this.hurt();
@@ -236,7 +249,14 @@ export class PlayerCtrl extends Component {
         }
     }
 
+    climb(){
+        this.isClimb = true;
+        this.collider.enabled = false;
+        this.anim.play("pinkClimb");
+    }
+
     attack(){
+        if(this.isClimb) return;
         this.anim.play("pinkAttack");
 
         this.anim.once(Animation.EventType.FINISHED, () => {
@@ -271,8 +291,7 @@ export class PlayerCtrl extends Component {
         this.node.setScale(-this.node.scale.x, this.node.scale.y, this.node.scale.z);
     }
 
-    takeDame(dame)
-    {
+    takeDame(dame){
         if(this.isGodState) return;
         this.curHealth -= dame;
         this.gameManager.displayHealth(this.curHealth);
@@ -282,6 +301,15 @@ export class PlayerCtrl extends Component {
             return;
         }
         this.hurt();
+    }
+
+    getPlayerNode(){
+        return this.node;
+    }
+
+    onDestroy() {
+        if (PlayerCtrl.Instance === this) 
+            PlayerCtrl.Instance = null;
     }
 }
 

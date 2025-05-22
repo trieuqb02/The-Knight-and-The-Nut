@@ -145,27 +145,6 @@
     "fileId": "7fivES+EtEtJBstjmhqrNF"
   },
   {
-    "__type__": "3302aY9YYZH5Z4lbpJqYwpT",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "__prefab": {
-      "__id__": 7
-    },
-    "timeLife": 2,
-    "speed": 35,
-    "dame": 1,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.CompPrefabInfo",
-    "fileId": "76lfvEVxxDGI6bJ/7txz3e"
-  },
-  {
     "__type__": "cc.BoxCollider2D",
     "_name": "",
     "_objFlags": 0,
@@ -175,7 +154,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 9
+      "__id__": 7
     },
     "tag": 0,
     "_group": 1,
@@ -209,7 +188,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 11
+      "__id__": 9
     },
     "enabledContactListener": true,
     "bullet": false,
@@ -243,7 +222,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 13
+      "__id__": 11
     },
     "playOnLoad": true,
     "_clips": [
@@ -261,6 +240,33 @@
   {
     "__type__": "cc.CompPrefabInfo",
     "fileId": "e8RCb44q5KPJRoE1gczp+0"
+  },
+  {
+    "__type__": "3302aY9YYZH5Z4lbpJqYwpT",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 13
+    },
+    "timeLife": 5,
+    "speed": 10,
+    "dame": 1,
+    "ownerTag": "player",
+    "dir": {
+      "__type__": "cc.Vec2",
+      "x": 1,
+      "y": 0
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "8cVl8bcZ5GObyvKOGH+eL8"
   },
   {
     "__type__": "cc.PrefabInfo",
