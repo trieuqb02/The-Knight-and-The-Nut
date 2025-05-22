@@ -621,7 +621,22 @@
     "speedUpEffect": {
       "__id__": 14
     },
-    "reverseEffect": null,
+    "reverseEffect": {
+      "__uuid__": "f6612c29-0fe8-4c68-ab16-47c2ab4d3eba",
+      "__expectedType__": "cc.Prefab"
+    },
+    "reverseSound": {
+      "__uuid__": "5777ccad-d923-4bb1-9c95-2b5881f48c8a",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "coinSound": {
+      "__uuid__": "90c71b93-1565-48c8-bb56-dd96ce392894",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "fireSound": {
+      "__uuid__": "b57e162f-3cfc-4c04-8d06-b9d9bbd96efb",
+      "__expectedType__": "cc.AudioClip"
+    },
     "_id": ""
   },
   {
