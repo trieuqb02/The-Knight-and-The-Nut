@@ -50,6 +50,7 @@ export class PlayerCtrl extends Component {
 
     @property
     isGodState: boolean = false;
+    private isDead: boolean = false;
     @property
     timingGod: number = 5;
     private railwayManager;
@@ -102,6 +103,7 @@ export class PlayerCtrl extends Component {
     }
 
     update(deltaTime: number) {
+        if(this.isDead) return;
         this.railCheck();
     }
 
@@ -306,13 +308,15 @@ export class PlayerCtrl extends Component {
     }
 
     dead(){
+        this.isDead = true;
         this.anim.play("pinkDead");
         this.collider.enabled = false;
         // disable detect
          this.anim.once(Animation.EventType.FINISHED, () => {
             this.node.destroy();
+            this.gameManager.gameOver();
         });
-        this.gameManager.gameOver();
+        
     }
 
     hurt(){

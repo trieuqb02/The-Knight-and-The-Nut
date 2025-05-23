@@ -167,7 +167,7 @@ export class RailwayManager extends Component {
 
     const arr = [];
     let rand = Math.floor(Math.random() * 100) + 1;
-    if (this.render >= 3) {
+    if (this.render >= 2) {
       if (this.key == KeyMission.MISSION_1) {
         rand = 1;
       }

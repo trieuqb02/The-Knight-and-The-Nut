@@ -188,7 +188,7 @@ export class GameManager extends Component {
     this.isPlay = false;
     this.scheduleOnce(() => {
       this.onTimeUp();
-    }, 2);
+    }, 0);
   }
 
   reset() {
