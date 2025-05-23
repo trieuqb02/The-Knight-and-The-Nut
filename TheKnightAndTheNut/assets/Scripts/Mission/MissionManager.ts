@@ -59,9 +59,9 @@ export class MissionManager extends Component {
     {
       key: KeyMission.MISSION_3,
       islocked: true,
-      score: 800,
+      score: 1200,
       image: null,
-      time: 10,
+      time: 200,
     },
   ];
 

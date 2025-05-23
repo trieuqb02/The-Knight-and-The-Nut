@@ -86,7 +86,7 @@ export class BossCtrl extends Component {
 
     dead()
     {
-        PlayerCtrl.Instance.addScore(3000);
+        PlayerCtrl.Instance.addScore(800);
         if(this.isDead) return;
         this.isDead = true;
         this.anim.play("bossDead");

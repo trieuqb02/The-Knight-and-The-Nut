@@ -222,7 +222,7 @@ export class GameManager extends Component {
       this.timerProgress.progress = progress;
 
       if (this.key == KeyMission.MISSION_3 && !this.isBoss) {
-        if (this.totalScore >= 3000) {
+        if (this.totalScore >= 500) {
           this.boss.active = true;
           this.isBoss = true;
         }
