@@ -732,7 +732,7 @@
     "propertyPath": [
       "fireRate"
     ],
-    "value": 2.5
+    "value": 1.5
   },
   {
     "__type__": "CCPropertyOverrideInfo",

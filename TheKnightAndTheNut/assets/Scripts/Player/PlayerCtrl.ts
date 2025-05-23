@@ -280,12 +280,12 @@ export class PlayerCtrl extends Component {
                 }
             }, 0.15);
         }
-        if (event.keyCode === KeyCode.KEY_A) { 
-            this.hurt();
-        }
-        if (event.keyCode === KeyCode.KEY_D) { 
-            this.dead();
-        }
+        // if (event.keyCode === KeyCode.KEY_A) { 
+        //     this.hurt();
+        // }
+        // if (event.keyCode === KeyCode.KEY_D) { 
+        //     this.dead();
+        // }
     }
 
     climb(){

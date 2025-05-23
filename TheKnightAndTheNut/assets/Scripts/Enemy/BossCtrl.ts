@@ -71,6 +71,7 @@ export class BossCtrl extends Component {
 
     takeDame(dame)
     {
+        if(this.isHurting) return;
         this.curHealth -= dame;
         console.log("Hp Boss: " + this.curHealth);
         //this.gameManager.displayHealth(this.curHealth);
