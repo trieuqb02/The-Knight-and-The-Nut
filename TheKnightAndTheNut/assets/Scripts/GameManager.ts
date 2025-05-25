@@ -11,7 +11,6 @@ import {
   Sprite,
   SpriteFrame,
   Animation,
-  AnimationClip,
   UITransform,
   AudioClip,
 } from "cc";
@@ -25,63 +24,67 @@ const { ccclass, property } = _decorator;
 @ccclass("GameManager")
 export class GameManager extends Component {
   @property(Node)
-  railwayManager: Node = null;
+  private railwayManager: Node = null;
 
   @property(Node)
-  gamePlay: Node = null;
+  private gamePlay: Node = null;
 
   @property(Node)
-  player: Node = null;
+  private player: Node = null;
 
   @property(Node)
-  boss: Node = null;
+  private boss: Node = null;
 
   @property(Prefab)
-  scorePrefab: Prefab = null;
+  private scorePrefab: Prefab = null;
 
   @property(Prefab)
-  timerPrefab: Prefab = null;
+  private timerPrefab: Prefab = null;
 
   @property(Prefab)
-  resultPrefab: Prefab = null;
+  private resultPrefab: Prefab = null;
 
   @property(Prefab)
-  healthPrefab: Prefab = null;
+  private healthPrefab: Prefab = null;
 
   @property(Prefab)
-  powerPrefab: Prefab = null;
+  private powerPrefab: Prefab = null;
 
   @property(SpriteFrame)
-  winPriteFrame: SpriteFrame = null;
+  private winPriteFrame: SpriteFrame = null;
 
   @property(SpriteFrame)
-  loseSpriteFrame: SpriteFrame = null;
+  private loseSpriteFrame: SpriteFrame = null;
 
   @property(Node)
-  background: Node = null;
+  private background: Node = null;
 
   @property(SpriteFrame)
-  blackHeald: SpriteFrame = null;
+  private blackHeald: SpriteFrame = null;
 
   @property(SpriteFrame)
-  power0: SpriteFrame = null;
+  private power0: SpriteFrame = null;
+
   @property(SpriteFrame)
-  power1: SpriteFrame = null;
+  private power1: SpriteFrame = null;
+
   @property(SpriteFrame)
-  power2: SpriteFrame = null;
+  private power2: SpriteFrame = null;
+
   @property(SpriteFrame)
-  power3: SpriteFrame = null;
+  private power3: SpriteFrame = null;
+
   @property(SpriteFrame)
-  power4: SpriteFrame = null;
+  private power4: SpriteFrame = null;
 
   @property(AudioClip)
   audioBGClip: AudioClip = null;
 
-  powerComp = null;
+  private powerComp = null;
 
-  timerProgress = null;
+  private timerProgress = null;
 
-  scoreLB = null;
+  private scoreLB = null;
 
   private key: string = "";
 
@@ -105,7 +108,7 @@ export class GameManager extends Component {
 
   private isBoss: boolean = false;
 
-  init() {
+  private init() {
     AudioManager.instance.stopBGM();
     AudioManager.instance.playBGM(this.audioBGClip);
     const score = instantiate(this.scorePrefab);
@@ -134,7 +137,7 @@ export class GameManager extends Component {
     }
   }
 
-  displayHealth(curHealth: number) {
+  public displayHealth(curHealth: number) {
     if (this.isHealthInit) {
       for (let index = 1; index <= curHealth; index++) {
         const health = instantiate(this.healthPrefab);
@@ -151,7 +154,7 @@ export class GameManager extends Component {
     }
   }
 
-  displayPower(curPower: number) {
+  public displayPower(curPower: number) {
     switch (curPower) {
       case 1: {
         this.powerComp.spriteFrame = this.power1;
@@ -172,7 +175,7 @@ export class GameManager extends Component {
     }
   }
 
-  playPower(time: number) {
+  private playPower(time: number) {
     const anim = this.powerComp.node.getComponent(Animation);
     const [idleClip] = anim.clips;
     const idleState = anim.getState(idleClip.name);
@@ -183,7 +186,7 @@ export class GameManager extends Component {
     this.powerComp.spriteFrame = this.power0;
   }
 
-  gameOver() {
+  private gameOver() {
     this.idlPlayer = true;
     this.isPlay = false;
     this.scheduleOnce(() => {
@@ -191,7 +194,7 @@ export class GameManager extends Component {
     }, 0);
   }
 
-  reset() {
+  private reset() {
     const data = DataManager.instance.getData();
     this.totalTime = data.time;
     this.winScore = data.score;
@@ -235,7 +238,7 @@ export class GameManager extends Component {
     }
   }
 
-  updateScore(score: number) {
+  public updateScore(score: number) {
     this.totalScore += score;
     this.scoreLB.string = `${this.totalScore}`;
   }
@@ -280,7 +283,7 @@ export class GameManager extends Component {
     this.gamePlay.addChild(result);
   }
 
-  onClickHome() {
+  private onClickHome() {
     if (this.totalScore > this.winScore) {
       this.saveLocalData();
     }
@@ -289,7 +292,7 @@ export class GameManager extends Component {
     director.loadScene("LoadingScene");
   }
 
-  onClickButton() {
+  private onClickButton() {
     director.resume();
     const missionList = DataManager.instance.getMissionList();
     const index = missionList.findIndex((item) => item.key === this.key);
@@ -319,7 +322,7 @@ export class GameManager extends Component {
     }
   }
 
-  saveLocalData() {
+  private saveLocalData() {
     const stored = localStorage.getItem("FINISH_MISSION");
     let mission: string[] = stored ? JSON.parse(stored) : [];
     mission.push(this.key);
