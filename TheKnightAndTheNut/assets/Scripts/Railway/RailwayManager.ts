@@ -12,7 +12,6 @@ import {
 import { PoollingRailway } from "./PoollingRailway";
 import { Collectible } from "../Power Ups/Collectible";
 import { EnemyCtrl } from "../Enemy/EnemyCtrl";
-import { KeyMission } from "../Mission/Mission";
 const { ccclass, property } = _decorator;
 
 @ccclass("RailwayManager")
@@ -38,12 +37,6 @@ export class RailwayManager extends Component {
   @property(Number)
   private timeAppearObstacle: number = 3;
 
-  @property(Number)
-  private distantAppearObstacle: number = 3;
-
-  @property(Number)
-  private quantityObstacle: number = 4;
-
   private defaultSpeed: number = 0;
 
   private compPoll = null;
@@ -59,10 +52,6 @@ export class RailwayManager extends Component {
   private key: string = "";
 
   private countTime: number = 0;
-
-  private isSpawnObstacle: boolean = true;
-
-  private count: number = 0;
 
   private RailwayPrefabValues: string[] = [];
 
@@ -173,22 +162,15 @@ export class RailwayManager extends Component {
       enemy.node.destroy();
     }
 
-    const railwayType = this.RailwayPrefabValues.shift();
+    let railwayType = this.RailwayPrefabValues.shift();
 
-    if (
-      this.isSpawnObstacle &&
-      this.count >= 0 &&
-      this.count < this.quantityObstacle
-    ) {
-      this.placeObstacle(railway);
-      this.count++;
-      if (this.count == this.quantityObstacle) {
-        this.isSpawnObstacle = this.isSpawnObstacle!;
-        this.count = -this.distantAppearObstacle;
-      }
-    } else {
-      this.isSpawnObstacle = this.isSpawnObstacle!;
-      this.count++;
+    if (railwayType && railwayType.length >= 3) {
+      const type = railwayType[0];
+      const position = railwayType[1];
+
+      this.placeObstacle(railway, type, position);
+
+      railwayType = railwayType[3];
     }
 
     if (railwayType == "U") {
@@ -210,56 +192,51 @@ export class RailwayManager extends Component {
     this.railways.push(railway);
   }
 
-  private placeObstacle(railway: Node): void {
+  private placeObstacle(railway: Node, type: string, position: string): void {
     let obstacle = null;
-    let rand = Math.floor(Math.random() * 100) + 1;
-    if (this.countTime >= this.timeAppearObstacle) {
-      if (this.key == KeyMission.MISSION_1) {
-        rand = 1;
-      }
+    if (type == "C") {
       let scaleXCoin = 7;
       let scaleYCoin = 7;
       let scaleZCoin = 7;
       let yCoin = 7;
 
+      obstacle = instantiate(this.coinPrefab);
+      const parentScale = railway.getScale();
+
+      if (position == "D") {
+        yCoin *= -1;
+      }
+
+      obstacle.setScale(
+        scaleXCoin / parentScale.x,
+        scaleYCoin / parentScale.y,
+        scaleZCoin / parentScale.z
+      );
+      obstacle.setPosition(0, yCoin);
+    } else if (type == "E") {
       let scaleXEnemy = 3;
       let scaleYEnemy = 3;
       let scaleZEnemy = 3;
       let yEnemy = 2.6;
-      let randUpOrDown = Math.floor(Math.random() * 100) + 1;
-      if (rand % 2 != 0) {
-        obstacle = instantiate(this.coinPrefab);
-        const parentScale = railway.getScale();
 
-        if (randUpOrDown % 2 != 0) {
-          yCoin *= -1;
-        }
-        obstacle.setScale(
-          scaleXCoin / parentScale.x,
-          scaleYCoin / parentScale.y,
-          scaleZCoin / parentScale.z
-        );
-        obstacle.setPosition(0, yCoin);
-      } else {
-        obstacle = instantiate(this.enemyPrefab);
-        const parentScale = railway.getScale();
+      obstacle = instantiate(this.enemyPrefab);
+      const parentScale = railway.getScale();
 
-        if (randUpOrDown % 2 != 0) {
-          yEnemy *= -1;
-          obstacle.angle = -180;
-          scaleXEnemy *= -1;
-        }
-
-        obstacle.setScale(
-          scaleXEnemy / parentScale.x,
-          scaleYEnemy / parentScale.y,
-          scaleZEnemy / parentScale.z
-        );
-        obstacle.setPosition(0, yEnemy);
+      if (position == "D") {
+        yEnemy *= -1;
+        obstacle.angle = -180;
+        scaleXEnemy *= -1;
       }
-      railway.addChild(obstacle);
+
+      obstacle.setScale(
+        scaleXEnemy / parentScale.x,
+        scaleYEnemy / parentScale.y,
+        scaleZEnemy / parentScale.z
+      );
+      obstacle.setPosition(0, yEnemy);
     }
-    this.countTime++;
+
+    railway.addChild(obstacle);
   }
 
   private calEPointAndSPoint(railway: Node, lastEndPoint: Vec3): void {
