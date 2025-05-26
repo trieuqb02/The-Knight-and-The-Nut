@@ -28,6 +28,9 @@ export class MenuManager extends Component {
 
     this.eventComp = this.eventManager.getComponent(EventManager);
 
+    const app = (window as any).myFirebaseApp;
+
+    console.log(app)
 
   }
 

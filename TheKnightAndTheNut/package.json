@@ -3,5 +3,15 @@
   "uuid": "dadfda6b-a2e2-4e25-9c55-33caace89b3d",
   "creator": {
     "version": "3.8.5"
+  },
+  "dependencies": {
+    "firebase": "^11.8.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "rollup": "^4.41.1",
+    "typescript": "^5.8.3"
   }
 }
