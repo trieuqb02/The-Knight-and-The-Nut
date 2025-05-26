@@ -4,10 +4,11 @@ import {
   instantiate,
   Node,
   Prefab,
+  resources,
+  TextAsset,
   UITransform,
   Vec3,
 } from "cc";
-import { Railway } from "./Railway";
 import { PoollingRailway } from "./PoollingRailway";
 import { Collectible } from "../Power Ups/Collectible";
 import { EnemyCtrl } from "../Enemy/EnemyCtrl";
@@ -63,6 +64,8 @@ export class RailwayManager extends Component {
 
   private count: number = 0;
 
+  private RailwayPrefabValues: string[] = [];
+
   protected onLoad(): void {
     this.gamePlaytWidth =
       this.gamePlayNode.getComponent(UITransform)?.contentSize.width ?? 0;
@@ -114,6 +117,15 @@ export class RailwayManager extends Component {
   public startRailway(key: string): void {
     this.isRunning = true;
     this.key = key;
+
+    resources.load(`missions/${this.key}`, TextAsset, (err, asset) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const content = asset.text;
+      this.RailwayPrefabValues = content.split(" ");
+    });
   }
 
   public endRailway(): void {
@@ -149,6 +161,20 @@ export class RailwayManager extends Component {
   private spawnRailway(): void {
     const railway = this.compPoll.getPrefabNode();
 
+    const coin = railway.getComponentInChildren(Collectible) ?? null;
+
+    const enemy = railway.getComponentInChildren(EnemyCtrl) ?? null;
+
+    if (coin) {
+      coin.node.destroy();
+    }
+
+    if (enemy) {
+      enemy.node.destroy();
+    }
+
+    const railwayType = this.RailwayPrefabValues.shift();
+
     if (
       this.isSpawnObstacle &&
       this.count >= 0 &&
@@ -163,6 +189,14 @@ export class RailwayManager extends Component {
     } else {
       this.isSpawnObstacle = this.isSpawnObstacle!;
       this.count++;
+    }
+
+    if (railwayType == "U") {
+      railway.angle = 45;
+    } else if (railwayType == "D") {
+      railway.angle = -45;
+    } else {
+      railway.angle = 0;
     }
 
     this.gamePlayNode.addChild(railway);
@@ -183,24 +217,45 @@ export class RailwayManager extends Component {
       if (this.key == KeyMission.MISSION_1) {
         rand = 1;
       }
+      let scaleXCoin = 7;
+      let scaleYCoin = 7;
+      let scaleZCoin = 7;
+      let yCoin = 7;
+
+      let scaleXEnemy = 3;
+      let scaleYEnemy = 3;
+      let scaleZEnemy = 3;
+      let yEnemy = 2.6;
+      let randUpOrDown = Math.floor(Math.random() * 100) + 1;
       if (rand % 2 != 0) {
         obstacle = instantiate(this.coinPrefab);
         const parentScale = railway.getScale();
+
+        if (randUpOrDown % 2 != 0) {
+          yCoin *= -1;
+        }
         obstacle.setScale(
-          7 / parentScale.x,
-          7 / parentScale.y,
-          7 / parentScale.z
+          scaleXCoin / parentScale.x,
+          scaleYCoin / parentScale.y,
+          scaleZCoin / parentScale.z
         );
-        obstacle.setPosition(0, 7);
+        obstacle.setPosition(0, yCoin);
       } else {
         obstacle = instantiate(this.enemyPrefab);
         const parentScale = railway.getScale();
+
+        if (randUpOrDown % 2 != 0) {
+          yEnemy *= -1;
+          obstacle.angle = -180;
+          scaleXEnemy *= -1;
+        }
+
         obstacle.setScale(
-          3 / parentScale.x,
-          3 / parentScale.y,
-          3 / parentScale.z
+          scaleXEnemy / parentScale.x,
+          scaleYEnemy / parentScale.y,
+          scaleZEnemy / parentScale.z
         );
-        obstacle.setPosition(0, 2.6);
+        obstacle.setPosition(0, yEnemy);
       }
       railway.addChild(obstacle);
     }

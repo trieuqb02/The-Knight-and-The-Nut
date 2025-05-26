@@ -30,9 +30,6 @@ export class GameManager extends Component {
   private gamePlay: Node = null;
 
   @property(Node)
-  private player: Node = null;
-
-  @property(Node)
   private boss: Node = null;
 
   @property(Prefab)
@@ -132,6 +129,7 @@ export class GameManager extends Component {
     this.gamePlay.addChild(power);
     this.gamePlay.addChild(score);
     this.gamePlay.addChild(timer);
+
     if (!this.idlPlayer) {
       director.resume();
     }
@@ -175,7 +173,7 @@ export class GameManager extends Component {
     }
   }
 
-  private playPower(time: number) {
+  public playPower(time: number) {
     const anim = this.powerComp.node.getComponent(Animation);
     const [idleClip] = anim.clips;
     const idleState = anim.getState(idleClip.name);
@@ -186,7 +184,7 @@ export class GameManager extends Component {
     this.powerComp.spriteFrame = this.power0;
   }
 
-  private gameOver() {
+  public gameOver() {
     this.idlPlayer = true;
     this.isPlay = false;
     this.scheduleOnce(() => {
