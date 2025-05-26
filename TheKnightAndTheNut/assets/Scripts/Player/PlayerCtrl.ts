@@ -1,4 +1,4 @@
-import { _decorator, Component, EventKeyboard, Input, input, Animation, KeyCode, Node, Collider2D, IPhysics2DContact, Contact2DType, PhysicsSystem2D, Vec2, ERaycast2DType, Graphics, Color, UITransform, Vec3, Prefab, instantiate, AudioClip, find } from 'cc';
+import { _decorator, Component, EventKeyboard, Input, input, Animation, KeyCode, Node, Collider2D, IPhysics2DContact, Contact2DType, PhysicsSystem2D, Vec2, ERaycast2DType, Graphics, Color, UITransform, Vec3, Prefab, instantiate, AudioClip, find, RigidBody2D } from 'cc';
 import { GameManager } from '../GameManager';
 import { AudioManager } from '../AudioManager';
 import { Entity } from './Entity';
@@ -54,11 +54,23 @@ export class PlayerCtrl extends Entity {
     @property(AudioClip)
     fireSound: AudioClip = null;
 
+    // jump
+    @property
+    gravity: number = -30;
+    @property
+    jumpForce: number = 8;
+    @property
+    speedJump: number = 8;
+    private _rigidbody: RigidBody2D = null!;
+    private _isGrounded: boolean = false;
+    private _velocityY: number = 0;
+
     onLoad(){
         super.onLoad();
         if (PlayerCtrl.Instance === null) PlayerCtrl.Instance = this; // singleton
 
         // get component
+        this._rigidbody = this.getComponent(RigidBody2D)!;
         const railwayManagerNode = find('Canvas/RailwayManager');
         if (railwayManagerNode) 
             this.railwayManager = railwayManagerNode.getComponent(RailwayManager);
@@ -85,6 +97,77 @@ export class PlayerCtrl extends Entity {
     update(deltaTime: number) {
         if(this.isDead) return;
         this.railCheck();
+
+        if (!this._isGrounded) {
+            this._velocityY += this.gravity * deltaTime;
+            this.node.setPosition(this.node.position.add3f(0, this._velocityY * deltaTime * this.speedJump, 0));
+        } else {
+            this._velocityY = 0; 
+        }
+    }
+
+    onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        super.onBeginContact(selfCollider, otherCollider, contact);
+        if (otherCollider.group === ColliderGroup.GROUND) {
+            this._isGrounded = true;
+            console.log("Collide ground: " + this._isGrounded);
+        }
+    }
+
+    jump() {
+        console.log("on jump");
+        this._velocityY = this.jumpForce;
+        this._isGrounded = false;
+    }
+
+    railCheck(){
+        if(!this._isGrounded) return;
+        this.direction = new Vec3(0, 1, 0); // ray up
+        this.direction2 = new Vec3(0, -1, 0); // ray down
+
+        const originWorld = this.rayOrigin.worldPosition; 
+        const originWorld2 = this.rayOrigin2.worldPosition; 
+        // calculate endPoint
+        const endPoint = originWorld.clone().add(this.direction.multiplyScalar(this.distanceRay));
+        const endPoint2 = originWorld2.clone().add(this.direction2.multiplyScalar(this.distanceRay));
+
+        // ray hit
+        const hits = PhysicsSystem2D.instance.raycast(
+            originWorld,
+            endPoint,
+            ERaycast2DType.Closest,
+            ColliderGroup.GROUND,
+        );
+        //const hitsArr = [...hits];
+
+        const hits2 = PhysicsSystem2D.instance.raycast(
+            originWorld2,
+            endPoint2,
+            ERaycast2DType.Closest,
+            ColliderGroup.GROUND,
+        );
+        //const hitsArr2 = [...hits2];
+
+        // draw ray
+        //this.drawRay(originWorld, endPoint);
+        this.drawRay(originWorld2, endPoint2);
+
+        // hit up
+        if (hits.length > 0) {
+            const hit = hits[0];
+            const hitPoint = hit.point; // collide point
+            this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
+            //this.drawPoint(hitPoint);
+            return;
+        }
+        // hit down
+        if (hits2.length > 0) {
+            const hit = hits2[0];
+            const hitPoint = hit.point; // collide point
+            this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
+            this.drawPoint(hitPoint);
+            return;
+        }
     }
 
     getOrigin(){
@@ -147,55 +230,6 @@ export class PlayerCtrl extends Entity {
         this.gameManager.updateScore(score);
     }
 
-    railCheck(){
-        this.direction = new Vec3(0, 1, 0); // ray up
-        this.direction2 = new Vec3(0, -1, 0); // ray down
-
-        const originWorld = this.rayOrigin.worldPosition; 
-        const originWorld2 = this.rayOrigin2.worldPosition; 
-        // calculate endPoint
-        const endPoint = originWorld.clone().add(this.direction.multiplyScalar(this.distanceRay));
-        const endPoint2 = originWorld2.clone().add(this.direction2.multiplyScalar(this.distanceRay));
-
-        // ray hit
-        const hits = PhysicsSystem2D.instance.raycast(
-            originWorld,
-            endPoint,
-            ERaycast2DType.Closest,
-            ColliderGroup.GROUND,
-        );
-        //const hitsArr = [...hits];
-
-        const hits2 = PhysicsSystem2D.instance.raycast(
-            originWorld2,
-            endPoint2,
-            ERaycast2DType.Closest,
-            ColliderGroup.GROUND,
-        );
-        //const hitsArr2 = [...hits2];
-
-        // draw ray
-        //this.drawRay(originWorld, endPoint);
-        this.drawRay(originWorld2, endPoint2);
-
-        // hit up
-        if (hits.length > 0) {
-            const hit = hits[0];
-            const hitPoint = hit.point; // collide point
-            this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
-            //this.drawPoint(hitPoint);
-            return;
-        }
-        // hit down
-        if (hits2.length > 0) {
-            const hit = hits2[0];
-            const hitPoint = hit.point; // collide point
-            this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
-            this.drawPoint(hitPoint);
-            return;
-        }
-    }
-
     drawPoint(hitPoint){
         // convert to world pos
         const localPoint = this.graphicNode
@@ -245,6 +279,11 @@ export class PlayerCtrl extends Entity {
                     this.climb();
                 }
             }, 0.15);
+        }
+
+        if (event.keyCode == KeyCode.KEY_H && this._isGrounded) {
+            console.log("Press jump");
+            this.jump();
         }
     }
 

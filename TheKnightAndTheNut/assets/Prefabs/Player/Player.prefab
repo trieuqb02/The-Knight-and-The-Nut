@@ -633,6 +633,7 @@
       "__uuid__": "b57e162f-3cfc-4c04-8d06-b9d9bbd96efb",
       "__expectedType__": "cc.AudioClip"
     },
+    "jumpForce": 8,
     "_id": ""
   },
   {
@@ -705,12 +706,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": -0.3,
-      "y": 13.4
+      "y": 10.4
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 12.3,
-      "height": 16.9
+      "height": 22.9
     },
     "_id": ""
   },
@@ -788,6 +789,7 @@
       "__id__": 0
     },
     "fileId": "1bU4Em+6hDtayV9UH8JgYQ",
+    "instance": null,
     "targetOverrides": []
   }
 ]
