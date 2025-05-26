@@ -1,5 +1,7 @@
-import { _decorator, Component, EditBox, Label, Node } from "cc";
+import { _decorator, Component, director, EditBox, Label, Node } from "cc";
 import { EventEnum } from "../EventManager";
+import { SceneTransitionManager } from "../SceneTransitionManager";
+import { LoadingManager } from "../LoadingManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("AuthManager")
@@ -81,6 +83,10 @@ export class AuthManager extends Component {
   private login(): void {
     const username = this.username.string;
     const password = this.password.string;
+
+    SceneTransitionManager.setNextScene("MenuScene");
+    director.loadScene("LoadingScene");
+   
 
     if(!username && !password){
         this.openMessagePanel("Please Input Username and Password!");

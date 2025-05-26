@@ -9,6 +9,7 @@ export enum EventEnum {
   EVENT_LOGIN = "EVENT_LOGIN",
   EVENT_REGISTER = "EVENT_REGISTER",
   EVENT_CLOSE_MESSAGE = "EVENT_CLOSE_MESSAGE",
+  EVENT_OPEN_RANKING =  "EVENT_OPEN_RANKING"
 }
 
 @ccclass("EventManager")
@@ -21,6 +22,11 @@ export class EventManager extends Component {
   emitOpenMissionList() {
     AudioManager.instance.playSFX(this.clickSound);
     this.node.emit(EventEnum.EVENT_OPEN_MISSION_LIST);
+  }
+
+  emitOpenRankingsList(){
+    AudioManager.instance.playSFX(this.clickSound);
+    this.node.emit(EventEnum.EVENT_OPEN_RANKING);
   }
 
   emitOpenSetting() {
