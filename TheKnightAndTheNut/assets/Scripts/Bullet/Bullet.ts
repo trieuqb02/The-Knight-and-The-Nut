@@ -2,6 +2,8 @@ import { _decorator, Collider2D, Component, Contact2DType, instantiate, IPhysics
 import { EnemyCtrl } from '../Enemy/EnemyCtrl';
 import { PlayerCtrl } from '../Player/PlayerCtrl';
 import { BossCtrl } from '../Enemy/BossCtrl';
+import { Entity } from '../Player/Entity';
+import { IDamageable } from '../Player/IDamageable';
 const { ccclass, property } = _decorator;
 
 @ccclass('Bullet')
@@ -10,15 +12,12 @@ export class Bullet extends Component {
 
     @property
     private timeLife: number = 2;
-
     @property
     private speed: number = 10;
     @property
     private dame: number = 1;
-
     @property
     private ownerTag: string = 'player';
-
     @property(Vec2)
     private dir: Vec2 = new Vec2();
     @property(Prefab)
@@ -40,7 +39,13 @@ export class Bullet extends Component {
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        //const otherEntity = otherCollider.getComponent(Entity) as IDamageable;
         if (this.ownerTag === 'player') {
+            // otherEntity.takeDame(this.dame);
+            // this.scheduleOnce(() => {
+            //     this.node.destroy();
+            // }, 0);
+            // this.createEffect();
             const enemy = otherCollider.node.getComponent(EnemyCtrl);
             const boss = otherCollider.node.getComponent(BossCtrl);
             // detect enemy
@@ -60,6 +65,12 @@ export class Bullet extends Component {
                 this.createEffect();
             }
         } else if (this.ownerTag === 'enemy') {
+            // console.log("Boss fire " + otherCollider.name);
+            // otherEntity.takeDame(this.dame);
+            // this.scheduleOnce(() => {
+            //     this.node.destroy();
+            // }, 0);
+            // this.createEffect();
             const player = otherCollider.node.getComponent(PlayerCtrl);
             if (player) {
                 player.takeDame(this.dame);
@@ -89,7 +100,6 @@ export class Bullet extends Component {
 
     move(){
         // move right with speed 
-        //this.rb.linearVelocity = new Vec2(this.speed, 0); 
         this.rb.linearVelocity = this.dir.multiplyScalar(this.speed);
     }
 

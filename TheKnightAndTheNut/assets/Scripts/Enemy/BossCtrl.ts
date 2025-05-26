@@ -1,23 +1,17 @@
 import { _decorator, Component, instantiate, Node, Prefab, UITransform, Animation, input, Input, KeyCode, EventKeyboard, Vec3, PhysicsSystem2D, ERaycast2DType, Graphics, Color, Vec2, PhysicsGroup, Contact2DType, IPhysics2DContact, Collider2D } from 'cc';
 import { PlayerCtrl } from '../Player/PlayerCtrl';
+import { Entity } from '../Player/Entity';
+import { ColliderGroup } from '../ColliderGroup';
 const { ccclass, property } = _decorator;
 
-export enum ColliderGroup {
-    DEFAULT = 1 << 0,
-    PLAYER = 1 << 1,
-    ENEMY = 1 << 2,
-    GROUND = 1 << 3,
-}
-
 @ccclass('BossCtrl')
-export class BossCtrl extends Component {
+export class BossCtrl extends Entity {
     @property(Prefab)
     private bulletPrefab: Prefab;
     @property(Node)
     private fireOrigin: Node;
     @property(Node)
     private bulletParent: Node;
-    private anim: Animation;
     private direction: Vec3;
     @property({type: Node,})
     rayOrigin: Node; 
@@ -32,21 +26,11 @@ export class BossCtrl extends Component {
     private scanInterval: number = 3;
     private scanTimer: number = 0;
 
-    @property
-    startingHealth: number = 1;
-    private curHealth: number;
     private isHurting: boolean = false;
-    private isDead: boolean = false;
     
     protected onLoad(): void {
-        this.node.getComponent(UITransform).priority = 10; // set sorting layer for Boss
-        this.anim = this.getComponent(Animation);
+        super.onLoad();
         this.graphics = this.rayDrawerNode.getComponent(Graphics);
-    }
-
-    start() {
-        this.curHealth = this.startingHealth;
-        input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }
 
     update(deltaTime: number) {
@@ -58,14 +42,18 @@ export class BossCtrl extends Component {
         }
     }
 
+    onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        // implement
+    }
+
     hurt(){
         this.isHurting = true;
-        this.anim.play("bossHurt");
+        this.anim.play("hurt");
 
         // play run anim after hurt anim
         this.anim.once(Animation.EventType.FINISHED, () => {
             this.isHurting = false;
-            this.anim.play("bossIdle");
+            this.anim.play("idle");
         });
     }
 
@@ -73,12 +61,7 @@ export class BossCtrl extends Component {
     {
         if(this.isHurting) return;
         this.curHealth -= dame;
-        console.log("Hp Boss: " + this.curHealth);
-        //this.gameManager.displayHealth(this.curHealth);
-
         if (this.curHealth <= 0){   
-            console.log("Boss Dead " + this.curHealth);
-
             this.dead();
             return;
         }
@@ -89,10 +72,12 @@ export class BossCtrl extends Component {
     {
         PlayerCtrl.Instance.addScore(800);
         if(this.isDead) return;
+        //super.dead();
         this.isDead = true;
-        this.anim.play("bossDead");
-
-        this.anim.once(Animation.EventType.FINISHED, () => {
+        this.anim.play("dead");
+        this.collider.enabled = false;
+        // disable detect
+         this.anim.once(Animation.EventType.FINISHED, () => {
             this.node.destroy();
         });
     }
@@ -129,9 +114,7 @@ export class BossCtrl extends Component {
 
         if (hits.length > 0) {
             const hit = hits[0];
-            console.log("Hittttttttt");
             if (hit.collider.node === PlayerCtrl.Instance.getPlayerNode()) {
-                console.log("Hitttt " + hit.collider.name);
                 this.scanTimer = 0;
                 this.fire();
                 //this.drawPoint(hit.point);
@@ -165,19 +148,13 @@ export class BossCtrl extends Component {
         this.graphics.stroke();
     }
 
-    onKeyDown(event: EventKeyboard){
-        if(event.keyCode == KeyCode.KEY_B){
-            this.fire();
-        }
-    }
-
     fire(){
         if(this.isHurting) return;
         // play animation attack
         // call instanceBullet() in event animation
-        this.anim.play("bossAttack1");
+        this.anim.play("attack");
         this.anim.once(Animation.EventType.FINISHED, () => {
-            this.anim.play("bossIdle");
+            this.anim.play("idle");
         });
     }   
 

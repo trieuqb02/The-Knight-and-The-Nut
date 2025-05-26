@@ -1,15 +1,17 @@
 import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact, Node } from 'cc';
-import { ColliderGroup, PlayerCtrl } from '../Player/PlayerCtrl';
+import { PlayerCtrl } from '../Player/PlayerCtrl';
+import { ColliderGroup } from '../ColliderGroup';
 const { ccclass, property } = _decorator;
 
 @ccclass('Collectible')
 export class Collectible extends Component {
 	private amount: number = 1;
+    private collider;
 
     protected onLoad(): void {
-        const collider = this.getComponent(Collider2D);
-        if (collider) {
-            collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+        this.collider = this.getComponent(Collider2D);
+        if (this.collider) {
+            this.collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         }
     }
 
@@ -25,6 +27,7 @@ export class Collectible extends Component {
     collect(player){
         // play sound
         // effect
+        this.collider.enabled = false;
         player.collect(this.amount);
         // destroy after collide
         this.selfDestroy();

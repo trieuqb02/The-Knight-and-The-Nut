@@ -604,20 +604,16 @@
     "__prefab": {
       "__id__": 27
     },
-    "gameManagerNode": null,
-    "railwayManagerNode": null,
-    "rayDrawerNode": null,
+    "startingHealth": 20,
+    "bodyDame": 1,
     "rayOrigin": {
       "__id__": 2
     },
     "rayOrigin2": {
       "__id__": 6
     },
-    "startingHealth": 20,
-    "bodyDame": 1,
-    "isGodState": false,
     "timingGod": 5,
-    "nitroToGod": 3,
+    "nitroToGod": 4,
     "speedUpEffect": {
       "__id__": 14
     },
@@ -776,7 +772,7 @@
       "__id__": 10
     },
     "bulletSpawn": null,
-    "fireRate": 2,
+    "fireRate": 1.5,
     "_id": ""
   },
   {
@@ -792,7 +788,6 @@
       "__id__": 0
     },
     "fileId": "1bU4Em+6hDtayV9UH8JgYQ",
-    "instance": null,
     "targetOverrides": []
   }
 ]

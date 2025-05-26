@@ -9,6 +9,10 @@ export class Railway extends Component {
     this.speed = speed
   }
 
+  protected onLoad(): void {
+    this.node.setSiblingIndex(9);
+  }
+
   start() {}
 
   update(deltaTime: number) {

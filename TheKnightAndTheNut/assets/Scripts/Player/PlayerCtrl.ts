@@ -1,71 +1,52 @@
-import { _decorator, Component, EventKeyboard, Input, input, Animation, KeyCode, Node, Collider2D, IPhysics2DContact, Contact2DType, PhysicsSystem2D, Vec2, ERaycast2DType, Graphics, Color, UITransform, Vec3, Prefab, instantiate, AudioClip } from 'cc';
-import { EnemyCtrl } from '../Enemy/EnemyCtrl';
+import { _decorator, Component, EventKeyboard, Input, input, Animation, KeyCode, Node, Collider2D, IPhysics2DContact, Contact2DType, PhysicsSystem2D, Vec2, ERaycast2DType, Graphics, Color, UITransform, Vec3, Prefab, instantiate, AudioClip, find } from 'cc';
 import { GameManager } from '../GameManager';
 import { AudioManager } from '../AudioManager';
+import { Entity } from './Entity';
+import { RailwayManager } from '../Railway/RailwayManager';
+import { ColliderGroup } from '../ColliderGroup';
 const { ccclass, property } = _decorator;
 
-export enum ColliderGroup {
-    DEFAULT = 1 << 0,
-    PLAYER = 1 << 1,
-    ENEMY = 1 << 2,
-    GROUND = 1 << 3,
-}
-
 @ccclass('PlayerCtrl')
-export class PlayerCtrl extends Component {
+export class PlayerCtrl extends Entity {
     public static Instance: PlayerCtrl = null; // singleton
 
     private isHoldingSpace: boolean = false;
+    private spacePressTimer;
+
     private isReverse: boolean = false;
     private isClimb: boolean = false;
-    private anim: Animation;
+
     private direction: Vec3;
     private direction2: Vec3;
     private distanceRay: number = 200;
-
-    @property(Node)
-    gameManagerNode: Node;
-
-    @property(Node)
-    railwayManagerNode: Node;
-
-    @property(Node)
-    rayDrawerNode: Node;
-
-    // node for draw ray
-    private graphics: Graphics = null;
-    
     @property({type: Node,})
     rayOrigin: Node; 
     @property({type: Node,})
     rayOrigin2: Node; 
 
-    @property
-    startingHealth: number = 3;
-    private curHealth: number;
-    @property
-    bodyDame: number = 1;
+    // node for draw ray
+    private graphics: Graphics = null;
+    private graphicNode: Node;
 
     private coinNumber: number = 0;
-
-    @property
-    isGodState: boolean = false;
-    private isDead: boolean = false;
-    @property
-    timingGod: number = 5;
+    
     private railwayManager;
     private gameManager;
+
+    isGodState: boolean = false;
+    @property
+    timingGod: number = 5;
     @property
     nitroToGod: number = 5;
     private curNitroNumber: number = 0;
-    private collider;
 
-    private spacePressTimer;
+    // Effect
     @property({type: Node,})
     speedUpEffect: Node; 
     @property({type: Prefab,})
     reverseEffect: Prefab; 
 
+    // Audio
     @property(AudioClip)
     reverseSound: AudioClip = null;
     @property(AudioClip)
@@ -74,28 +55,27 @@ export class PlayerCtrl extends Component {
     fireSound: AudioClip = null;
 
     onLoad(){
+        super.onLoad();
         if (PlayerCtrl.Instance === null) PlayerCtrl.Instance = this; // singleton
 
-        this.node.getComponent(UITransform).priority = 10; // set sorting layer for Player
-        this.graphics = this.rayDrawerNode.getComponent(Graphics);
+        // get component
+        const railwayManagerNode = find('Canvas/RailwayManager');
+        if (railwayManagerNode) 
+            this.railwayManager = railwayManagerNode.getComponent(RailwayManager);
 
-        this.anim = this.getComponent(Animation);
-        this.railwayManager = this.railwayManagerNode.getComponent('RailwayManager');
+        const gameManagerNode = find('Canvas/GameManager');
+        if (gameManagerNode) 
+            this.gameManager = gameManagerNode.getComponent(GameManager);
 
-        this.gameManager = this.gameManagerNode.getComponent('GameManager');
-
-        this.collider = this.getComponent(Collider2D);
-        if (this.collider) {
-            this.collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-            this.collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
-        }
-
+        this.graphicNode = find('Canvas/GraphicNode');
+        if (this.graphicNode) 
+            this.graphics = this.graphicNode.getComponent(Graphics);
+        
+        // deactive effect
         this.speedUpEffect.active = false;
     }
 
     start() {
-        // init health
-        this.curHealth = this.startingHealth;
         this.gameManager.displayHealth(this.curHealth)
 
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
@@ -114,7 +94,7 @@ export class PlayerCtrl extends Component {
     onGod(){
         this.isGodState = true;
         this.speedUpEffect.active = true;
-        let pinkAttackState = this.anim.getState("pinkRun");
+        let pinkAttackState = this.anim.getState("run");
         // speed up
         this.railwayManager.runSpeedUp(500, this.timingGod);
         this.gameManager.playPower(this.timingGod);
@@ -196,11 +176,10 @@ export class PlayerCtrl extends Component {
 
         // draw ray
         //this.drawRay(originWorld, endPoint);
-        //this.drawRay(originWorld2, endPoint2);
+        this.drawRay(originWorld2, endPoint2);
 
         // hit up
         if (hits.length > 0) {
-            //console.log("hit uppp");
             const hit = hits[0];
             const hitPoint = hit.point; // collide point
             this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
@@ -209,18 +188,17 @@ export class PlayerCtrl extends Component {
         }
         // hit down
         if (hits2.length > 0) {
-            //console.log("hit down");
             const hit = hits2[0];
             const hitPoint = hit.point; // collide point
             this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
-            //this.drawPoint(hitPoint);
+            this.drawPoint(hitPoint);
             return;
         }
     }
 
     drawPoint(hitPoint){
         // convert to world pos
-        const localPoint = this.rayDrawerNode
+        const localPoint = this.graphicNode
         .getComponent(UITransform)
         .convertToNodeSpaceAR(new Vec3(hitPoint.x, hitPoint.y, 0));
 
@@ -232,27 +210,13 @@ export class PlayerCtrl extends Component {
 
     drawRay(originWorld, endPoint){
         // to local graphics node
-        const localStart = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(originWorld);
-        const localEnd = this.rayDrawerNode.getComponent(UITransform).convertToNodeSpaceAR(endPoint);
+        const localStart = this.graphicNode.getComponent(UITransform).convertToNodeSpaceAR(originWorld);
+        const localEnd = this.graphicNode.getComponent(UITransform).convertToNodeSpaceAR(endPoint);
         this.graphics.clear();
         this.graphics.moveTo(localStart.x, localStart.y);
         this.graphics.lineTo(localEnd.x, localEnd.y);
         this.graphics.strokeColor = Color.RED;
         this.graphics.stroke();
-    }
-
-    onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        if (otherCollider.group === ColliderGroup.ENEMY) {
-            const enemy = otherCollider.node.getComponent(EnemyCtrl);
-            if (enemy) {
-                enemy.takeDame(this.bodyDame); 
-            }
-        }
-    }
-
-    onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        if (otherCollider.group === ColliderGroup.ENEMY) {
-        }
     }
 
     onKeyUp(event: EventKeyboard){
@@ -266,7 +230,7 @@ export class PlayerCtrl extends Component {
                 this.spacePressTimer = null;
             }
 
-            this.anim.play("pinkRun");
+            this.anim.play("run");
             this.reverse();
         }
     }
@@ -282,49 +246,29 @@ export class PlayerCtrl extends Component {
                 }
             }, 0.15);
         }
-        // if (event.keyCode === KeyCode.KEY_A) { 
-        //     this.hurt();
-        // }
-        // if (event.keyCode === KeyCode.KEY_D) { 
-        //     this.dead();
-        // }
     }
 
     climb(){
         this.isClimb = true;
         this.collider.enabled = false;
-        this.anim.play("pinkClimb");
+        this.anim.play("climb");
     }
 
     attack(){
         if(this.isClimb) return;
 
         AudioManager.instance.playSFX(this.fireSound);
-        this.anim.play("pinkAttack");
+        this.anim.play("attack");
 
         this.anim.once(Animation.EventType.FINISHED, () => {
-            this.anim.play("pinkRun");
+            this.anim.play("run");
         });
     }
 
     dead(){
-        this.isDead = true;
-        this.anim.play("pinkDead");
-        this.collider.enabled = false;
-        // disable detect
-         this.anim.once(Animation.EventType.FINISHED, () => {
-            this.node.destroy();
-            this.gameManager.gameOver();
-        });
-        
-    }
-
-    hurt(){
-        this.anim.play("pinkHurt");
-
-        // play run anim after hurt anim
+        super.dead();
         this.anim.once(Animation.EventType.FINISHED, () => {
-            this.anim.play("pinkRun");
+            this.gameManager.gameOver();
         });
     }
 
@@ -340,15 +284,10 @@ export class PlayerCtrl extends Component {
     }
 
     takeDame(dame){
+        console.log("call take dame on player");
         if(this.isGodState) return;
-        this.curHealth -= dame;
+        super.takeDame(dame);
         this.gameManager.displayHealth(this.curHealth);
-
-        if (this.curHealth <= 0){   
-            this.dead();
-            return;
-        }
-        this.hurt();
     }
 
     getPlayerNode(){

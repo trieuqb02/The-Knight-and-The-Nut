@@ -190,9 +190,9 @@
     "__prefab": {
       "__id__": 9
     },
-    "speed": 0,
-    "dame": 1,
     "startingHealth": 1,
+    "bodyDame": 1,
+    "speed": 0,
     "_id": ""
   },
   {

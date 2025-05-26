@@ -15,7 +15,7 @@ export class MoveBG extends Component {
     private hasSpawned: boolean = false;
 
     protected onLoad(): void {
-        this.node.getComponent(UITransform).priority = -10;
+        this.node.setSiblingIndex(-10);
     }
 
     update(deltaTime: number) {
