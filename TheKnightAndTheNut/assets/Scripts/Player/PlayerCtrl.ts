@@ -209,6 +209,7 @@ export class PlayerCtrl extends Entity {
         this.coinNumber += amount;
 
         this.gameManager.updateScore(50);
+        this.gameManager.receiveGold(1);
         if(this.isGodState) return;
 
         // add nitro after collect coin

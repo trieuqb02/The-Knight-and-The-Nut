@@ -85,10 +85,10 @@ export class MissionManager extends Component {
   }
 
   openMissionList() {
-    if (!this.missionList.node.active) {
-      this.missionList.node.active = true;
-      this.init();
+    if(this.missionList.content.children.length > 0){
+      return;
     }
+    this.init();
   }
 
   init() {

@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "b3ef1893-45a7-4656-b63a-cf9dabefcade",
+  "uuid": "9c0b5bc2-71da-496a-9ffe-ab8d7f4b2967",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "RailwayFlat"
+    "syncNodeName": "item"
   }
 }
