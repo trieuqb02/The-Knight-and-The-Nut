@@ -34,8 +34,6 @@ export class PlayerMovement extends Component {
     private isHoldingSpace: boolean = false;
     private spacePressTimer;
 
-    
-
     protected onLoad(): void {
         this.graphicNode = find('Canvas/GraphicNode');
         if (this.graphicNode) 
@@ -45,10 +43,6 @@ export class PlayerMovement extends Component {
         input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
     }
     
-    start() {
-
-    }
-
     update(deltaTime: number) {
         if(PlayerCtrl.Instance.isDead) return;
         this.railCheck();
@@ -62,6 +56,7 @@ export class PlayerMovement extends Component {
     }
 
     reverse(){
+        if (!PlayerCtrl.Instance.isGrounded) return;
         AudioManager.instance.playSFX(PlayerCtrl.Instance.reverseSound);
         this.isReverse = !this.isReverse;
         this._dirY *= -1;

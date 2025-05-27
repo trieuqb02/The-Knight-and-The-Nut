@@ -4,4 +4,5 @@ export enum ColliderGroup {
     ENEMY = 1 << 2,
     GROUND = 1 << 3,
     BOSS   = 1 << 4,
+    POWER_UP   = 1 << 5,
 }

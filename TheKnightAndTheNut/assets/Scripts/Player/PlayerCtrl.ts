@@ -6,6 +6,7 @@ import { AudioManager } from '../AudioManager';
 import { Entity } from './Entity';
 import { RailwayManager } from '../Railway/RailwayManager';
 import { ColliderGroup } from '../ColliderGroup';
+import { PowerUp } from '../Power Ups/PowerUp';
 const { ccclass, property } = _decorator;
 
 @ccclass('PlayerCtrl')
@@ -75,6 +76,12 @@ export class PlayerCtrl extends Entity {
         super.onBeginContact(selfCollider, otherCollider, contact);
         if (otherCollider.group === ColliderGroup.GROUND) {
             this._isGrounded = true;
+        }
+        if (otherCollider.group === ColliderGroup.POWER_UP) {
+            const powerUp = otherCollider.getComponent(PowerUp);
+            if (powerUp) {
+                powerUp.active(this.node); 
+            }
         }
     }
 
