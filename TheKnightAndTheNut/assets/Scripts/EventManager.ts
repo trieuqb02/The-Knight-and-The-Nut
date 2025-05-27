@@ -4,12 +4,8 @@ const { ccclass, property } = _decorator;
 
 export enum EventEnum {
   EVENT_OPEN_MISSION_LIST = "EVENT_OPEN_MISSION_LIST",
-  EVENT_OPEN_LOGIN_PANEL = "EVENT_OPEN_LOGIN_PANEL",
-  EVENT_OPEN_REGISTER_PANEL = "EVENT_OPEN_REGISTER_PANEL",
-  EVENT_LOGIN = "EVENT_LOGIN",
-  EVENT_REGISTER = "EVENT_REGISTER",
-  EVENT_CLOSE_MESSAGE = "EVENT_CLOSE_MESSAGE",
-  EVENT_OPEN_RANKING =  "EVENT_OPEN_RANKING"
+  EVENT_OPEN_RANKING = "EVENT_OPEN_RANKING",
+  EVENT_OPEN_SHOP = "EVENT_OPEN_SHOP",
 }
 
 @ccclass("EventManager")
@@ -24,9 +20,14 @@ export class EventManager extends Component {
     this.node.emit(EventEnum.EVENT_OPEN_MISSION_LIST);
   }
 
-  emitOpenRankingsList(){
+  emitOpenRankingsList() {
     AudioManager.instance.playSFX(this.clickSound);
     this.node.emit(EventEnum.EVENT_OPEN_RANKING);
+  }
+
+  emitOpenShop() {
+    AudioManager.instance.playSFX(this.clickSound);
+    this.node.emit(EventEnum.EVENT_OPEN_SHOP);
   }
 
   emitOpenSetting() {
@@ -39,30 +40,5 @@ export class EventManager extends Component {
 
   emitOpenQuit() {
     AudioManager.instance.playSFX(this.clickSound);
-  }
-
-  emitOpenLogin(){
-    AudioManager.instance.playSFX(this.clickSound);
-    this.node.emit(EventEnum.EVENT_OPEN_LOGIN_PANEL);
-  }
-
-  emitOpenRegister(){
-    AudioManager.instance.playSFX(this.clickSound);
-    this.node.emit(EventEnum.EVENT_OPEN_REGISTER_PANEL);
-  }
-
-  emitLogin(){
-    AudioManager.instance.playSFX(this.clickSound);
-    this.node.emit(EventEnum.EVENT_LOGIN);
-  }
-
-  emitRegister(){
-    AudioManager.instance.playSFX(this.clickSound);
-    this.node.emit(EventEnum.EVENT_REGISTER);
-  }
-
-  emitCloseMessage(){
-    AudioManager.instance.playSFX(this.clickSound);
-    this.node.emit(EventEnum.EVENT_CLOSE_MESSAGE);
   }
 }
