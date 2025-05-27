@@ -85,6 +85,9 @@ export class MissionManager extends Component {
   }
 
   openMissionList() {
+    if(this.missionList.content.children.length > 0){
+      return;
+    }
     this.init();
   }
 

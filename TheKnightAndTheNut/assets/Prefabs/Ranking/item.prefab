@@ -35,18 +35,15 @@
     "_components": [
       {
         "__id__": 26
-      },
-      {
-        "__id__": 28
       }
     ],
     "_prefab": {
-      "__id__": 30
+      "__id__": 28
     },
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -16,
+      "y": 0,
       "z": 0
     },
     "_lrot": {
@@ -95,7 +92,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -267.841796875,
+      "x": -235,
       "y": 0,
       "z": 0
     },
@@ -136,8 +133,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 36.689453125,
-      "height": 50.4
+      "width": 45.179962158203125,
+      "height": 30.240000000000002
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -172,17 +169,20 @@
       "b": 0,
       "a": 255
     },
-    "_string": "No1",
+    "_string": "Rank",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
-    "_lineHeight": 40,
+    "_lineHeight": 24,
     "_overflow": 0,
     "_enableWrapText": true,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "22a61198-1aec-4a6b-8d3d-60fbbeee2d6c",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_isItalic": false,
     "_isBold": false,
@@ -254,7 +254,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -120.0439453125,
+      "x": -80,
       "y": 0,
       "z": 0
     },
@@ -295,7 +295,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 38.90625,
+      "width": 50.19996643066406,
       "height": 30.240000000000002
     },
     "_anchorPoint": {
@@ -331,7 +331,7 @@
       "b": 0,
       "a": 255
     },
-    "_string": "trieu",
+    "_string": "Name",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 20,
@@ -340,8 +340,11 @@
     "_lineHeight": 24,
     "_overflow": 0,
     "_enableWrapText": true,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "22a61198-1aec-4a6b-8d3d-60fbbeee2d6c",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_isItalic": false,
     "_isBold": false,
@@ -413,7 +416,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 57.7734375,
+      "x": 90,
       "y": 0,
       "z": 0
     },
@@ -454,8 +457,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 96.728515625,
-      "height": 50.4
+      "width": 52.5999755859375,
+      "height": 30.240000000000002
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -490,17 +493,20 @@
       "b": 0,
       "a": 255
     },
-    "_string": "Score: 100",
+    "_string": "Score",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
-    "_lineHeight": 40,
+    "_lineHeight": 24,
     "_overflow": 0,
     "_enableWrapText": true,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "22a61198-1aec-4a6b-8d3d-60fbbeee2d6c",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_isItalic": false,
     "_isBold": false,
@@ -572,7 +578,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 251.162109375,
+      "x": 230,
       "y": 0,
       "z": 0
     },
@@ -613,8 +619,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 70.048828125,
-      "height": 50.4
+      "width": 49.87995910644531,
+      "height": 30.240000000000002
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -649,17 +655,20 @@
       "b": 0,
       "a": 255
     },
-    "_string": "Level: 3",
+    "_string": "Level",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
-    "_lineHeight": 40,
+    "_lineHeight": 24,
     "_overflow": 0,
     "_enableWrapText": true,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "22a61198-1aec-4a6b-8d3d-60fbbeee2d6c",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_isItalic": false,
     "_isBold": false,
@@ -722,7 +731,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 592.373046875,
+      "width": 520,
       "height": 30
     },
     "_anchorPoint": {
@@ -737,44 +746,6 @@
     "fileId": "73dbFKRrlP9ZNAZeCWw2Jw"
   },
   {
-    "__type__": "cc.Layout",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "__prefab": {
-      "__id__": 29
-    },
-    "_resizeMode": 1,
-    "_layoutType": 1,
-    "_cellSize": {
-      "__type__": "cc.Size",
-      "width": 40,
-      "height": 40
-    },
-    "_startAxis": 0,
-    "_paddingLeft": 10,
-    "_paddingRight": 10,
-    "_paddingTop": 0,
-    "_paddingBottom": 0,
-    "_spacingX": 110,
-    "_spacingY": 0,
-    "_verticalDirection": 1,
-    "_horizontalDirection": 0,
-    "_constraint": 0,
-    "_constraintNum": 2,
-    "_affectedByScale": false,
-    "_isAlign": false,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.CompPrefabInfo",
-    "fileId": "7frNI8zt5J+KDjPcyApHGf"
-  },
-  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -783,6 +754,7 @@
       "__id__": 0
     },
     "fileId": "39u79/s6lP34J/hFFtsc4L",
+    "instance": null,
     "targetOverrides": null
   }
 ]

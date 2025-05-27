@@ -105,6 +105,8 @@ export class GameManager extends Component {
 
   private isBoss: boolean = false;
 
+  private totalGlod: number = 0;
+
   private init() {
     AudioManager.instance.stopBGM();
     AudioManager.instance.playBGM(this.audioBGClip);
@@ -241,8 +243,18 @@ export class GameManager extends Component {
     this.scoreLB.string = `${this.totalScore}`;
   }
 
+  public receiveGold(gold: number){
+    this.totalGlod += gold;
+  }
+
   protected onTimeUp() {
     director.pause();
+    
+    const user = DataManager.instance.getUser();
+    user.gold += this.totalGlod;
+    DataManager.instance.setUser(user);
+
+
     this.railwayComp.endRailway();
     const result = instantiate(this.resultPrefab);
     if (this.totalScore > this.winScore && !this.idlPlayer) {
@@ -282,7 +294,7 @@ export class GameManager extends Component {
   }
 
   private onClickHome() {
-    if (this.totalScore > this.winScore) {
+    if (this.totalScore >= this.winScore && !this.idlPlayer) {
       this.saveLocalData();
     }
     SceneTransitionManager.setNextScene("MenuScene");
@@ -301,7 +313,7 @@ export class GameManager extends Component {
       director.loadScene(sceneName);
     }
 
-    if (this.totalScore > this.winScore && !this.idlPlayer) {
+    if (this.totalScore >= this.winScore && !this.idlPlayer) {
       missionList.forEach((mission, index) => {
         if (mission.key === this.key) {
           if (index != missionList.length - 1) {
@@ -325,5 +337,18 @@ export class GameManager extends Component {
     let mission: string[] = stored ? JSON.parse(stored) : [];
     mission.push(this.key);
     localStorage.setItem("FINISH_MISSION", JSON.stringify(mission));
+
+    const user = DataManager.instance.getUser();
+
+    const missionNumber = parseInt(this.key.replace("mission", ""));
+
+    const firebase = (window as any).FirebaseBundle;
+
+    const userA = firebase.getUser(user.name);
+    if(missionNumber >= userA.mission && this.totalScore > userA.score){
+      firebase.updateData(`users/${user.name}`, {name: user.name, score: this.totalScore, mission: missionNumber})
+    } else {
+      firebase.updateData(`users/${user.name}`, {name: user.name, score: this.totalScore, mission: missionNumber})
+    }
   }
 }

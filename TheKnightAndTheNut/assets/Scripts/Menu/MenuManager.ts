@@ -1,6 +1,7 @@
 import { _decorator, AudioClip, Button, Component, Node, PageView, ScrollView } from "cc";
 import { EventManager } from "../EventManager";
 import { AudioManager } from "../AudioManager";
+import { DataManager } from "../DataManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("MenuManager")
@@ -12,8 +13,8 @@ export class MenuManager extends Component {
   @property(PageView)
   missionList: PageView = null;
 
-  @property(ScrollView)
-  rankingList: ScrollView = null;
+  @property(Node)
+  rankingPanel: Node = null;
 
   @property(Node)
   eventManager: Node = null;
@@ -23,20 +24,12 @@ export class MenuManager extends Component {
   protected onLoad(): void {
     AudioManager.instance.stopBGM();
     AudioManager.instance.playBGM(this.audioBGClip);
-
-    console.log(this.rankingList)
-
     this.eventComp = this.eventManager.getComponent(EventManager);
-
-    const app = (window as any).myFirebaseApp;
-
-    console.log(app)
-
   }
 
   clickOpenMissionList(){
-    if(this.rankingList.node.active){
-      this.rankingList.node.active = false;
+    if(this.rankingPanel.active){
+      this.rankingPanel.active = false;
     }
     if (!this.missionList.node.active) {
       this.missionList.node.active = true;
@@ -48,8 +41,8 @@ export class MenuManager extends Component {
     if(this.missionList.node.active){
       this.missionList.node.active = false;
     }
-    if (!this.rankingList.node.active) {
-      this.rankingList.node.active = true;
+    if (!this.rankingPanel.active) {
+      this.rankingPanel.active = true;
       this.eventComp.emitOpenRankingsList()
     }
   }
