@@ -53,10 +53,13 @@
       },
       {
         "__id__": 34
+      },
+      {
+        "__id__": 36
       }
     ],
     "_prefab": {
-      "__id__": 36
+      "__id__": 38
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -604,14 +607,8 @@
     "__prefab": {
       "__id__": 27
     },
-    "startingHealth": 20,
+    "startingHealth": 3,
     "bodyDame": 1,
-    "rayOrigin": {
-      "__id__": 2
-    },
-    "rayOrigin2": {
-      "__id__": 6
-    },
     "timingGod": 5,
     "nitroToGod": 4,
     "speedUpEffect": {
@@ -633,7 +630,6 @@
       "__uuid__": "b57e162f-3cfc-4c04-8d06-b9d9bbd96efb",
       "__expectedType__": "cc.AudioClip"
     },
-    "jumpForce": 8,
     "_id": ""
   },
   {
@@ -781,6 +777,33 @@
     "fileId": "aeYu9RmRdOkJ71wMsPzjK4"
   },
   {
+    "__type__": "1f5a9DqLKRJKZ0gC0JX2s6M",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 37
+    },
+    "rayOrigin": {
+      "__id__": 2
+    },
+    "rayOrigin2": {
+      "__id__": 6
+    },
+    "gravity": -150,
+    "jumpForce": 70,
+    "speedJump": 8,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "7f8GqlEptDb5/39BsSYWLg"
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -789,7 +812,6 @@
       "__id__": 0
     },
     "fileId": "1bU4Em+6hDtayV9UH8JgYQ",
-    "instance": null,
     "targetOverrides": []
   }
 ]
