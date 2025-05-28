@@ -5,6 +5,7 @@ import {
   AudioSource,
   Node,
   AudioClip,
+  Slider,
 } from "cc";
 const { ccclass } = _decorator;
 
@@ -54,6 +55,22 @@ export class AudioManager extends Component {
     if (this.sfxSource) {
       this.sfxSource.playOneShot(clip);
     }
+  }
+
+  setBgmVolume(volume: number) {
+    this.bgmSource.volume = volume;
+  }
+
+  setSfxVolume(volume: number) {
+    this.sfxSource.volume = volume;
+  }
+
+  getBgmVolume() {
+    return this.bgmSource.volume;
+  }
+
+  getSfxVolume() {
+    return this.sfxSource.volume;
   }
 
   stopBGM() {

@@ -27,6 +27,7 @@ export class EventManager extends Component {
 
   emitOpenSetting() {
     AudioManager.instance.playSFX(this.clickSound);
+    this.node.emit(EventEnum.EVENT_SETTING_SHOP);
   }
 
   emitOpenPvP() {

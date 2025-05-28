@@ -285,15 +285,18 @@ export class GameManager extends Component {
     const index = missionList.findIndex((item) => item.key === this.key);
 
     if (this.totalScore < this.winScore) {
-      buttonNext.node.getChildByName("Label").getComponent(Label).string = "Replay";
+      buttonNext.node.getChildByName("Label").getComponent(Label).string =
+        "Replay";
     }
 
     if (index == missionList.length - 1) {
-      buttonNext.node.getChildByName("Label").getComponent(Label).string = "Replay";
+      buttonNext.node.getChildByName("Label").getComponent(Label).string =
+        "Replay";
     }
 
     if (this.idlPlayer) {
-      buttonNext.node.getChildByName("Label").getComponent(Label).string = "Replay";
+      buttonNext.node.getChildByName("Label").getComponent(Label).string =
+        "Replay";
     }
 
     result
@@ -307,7 +310,7 @@ export class GameManager extends Component {
     buttonHome.node.on(Button.EventType.CLICK, this.onClickHome, this);
   }
 
-  private onClickHome():void {
+  private onClickHome(): void {
     if (this.totalScore >= this.winScore && !this.idlPlayer) {
       this.saveLocalData();
     }
@@ -316,7 +319,7 @@ export class GameManager extends Component {
     director.loadScene(SceneEnum.LOADING);
   }
 
-  private onClickNext():void {
+  private onClickNext(): void {
     director.resume();
     const missionList = DataManager.instance.getMissionList();
     const index = missionList.findIndex((item) => item.key === this.key);

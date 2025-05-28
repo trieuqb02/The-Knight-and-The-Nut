@@ -27,6 +27,9 @@ export class MenuManager extends Component {
   shopPanel: Node = null;
 
   @property(Node)
+  settingPanel: Node = null;
+
+  @property(Node)
   eventManager: Node = null;
 
   @property(Label)
@@ -54,6 +57,10 @@ export class MenuManager extends Component {
     if (this.shopPanel.active && s != "shop") {
       this.shopPanel.active = false;
     }
+
+    if (this.settingPanel.active && s != "setting") {
+      this.settingPanel.active = false;
+    }
   }
 
   clickOpenMissionList() {
@@ -77,6 +84,13 @@ export class MenuManager extends Component {
     if (!this.shopPanel.active) {
       this.shopPanel.active = true;
       this.eventComp.emitOpenShop();
+    }
+  }
+
+  clickOpenSetting() {
+    this.closePanel("setting");
+    if (!this.settingPanel.active) {
+      this.settingPanel.active = true;
     }
   }
 }
