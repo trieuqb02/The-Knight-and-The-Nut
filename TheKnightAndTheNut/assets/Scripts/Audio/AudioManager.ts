@@ -20,7 +20,6 @@ export class AudioManager extends Component {
       this.destroy();
       return;
     }
-    console.log("AudioManager loaded");
     this.node.parent = null;
     AudioManager._instance = this;
     director.addPersistRootNode(this.node);
@@ -32,7 +31,7 @@ export class AudioManager extends Component {
       this.bgmSource = bgmNode.getComponent(AudioSource)!;
       this.sfxSource = sfxNode.getComponent(AudioSource)!;
     } else {
-      console.error("Không tìm thấy node BGM hoặc SFX!");
+      console.error("Not Found node BGM or SFX!");
     }
   }
 

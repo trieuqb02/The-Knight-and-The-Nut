@@ -34,9 +34,6 @@ export class RailwayManager extends Component {
   @property(Number)
   private segmentCount: number = 10;
 
-  @property(Number)
-  private timeAppearObstacle: number = 3;
-
   private defaultSpeed: number = 0;
 
   private compPoll = null;
@@ -50,8 +47,6 @@ export class RailwayManager extends Component {
   private isRunning: boolean = false;
 
   private key: string = "";
-
-  private countTime: number = 0;
 
   private RailwayPrefabValues: string[] = [];
 

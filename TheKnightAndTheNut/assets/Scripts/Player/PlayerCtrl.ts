@@ -2,11 +2,11 @@ import { _decorator, Animation,
     Node, Collider2D, IPhysics2DContact,
     UITransform, Prefab, instantiate, AudioClip, find, } from 'cc';
 import { GameManager } from '../GameManager';
-import { AudioManager } from '../AudioManager';
 import { Entity } from './Entity';
 import { RailwayManager } from '../Railway/RailwayManager';
 import { ColliderGroup } from '../ColliderGroup';
 import { PowerUp } from '../Power Ups/PowerUp';
+import { AudioManager } from '../Audio/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('PlayerCtrl')

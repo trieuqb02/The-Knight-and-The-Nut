@@ -1,7 +1,8 @@
 import { _decorator, Color, Component, ERaycast2DType, EventKeyboard, find, Graphics, Input, input, KeyCode, Node, PhysicsSystem2D, UITransform, Vec3 } from 'cc';
 import { PlayerCtrl } from './PlayerCtrl';
 import { ColliderGroup } from '../ColliderGroup';
-import { AudioManager } from '../AudioManager';
+import { AudioManager } from '../Audio/AudioManager';
+
 const { ccclass, property } = _decorator;
 
 @ccclass('PlayerMovement')

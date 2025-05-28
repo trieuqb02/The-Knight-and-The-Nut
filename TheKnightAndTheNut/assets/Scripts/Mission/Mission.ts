@@ -1,14 +1,9 @@
-import { _decorator, AudioClip, Component, director, Sprite, SpriteFrame } from "cc";
-const { ccclass , property} = _decorator;
+import { _decorator, Component, director, Sprite, SpriteFrame } from "cc";
 import { DataManager } from "../DataManager";
 import { SceneTransitionManager } from "../SceneTransitionManager";
-import { AudioManager } from "../AudioManager";
+import { SceneEnum } from "../Enum/SceneEnum";
 
-export enum KeyMission {
-  MISSION_1 = "mission1",
-  MISSION_2 = "mission2",
-  MISSION_3 = "mission3",
-}
+const { ccclass , property} = _decorator;
 
 @ccclass("Mission")
 export class Mission extends Component {
@@ -20,7 +15,7 @@ export class Mission extends Component {
   time: number = 0;
 
   init(
-    data: { key: string; islocked: boolean; score: number,image: SpriteFrame, time: number },
+    data: { key: string; islocked: boolean; score: number,image?: SpriteFrame, time: number },
   ) {
     this.key = data.key;
     this.islocked = data.islocked;
@@ -52,7 +47,7 @@ export class Mission extends Component {
       score: this.score,
       time: this.time
     });
-    SceneTransitionManager.setNextScene("MainScene");
-    director.loadScene("LoadingScene");
+    SceneTransitionManager.setNextScene(SceneEnum.MAIN);
+    director.loadScene(SceneEnum.LOADING);
   }
 }

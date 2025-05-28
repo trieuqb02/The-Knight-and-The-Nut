@@ -1,12 +1,7 @@
-import { _decorator, AudioClip, Component, Node } from "cc";
-import { AudioManager } from "./AudioManager";
+import { _decorator, AudioClip, Component } from "cc";
+import { AudioManager } from "../Audio/AudioManager";
+import { EventEnum } from "../Enum/EventEnum";
 const { ccclass, property } = _decorator;
-
-export enum EventEnum {
-  EVENT_OPEN_MISSION_LIST = "EVENT_OPEN_MISSION_LIST",
-  EVENT_OPEN_RANKING = "EVENT_OPEN_RANKING",
-  EVENT_OPEN_SHOP = "EVENT_OPEN_SHOP",
-}
 
 @ccclass("EventManager")
 export class EventManager extends Component {

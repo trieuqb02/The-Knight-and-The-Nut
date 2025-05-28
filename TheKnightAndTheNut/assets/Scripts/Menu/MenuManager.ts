@@ -3,13 +3,13 @@ import {
   AudioClip,
   Button,
   Component,
+  Label,
   Node,
   PageView,
-  ScrollView,
 } from "cc";
-import { EventManager } from "../EventManager";
-import { AudioManager } from "../AudioManager";
 import { DataManager } from "../DataManager";
+import { EventManager } from "../Event/EventManager";
+import { AudioManager } from "../Audio/AudioManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("MenuManager")
@@ -29,12 +29,17 @@ export class MenuManager extends Component {
   @property(Node)
   eventManager: Node = null;
 
+  @property(Label)
+  goldLabel: Label = null;
+
   private eventComp = null;
 
   protected onLoad(): void {
     AudioManager.instance.stopBGM();
     AudioManager.instance.playBGM(this.audioBGClip);
     this.eventComp = this.eventManager.getComponent(EventManager);
+    const user = DataManager.instance.getUser();
+    this.goldLabel.string = user.gold.toString();
   }
 
   private closePanel(s: string) {
