@@ -1,6 +1,7 @@
 import { _decorator, Animation, 
     Node, Collider2D, IPhysics2DContact,
-    UITransform, Prefab, instantiate, AudioClip, find, } from 'cc';
+    UITransform, instantiate, AudioClip, find,
+    director, } from 'cc';
 import { GameManager } from '../GameManager';
 import { AudioManager } from '../AudioManager';
 import { Entity } from './Entity';
@@ -20,12 +21,13 @@ export class PlayerCtrl extends Entity {
     private gameManager;
 
     // Player state
-    isGodState: boolean = false;
+    private isGodState: boolean = false;
     @property
     timingGod: number = 5;
     @property
     nitroToGod: number = 5;
     private curNitroNumber: number = 0;
+    private isShield = false;
 
     // Check climb
     private _isClimb: boolean = false;
@@ -40,8 +42,6 @@ export class PlayerCtrl extends Entity {
     // Effect
     @property({type: Node,})
     speedUpEffect: Node; 
-    @property({type: Prefab,})
-    reverseEffect: Prefab; 
 
     // Audio
     @property(AudioClip)
@@ -66,10 +66,19 @@ export class PlayerCtrl extends Entity {
 
         // deactive effect
         this.speedUpEffect.active = false;
+
+        // sub event
+        director.on('SHIELD_ON', this.onShieldOn, this);
+        director.on('SHIELD_OFF', this.onShieldOff, this);
+        
     }
 
     start() {
         this.gameManager.displayHealth(this.curHealth)
+
+        this.scheduleOnce(()=>{
+            this.onGod();
+        }, 2);
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
@@ -83,6 +92,17 @@ export class PlayerCtrl extends Entity {
                 powerUp.active(this.node); 
             }
         }
+    }
+
+    onShieldOn(nodeData){
+        console.log("Shield on");
+        this.isShield = true;
+        // effect shield
+    }
+
+    onShieldOff(){
+        console.log("Shield off");
+        this.isShield = false;
     }
 
     onGod(){
@@ -102,8 +122,8 @@ export class PlayerCtrl extends Entity {
         }, this.timingGod);
     }
 
-    createEffect(){
-        let exp = instantiate(this.reverseEffect);
+    createEffect(effect){
+        let exp = instantiate(effect);
 
         exp.parent = this.node.parent;
 
@@ -161,8 +181,9 @@ export class PlayerCtrl extends Entity {
     }
 
     takeDame(dame){
-        console.log("call take dame on player");
-        if(this.isGodState) return;
+        if(this.isGodState || this.isShield) return;
+        console.log("shield state: " + this.isShield);
+        console.log("Player receive dame");
         super.takeDame(dame);
         this.gameManager.displayHealth(this.curHealth);
     }

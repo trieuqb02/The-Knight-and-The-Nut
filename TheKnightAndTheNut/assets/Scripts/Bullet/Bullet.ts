@@ -1,9 +1,8 @@
-import { _decorator, Collider2D, Component, Contact2DType, instantiate, IPhysics2DContact, Node, Prefab, RigidBody, RigidBody2D, UITransform, Vec2 } from 'cc';
+import { _decorator, Collider2D, Component, Contact2DType, 
+    instantiate, IPhysics2DContact, Prefab, RigidBody2D, UITransform, Vec2 } from 'cc';
 import { EnemyCtrl } from '../Enemy/EnemyCtrl';
 import { PlayerCtrl } from '../Player/PlayerCtrl';
 import { BossCtrl } from '../Enemy/BossCtrl';
-import { Entity } from '../Player/Entity';
-import { IDamageable } from '../Player/IDamageable';
 const { ccclass, property } = _decorator;
 
 @ccclass('Bullet')
@@ -74,6 +73,7 @@ export class Bullet extends Component {
             const player = otherCollider.node.getComponent(PlayerCtrl);
             if (player) {
                 player.takeDame(this.dame);
+                selfCollider.enabled = false;
                 this.scheduleOnce(() => {
                     this.node.destroy();
                 }, 0);

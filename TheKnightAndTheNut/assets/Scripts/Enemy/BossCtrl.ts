@@ -8,6 +8,8 @@ const { ccclass, property } = _decorator;
 export class BossCtrl extends Entity {
     @property(Prefab)
     private bulletPrefab: Prefab;
+    @property(Prefab)
+    private skillPrefab: Prefab;
     @property(Node)
     private fireOrigin: Node;
     @property(Node)
@@ -31,6 +33,8 @@ export class BossCtrl extends Entity {
     protected onLoad(): void {
         super.onLoad();
         this.graphics = this.rayDrawerNode.getComponent(Graphics);
+
+        input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }
 
     update(deltaTime: number) {
@@ -42,8 +46,56 @@ export class BossCtrl extends Entity {
         }
     }
 
+    onKeyDown(event: EventKeyboard){
+        if (event.keyCode == KeyCode.KEY_K) {
+            this.skill();
+        }
+    }
+
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         // implement
+    }
+
+    attack(){
+        if (this.isHurting) return;
+        const randomValue = Math.random(); 
+        if (randomValue < 0.3) {
+            this.skill(); 
+        } else {
+            this.fire();
+        }
+    }
+
+    skill(){
+        this.anim.play("bossAttack2");
+
+        // play run anim after hurt anim
+        this.anim.once(Animation.EventType.FINISHED, () => {
+            this.isHurting = false;
+            this.anim.play("idle");
+        });
+    }
+
+    instanceSkill(){
+        const skillCount = 5;
+        const skillSpacing = 200; 
+        const delay = 0.2; 
+        const y = PlayerCtrl.Instance.node.worldPosition.y;
+
+        for (let i = 0; i < skillCount; i++) {
+            this.scheduleOnce(() => {
+                const fire = instantiate(this.skillPrefab);
+                this.bulletParent.addChild(fire);
+                fire.setWorldPosition(new Vec3(
+                    this.fireOrigin.worldPosition.x - i * skillSpacing,
+                    y,
+                    0
+                ));
+                this.scheduleOnce(()=>{
+                    fire.destroy();
+                }, 1); // destroy after 1s
+            }, i * delay);
+        }
     }
 
     hurt(){
@@ -116,7 +168,7 @@ export class BossCtrl extends Entity {
             const hit = hits[0];
             if (hit.collider.node === PlayerCtrl.Instance.getPlayerNode()) {
                 this.scanTimer = 0;
-                this.fire();
+                this.attack();
                 //this.drawPoint(hit.point);
             }
         }

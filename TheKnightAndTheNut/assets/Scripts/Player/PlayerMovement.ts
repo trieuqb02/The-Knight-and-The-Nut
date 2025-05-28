@@ -1,4 +1,5 @@
-import { _decorator, Color, Component, ERaycast2DType, EventKeyboard, find, Graphics, Input, input, KeyCode, Node, PhysicsSystem2D, UITransform, Vec3 } from 'cc';
+import { _decorator, Color, Component, ERaycast2DType, EventKeyboard, find, Graphics, Input, input, KeyCode, Node, 
+    PhysicsSystem2D, Prefab, UITransform, Vec3, Animation } from 'cc';
 import { PlayerCtrl } from './PlayerCtrl';
 import { ColliderGroup } from '../ColliderGroup';
 import { AudioManager } from '../AudioManager';
@@ -34,6 +35,10 @@ export class PlayerMovement extends Component {
     private isHoldingSpace: boolean = false;
     private spacePressTimer;
 
+    // effect
+    @property({type: Prefab,})
+    reverseEffect: Prefab; 
+
     protected onLoad(): void {
         this.graphicNode = find('Canvas/GraphicNode');
         if (this.graphicNode) 
@@ -60,7 +65,7 @@ export class PlayerMovement extends Component {
         AudioManager.instance.playSFX(PlayerCtrl.Instance.reverseSound);
         this.isReverse = !this.isReverse;
         this._dirY *= -1;
-        PlayerCtrl.Instance.createEffect();
+        PlayerCtrl.Instance.createEffect(this.reverseEffect);
         if(this.isReverse){
             this.node.angle = 180;
         }
@@ -72,6 +77,10 @@ export class PlayerMovement extends Component {
     }
 
     jump() {
+        PlayerCtrl.Instance.anim.play("jump");
+        PlayerCtrl.Instance.anim.once(Animation.EventType.FINISHED, () => {
+            PlayerCtrl.Instance.anim.play("run");
+        });
         this._velocityY = this.jumpForce * this._dirY;
         PlayerCtrl.Instance.isGrounded = false;
     }
