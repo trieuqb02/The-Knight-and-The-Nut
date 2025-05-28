@@ -154,7 +154,7 @@ export class PlayerMovement extends Component {
 
         // draw ray
         //this.drawRay(originWorld, endPoint);
-        this.drawRay(originWorld2, endPoint2);
+        //this.drawRay(originWorld2, endPoint2);
 
         // hit up
         if (hits.length > 0) {
@@ -169,7 +169,7 @@ export class PlayerMovement extends Component {
             const hit = hits2[0];
             const hitPoint = hit.point; // collide point
             this.node.worldPosition = new Vec3(this.node.worldPosition.x, hitPoint.y, this.node.worldPosition.z);
-            this.drawPoint(hitPoint);
+            //this.drawPoint(hitPoint);
             return;
         }
     }

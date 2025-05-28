@@ -1,7 +1,8 @@
 import { _decorator, Animation, 
     Node, Collider2D, IPhysics2DContact,
     UITransform, instantiate, AudioClip, find,
-    director, } from 'cc';
+    director,
+    debug, } from 'cc';
 import { GameManager } from '../GameManager';
 import { AudioManager } from '../AudioManager';
 import { Entity } from './Entity';
@@ -42,6 +43,8 @@ export class PlayerCtrl extends Entity {
     // Effect
     @property({type: Node,})
     speedUpEffect: Node; 
+    @property({type: Node,})
+    shieldEffect: Node; 
 
     // Audio
     @property(AudioClip)
@@ -66,6 +69,7 @@ export class PlayerCtrl extends Entity {
 
         // deactive effect
         this.speedUpEffect.active = false;
+        this.shieldEffect.active = false;
 
         // sub event
         director.on('SHIELD_ON', this.onShieldOn, this);
@@ -76,9 +80,9 @@ export class PlayerCtrl extends Entity {
     start() {
         this.gameManager.displayHealth(this.curHealth)
 
-        this.scheduleOnce(()=>{
-            this.onGod();
-        }, 2);
+        // this.scheduleOnce(()=>{
+        //     this.onGod();
+        // }, 2);
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
@@ -95,14 +99,14 @@ export class PlayerCtrl extends Entity {
     }
 
     onShieldOn(nodeData){
-        console.log("Shield on");
         this.isShield = true;
         // effect shield
+        this.shieldEffect.active = true;
     }
 
     onShieldOff(){
-        console.log("Shield off");
         this.isShield = false;
+        this.shieldEffect.active = false;
     }
 
     onGod(){
@@ -182,8 +186,6 @@ export class PlayerCtrl extends Entity {
 
     takeDame(dame){
         if(this.isGodState || this.isShield) return;
-        console.log("shield state: " + this.isShield);
-        console.log("Player receive dame");
         super.takeDame(dame);
         this.gameManager.displayHealth(this.curHealth);
     }
@@ -195,6 +197,9 @@ export class PlayerCtrl extends Entity {
     onDestroy() {
         if (PlayerCtrl.Instance === this) 
             PlayerCtrl.Instance = null;
+
+        director.off('SHIELD_ON', this.onShieldOn, this);
+        director.off('SHIELD_OFF', this.onShieldOff, this);
     }
 }
 
