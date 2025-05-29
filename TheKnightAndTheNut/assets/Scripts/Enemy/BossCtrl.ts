@@ -1,7 +1,8 @@
-import { _decorator, Component, instantiate, Node, Prefab, UITransform, Animation, input, Input, KeyCode, EventKeyboard, Vec3, PhysicsSystem2D, ERaycast2DType, Graphics, Color, Vec2, PhysicsGroup, Contact2DType, IPhysics2DContact, Collider2D } from 'cc';
+import { _decorator, Component, instantiate, Node, Prefab, UITransform, Animation, input, Input, KeyCode, EventKeyboard, Vec3, PhysicsSystem2D, ERaycast2DType, Graphics, Color, Vec2, PhysicsGroup, Contact2DType, IPhysics2DContact, Collider2D, AudioClip } from 'cc';
 import { PlayerCtrl } from '../Player/PlayerCtrl';
 import { Entity } from '../Player/Entity';
 import { ColliderGroup } from '../ColliderGroup';
+import { AudioManager } from '../Audio/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('BossCtrl')
@@ -29,6 +30,16 @@ export class BossCtrl extends Entity {
     private scanTimer: number = 0;
 
     private isHurting: boolean = false;
+
+    // Audio
+    @property(AudioClip)
+    fireSound: AudioClip = null;
+    @property(AudioClip)
+    hurtSound: AudioClip = null;
+    @property(AudioClip)
+    skillSound: AudioClip = null;
+    @property(AudioClip)
+    previousSkillSound: AudioClip = null;
     
     protected onLoad(): void {
         super.onLoad();
@@ -52,9 +63,9 @@ export class BossCtrl extends Entity {
         }
     }
 
-    onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        // implement
-    }
+    // onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+    //     // implement
+    // }
 
     attack(){
         if (this.isHurting) return;
@@ -67,6 +78,7 @@ export class BossCtrl extends Entity {
     }
 
     skill(){
+        AudioManager.instance.playSFX(this.previousSkillSound);
         this.anim.play("bossAttack2");
 
         // play run anim after hurt anim
@@ -77,6 +89,7 @@ export class BossCtrl extends Entity {
     }
 
     instanceSkill(){
+        AudioManager.instance.playSFX(this.skillSound);
         const skillCount = 5;
         const skillSpacing = 200; 
         const delay = 0.2; 
@@ -99,6 +112,7 @@ export class BossCtrl extends Entity {
     }
 
     hurt(){
+        AudioManager.instance.playSFX(this.hurtSound);
         this.isHurting = true;
         this.anim.play("hurt");
 
@@ -211,6 +225,7 @@ export class BossCtrl extends Entity {
     }   
 
     instanceBullet(){
+        AudioManager.instance.playSFX(this.fireSound);
         let bullet = instantiate(this.bulletPrefab);
         bullet.parent = this.bulletParent;
 

@@ -257,7 +257,7 @@
     "_priority": 0,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 391.5728715728716,
+    "_orthoHeight": 360,
     "_near": 0,
     "_far": 2000,
     "_color": {
@@ -613,7 +613,7 @@
     "_string": "Play",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 25.987499999999997,
+    "_actualFontSize": 24,
     "_fontSize": 24,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1257,7 +1257,7 @@
     "_string": "Shop",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 25.987499999999997,
+    "_actualFontSize": 24,
     "_fontSize": 24,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1586,7 +1586,7 @@
     "_string": "Leaderboard",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 25.987499999999997,
+    "_actualFontSize": 24,
     "_fontSize": 24,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1903,7 +1903,7 @@
     "_string": "Setting",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 25.987499999999997,
+    "_actualFontSize": 24,
     "_fontSize": 24,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -2699,7 +2699,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 114.17088011814575,
+      "width": 114.18997192382812,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -2732,7 +2732,7 @@
     "_string": "Levels",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 41.146875,
+    "_actualFontSize": 38,
     "_fontSize": 38,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -2983,7 +2983,7 @@
         "__id__": 110
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 116
@@ -3549,7 +3549,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 45.166917500901874,
+      "width": 45.179962158203125,
       "height": 30.240000000000002
     }
   },
@@ -3569,7 +3569,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 50.18547641594517,
+      "width": 50.19996643066406,
       "height": 30.240000000000002
     }
   },
@@ -3589,7 +3589,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 52.584776334776336,
+      "width": 52.5999755859375,
       "height": 30.240000000000002
     }
   },
@@ -3609,7 +3609,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 49.86556412337663,
+      "width": 49.87995910644531,
       "height": 30.240000000000002
     }
   },
@@ -3731,7 +3731,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 229.6715339781746,
+      "width": 110.31394958496094,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -3761,10 +3761,10 @@
       "b": 224,
       "a": 255
     },
-    "_string": "Leaderboard",
+    "_string": "RANK",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 41.146875,
+    "_actualFontSize": 38,
     "_fontSize": 38,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -4454,7 +4454,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 86.01759785353536,
+      "width": 86.03196716308594,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -4487,7 +4487,7 @@
     "_string": "Shop",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 41.146875,
+    "_actualFontSize": 38,
     "_fontSize": 38,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -5264,7 +5264,7 @@
     "_string": "0",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 41.146875,
+    "_actualFontSize": 38,
     "_fontSize": 38,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -5552,7 +5552,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 20.668543695887447,
+      "width": 20.6719970703125,
       "height": 50.4
     },
     "_anchorPoint": {

@@ -1,4 +1,4 @@
-import { _decorator, Component, director, Sprite, SpriteFrame } from "cc";
+import { _decorator, Component, director, Sprite, SpriteFrame, Node } from "cc";
 import { DataManager } from "../DataManager";
 import { SceneTransitionManager } from "../SceneTransitionManager";
 import { SceneEnum } from "../Enum/SceneEnum";
@@ -14,6 +14,9 @@ export class Mission extends Component {
   image: SpriteFrame = null;
   time: number = 0;
 
+  protected onLoad(): void {
+    this.node.on(Node.EventType.TOUCH_END, this.onClick, this);
+  }
   init(
     data: { key: string; islocked: boolean; score: number,image?: SpriteFrame, time: number },
   ) {
@@ -26,17 +29,20 @@ export class Mission extends Component {
     const image = this.node.getChildByName("image");
     const overlay = this.node.getChildByName("overlay");
     const lock = this.node.getChildByName("lock");
-    const playBtn = this.node.getChildByName("playBtn");
+    //const playBtn = this.node.getChildByName("playBtn");
 
     image.getComponent(Sprite).spriteFrame = this.image;
 
-    if (!this.islocked) {
-      playBtn.active = true;
-    } else {
+    if (this.islocked) {
       lock.active = true;
       overlay.active = true;
     }
   }
+
+  onClick(){
+    this.playMission();
+  }
+
 
   playMission() {
     if (this.islocked) return;

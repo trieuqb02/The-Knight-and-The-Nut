@@ -78,6 +78,8 @@ export class PlayerMovement extends Component {
     }
 
     jump() {
+        PlayerCtrl.Instance.createEffect(this.reverseEffect);
+        AudioManager.instance.playSFX(PlayerCtrl.Instance.jumpSound);
         PlayerCtrl.Instance.anim.play("jump");
         PlayerCtrl.Instance.anim.once(Animation.EventType.FINISHED, () => {
             PlayerCtrl.Instance.anim.play("run");
@@ -197,6 +199,11 @@ export class PlayerMovement extends Component {
         this.graphics.lineTo(localEnd.x, localEnd.y);
         this.graphics.strokeColor = Color.RED;
         this.graphics.stroke();
+    }
+
+    onDestroy() {
+        input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
+        input.off(Input.EventType.KEY_UP, this.onKeyUp, this);
     }
 }
 
