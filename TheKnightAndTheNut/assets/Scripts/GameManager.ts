@@ -28,11 +28,10 @@ const { ccclass, property } = _decorator;
 @ccclass("LevelBackground")
 class LevelBackground {
   @property()
-  key: string = '';
+  key: string = "";
 
   @property(Prefab)
   backgroundPrefab: Prefab = null;
-
 }
 
 @ccclass("GameManager")
@@ -92,13 +91,13 @@ export class GameManager extends Component {
   private tutorialNode: Node = null;
 
   @property(Node)
-  private spawnFlyEnemyNode:Node = null;
+  private spawnFlyEnemyNode: Node = null;
 
   @property(AudioClip)
   private audioBGClip: AudioClip = null;
 
   @property([LevelBackground])
-  private levelBakcgroundArr: LevelBackground[] = []
+  private levelBakcgroundArr: LevelBackground[] = [];
 
   private powerComp = null;
 
@@ -140,7 +139,6 @@ export class GameManager extends Component {
     this.railwayComp.startRailway(this.key);
     this.isPlay = true;
 
-    
     if (this.key == KeyMission.MISSION_1) {
       this.tutorialNode.active = true;
     }
@@ -157,13 +155,13 @@ export class GameManager extends Component {
       this.timerProgress.progress = progress;
 
       const sprite = this.timerProgress.barSprite;
-            if (sprite) {
-                if (progress <= 0.3) {
-                    sprite.color = new Color(255, 0, 0);
-                } else if (progress <= 0.6) {
-                    sprite.color = new Color(255, 255, 0);
-                }
-            }
+      if (sprite) {
+        if (progress <= 0.3) {
+          sprite.color = new Color(255, 0, 0);
+        } else if (progress <= 0.6) {
+          sprite.color = new Color(255, 255, 0);
+        }
+      }
 
       if (this.key == KeyMission.MISSION_3 && !this.isBoss) {
         if (this.totalScore >= 200) {
@@ -280,15 +278,12 @@ export class GameManager extends Component {
     this.scoreLB.string = `${this.totalScore}/${this.winScore}`;
     this.key = data.key;
 
-    const levelBackground = this.levelBakcgroundArr.find(element => {
+    const levelBackground = this.levelBakcgroundArr.find((element) => {
       return element.key == this.key;
-    })
-    console.log(this.levelBakcgroundArr)
-    console.log(levelBackground)
-    console.log(this.key)
+    });
     const backgroundNode = instantiate(levelBackground.backgroundPrefab);
-    backgroundNode.setPosition(0,0);
-    this.background.addChild(backgroundNode)
+    backgroundNode.setPosition(0, 0);
+    this.background.addChild(backgroundNode);
   }
 
   public updateScore(score: number): void {
@@ -302,7 +297,7 @@ export class GameManager extends Component {
 
   protected onTimeUp(): void {
     director.pause();
-
+    DataManager.instance.clearSkills();
     const user = DataManager.instance.getUser();
     user.gold += this.totalGlod;
     DataManager.instance.setUser(user);

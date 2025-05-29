@@ -8,7 +8,7 @@ export class DataManager {
 
   private user: User = null;
 
-  private skills: string[] = []
+  private skills: string[] = [];
 
   static get instance() {
     if (!this._instance) {
@@ -17,19 +17,19 @@ export class DataManager {
     return this._instance;
   }
 
-  setMissionList(data: any){
+  setMissionList(data: any) {
     this.missionList = data;
   }
 
-  getMissionList(){
+  getMissionList() {
     return this.missionList;
   }
 
-  setUser(user: User){
+  setUser(user: User) {
     this.user = user;
   }
 
-  getUser(){
+  getUser() {
     return this.user;
   }
 
@@ -41,12 +41,16 @@ export class DataManager {
     return this._data;
   }
 
-  getSkills(){
+  getSkills() {
     return this.skills;
   }
 
-  setSkill(skill: string){
+  setSkill(skill: string) {
     this.skills.push(skill);
+  }
+
+  clearSkills() {
+    this.skills = [];
   }
 
   clear() {

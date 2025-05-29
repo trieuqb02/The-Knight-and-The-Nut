@@ -27,7 +27,6 @@ export class AuthManager extends Component {
     const name = this.nameEdit.string;
     if (!name) return;
 
-    console.log(1)
     this.overlayNode.active = true;
     const aim = this.overlayNode.getChildByName("Loading").getComponent(Animation);
     aim.play()

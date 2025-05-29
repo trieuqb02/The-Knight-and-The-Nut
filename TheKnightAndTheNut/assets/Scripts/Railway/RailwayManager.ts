@@ -86,12 +86,12 @@ export class RailwayManager extends Component {
   private initRailways(): void {
     let lastEndPoint: Vec3 | null = null;
 
-    const startX = -this.gamePlaytWidth / 2;
+    const startX = -this.gamePlaytWidth;
 
     for (let i = 0; i < this.segmentCount; i++) {
       const railway = this.compPoll.getPrefabNode();
 
-      this.gamePlayNode.addChild(railway);
+      this.node.addChild(railway);
 
       if (lastEndPoint == null) {
         railway.setPosition(startX, 0);
@@ -126,9 +126,9 @@ export class RailwayManager extends Component {
   }
 
   private checkSpawnNext(): void {
-    const piece = this.railways[0];
+    const railway = this.railways[0];
     if (!this.hasSpawnedNext) return;
-    const worldX = piece.getPosition().x;
+    const worldX = railway.getPosition().x;
     if (worldX <= -(this.gamePlaytWidth / 2)) {
       this.spawnRailway();
       this.hasSpawnedNext = false;
@@ -160,7 +160,7 @@ export class RailwayManager extends Component {
 
     const po_up = railway.getComponentInChildren(PowerUp) ?? null;
 
-    if(po_up){
+    if (po_up) {
       po_up.node.destroy();
     }
 
@@ -172,7 +172,6 @@ export class RailwayManager extends Component {
       enemy.node.destroy();
     }
 
-
     let railwayType = this.RailwayPrefabValues.shift();
 
     if (railwayType && railwayType.length >= 4) {
@@ -180,12 +179,15 @@ export class RailwayManager extends Component {
       const position = railwayType[1] + railwayType[2];
 
       const skills = DataManager.instance.getSkills();
-      const checkSkill = skills.find(skill => {
+      const checkSkill = skills.find((skill) => {
         return skill === railwayType[0];
-      }) 
-      if(checkSkill){
+      });
+      if (checkSkill) {
         this.placeObstacle(railway, type, position);
-      } else if(railwayType[0] != RuleEnum.MAGNET_PW && railwayType[0] != RuleEnum.SHIEL_PW) {
+      } else if (
+        railwayType[0] != RuleEnum.MAGNET_PW &&
+        railwayType[0] != RuleEnum.SHIEL_PW
+      ) {
         this.placeObstacle(railway, type, position);
       }
       railwayType = railwayType[3];
@@ -199,7 +201,7 @@ export class RailwayManager extends Component {
       railway.angle = 0;
     }
 
-    this.gamePlayNode.addChild(railway);
+    this.node.addChild(railway);
 
     const lastEndPoint = this.railways[this.railways.length - 1]
       .getChildByName("EndPoint")
@@ -270,7 +272,7 @@ export class RailwayManager extends Component {
         scaleZEnemy / parentScale.z
       );
       obstacle.setPosition(0, yEnemy);
-    } else if (type == RuleEnum.SHIEL_PW){
+    } else if (type == RuleEnum.SHIEL_PW) {
       obstacle = instantiate(this.shielPrefab);
       let yMagnet = 7;
       switch (position) {
@@ -292,7 +294,7 @@ export class RailwayManager extends Component {
         }
       }
       obstacle.setPosition(0, yMagnet);
-    } else if (type == RuleEnum.MAGNET_PW){
+    } else if (type == RuleEnum.MAGNET_PW) {
       obstacle = instantiate(this.magnetPrefeb);
       let yShile = 7;
       switch (position) {
