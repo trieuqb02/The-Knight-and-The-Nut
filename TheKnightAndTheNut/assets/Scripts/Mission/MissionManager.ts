@@ -13,6 +13,7 @@ import { Mission } from "./Mission";
 import { DataManager } from "../DataManager";
 import { EventEnum } from "../Enum/EventEnum";
 import { KeyLocalStore } from "../Enum/KeyLocalStore";
+import { ScaleUp } from "../ScaleUp/ScaleUp";
 const { ccclass, property } = _decorator;
 
 @ccclass("ImageMission")
@@ -25,7 +26,7 @@ class ImageMission {
 }
 
 @ccclass("MissionManager")
-export class MissionManager extends Component {
+export class MissionManager extends ScaleUp {
   @property(PageView)
   missionList: PageView = null;
 

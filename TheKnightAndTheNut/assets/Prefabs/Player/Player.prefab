@@ -369,7 +369,7 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 15
@@ -1058,6 +1058,9 @@
     "speedUpEffect": {
       "__id__": 20
     },
+    "shieldEffect": {
+      "__id__": 26
+    },
     "reverseSound": {
       "__uuid__": "5777ccad-d923-4bb1-9c95-2b5881f48c8a",
       "__expectedType__": "cc.AudioClip"
@@ -1260,7 +1263,6 @@
       "__id__": 0
     },
     "fileId": "1bU4Em+6hDtayV9UH8JgYQ",
-    "instance": null,
     "targetOverrides": []
   }
 ]

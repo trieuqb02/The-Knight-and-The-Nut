@@ -13,6 +13,7 @@ import {
   Animation,
   UITransform,
   AudioClip,
+  Color,
 } from "cc";
 import { DataManager } from "./DataManager";
 import { RailwayManager } from "./Railway/RailwayManager";
@@ -127,6 +128,15 @@ export class GameManager extends Component {
       const progress = this.timeLeft / this.totalTime;
       this.timerProgress.progress = progress;
 
+      const sprite = this.timerProgress.barSprite;
+            if (sprite) {
+                if (progress <= 0.3) {
+                    sprite.color = new Color(255, 0, 0);
+                } else if (progress <= 0.6) {
+                    sprite.color = new Color(255, 255, 0);
+                }
+            }
+
       if (this.key == KeyMission.MISSION_3 && !this.isBoss) {
         if (this.totalScore >= 200) {
           this.boss.active = true;
@@ -239,7 +249,7 @@ export class GameManager extends Component {
     this.winScore = data.score;
     this.timeLeft = this.totalTime;
     this.timerProgress.progress = this.totalTime;
-    this.scoreLB.string = `${this.totalScore}`;
+    this.scoreLB.string = `${this.totalScore}/${this.winScore}`;
     this.key = data.key;
 
     const backgroundComp = this.background.getComponent(Sprite);
@@ -248,7 +258,7 @@ export class GameManager extends Component {
 
   public updateScore(score: number): void {
     this.totalScore += score;
-    this.scoreLB.string = `${this.totalScore}`;
+    this.scoreLB.string = `${this.totalScore}/${this.winScore}`;
   }
 
   public receiveGold(gold: number): void {

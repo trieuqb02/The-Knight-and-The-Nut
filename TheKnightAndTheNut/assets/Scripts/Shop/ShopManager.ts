@@ -13,6 +13,7 @@ import {
 import { Item } from "./Item";
 import { MyEvent } from "./MyEvent";
 import { EventEnum } from "../Enum/EventEnum";
+import { ScaleUp } from "../ScaleUp/ScaleUp";
 const { ccclass, property } = _decorator;
 
 @ccclass("ImageShopItem")
@@ -25,7 +26,7 @@ class ImageItemShop {
 }
 
 @ccclass("ShopManager")
-export class ShopManager extends Component {
+export class ShopManager extends ScaleUp {
   @property([ImageItemShop])
   imageList: ImageItemShop[] = [];
 

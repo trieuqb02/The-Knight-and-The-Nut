@@ -15,6 +15,12 @@
         "key": "mission3",
         "islocked": true,
         "score": 1200,
-        "time": 30
+        "time": 60
+      },
+      {
+        "key": "mission4",
+        "islocked": true,
+        "score": 1500,
+        "time": 60
       }
 ]
