@@ -375,6 +375,10 @@
       "__uuid__": "bb717741-a5db-4ecd-ac21-e11cb2addd88",
       "__expectedType__": "cc.Prefab"
     },
+    "skillPrefab": {
+      "__uuid__": "14cf6cb3-17fc-481a-aae7-cbcbdb70f42c",
+      "__expectedType__": "cc.Prefab"
+    },
     "fireOrigin": {
       "__id__": 2
     },
@@ -383,6 +387,22 @@
       "__id__": 2
     },
     "rayDrawerNode": null,
+    "fireSound": {
+      "__uuid__": "0ec4fd8d-adaa-4b99-a637-f333e5d85b2c",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "hurtSound": {
+      "__uuid__": "63075d1d-75a8-4025-9a09-f9e48875ccce",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "skillSound": {
+      "__uuid__": "f6091a6c-bb43-456d-a60a-837916a55e7b",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "previousSkillSound": {
+      "__uuid__": "a38b8ac2-4592-4a3c-b958-1924e17221bb",
+      "__expectedType__": "cc.AudioClip"
+    },
     "_id": ""
   },
   {

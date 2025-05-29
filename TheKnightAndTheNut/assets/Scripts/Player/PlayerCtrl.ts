@@ -1,8 +1,7 @@
 import { _decorator, Animation, 
     Node, Collider2D, IPhysics2DContact,
     UITransform, instantiate, AudioClip, find,
-    director,
-    debug, } from 'cc';
+    director, } from 'cc';
 import { GameManager } from '../GameManager';
 import { Entity } from './Entity';
 import { RailwayManager } from '../Railway/RailwayManager';
@@ -53,6 +52,12 @@ export class PlayerCtrl extends Entity {
     coinSound: AudioClip = null;
     @property(AudioClip)
     fireSound: AudioClip = null;
+    @property(AudioClip)
+    jumpSound: AudioClip = null;
+    @property(AudioClip)
+    hurtSound: AudioClip = null;
+    @property(AudioClip)
+    pwUpsSound: AudioClip = null;
 
     onLoad(){
         super.onLoad();
@@ -79,10 +84,6 @@ export class PlayerCtrl extends Entity {
 
     start() {
         this.gameManager.displayHealth(this.curHealth)
-
-        // this.scheduleOnce(()=>{
-        //     this.onGod();
-        // }, 2);
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
@@ -93,6 +94,7 @@ export class PlayerCtrl extends Entity {
         if (otherCollider.group === ColliderGroup.POWER_UP) {
             const powerUp = otherCollider.getComponent(PowerUp);
             if (powerUp) {
+                AudioManager.instance.playSFX(this.pwUpsSound);
                 powerUp.active(this.node); 
             }
         }
@@ -136,6 +138,11 @@ export class PlayerCtrl extends Entity {
             .convertToNodeSpaceAR(this.node.worldPosition);
 
         exp.setPosition(localPos);
+    }
+
+    hurt(){
+        AudioManager.instance.playSFX(this.hurtSound);
+        super.hurt();
     }
 
     collect(amount)

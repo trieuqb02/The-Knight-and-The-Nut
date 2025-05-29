@@ -905,7 +905,7 @@
     "startRadiusVar": 20,
     "endRadius": 70,
     "endRadiusVar": 20,
-    "rotatePerS": 180,
+    "rotatePerS": 360,
     "rotatePerSVar": 0,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
@@ -927,9 +927,9 @@
     },
     "_startColorVar": {
       "__type__": "cc.Color",
-      "r": 39,
-      "g": 110,
-      "b": 236,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_endColor": {
@@ -941,9 +941,9 @@
     },
     "_endColorVar": {
       "__type__": "cc.Color",
-      "r": 39,
-      "g": 110,
-      "b": 236,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_positionType": 2,
@@ -1071,6 +1071,18 @@
     },
     "fireSound": {
       "__uuid__": "b57e162f-3cfc-4c04-8d06-b9d9bbd96efb",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "jumpSound": {
+      "__uuid__": "c3a71c0c-6f21-4d5c-badf-3d39d4e23d50",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "hurtSound": {
+      "__uuid__": "45066dd4-0c8b-4a16-83d9-10f22489a7cb",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "pwUpsSound": {
+      "__uuid__": "deedd50f-62d8-4abe-9e46-f0982252665d",
       "__expectedType__": "cc.AudioClip"
     },
     "_id": ""
