@@ -3,13 +3,13 @@ import {
   AudioClip,
   Button,
   Component,
+  Label,
   Node,
   PageView,
-  ScrollView,
 } from "cc";
-import { EventManager } from "../EventManager";
-import { AudioManager } from "../AudioManager";
 import { DataManager } from "../DataManager";
+import { EventManager } from "../Event/EventManager";
+import { AudioManager } from "../Audio/AudioManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("MenuManager")
@@ -27,7 +27,13 @@ export class MenuManager extends Component {
   shopPanel: Node = null;
 
   @property(Node)
+  settingPanel: Node = null;
+
+  @property(Node)
   eventManager: Node = null;
+
+  @property(Label)
+  goldLabel: Label = null;
 
   private eventComp = null;
 
@@ -35,6 +41,8 @@ export class MenuManager extends Component {
     AudioManager.instance.stopBGM();
     AudioManager.instance.playBGM(this.audioBGClip);
     this.eventComp = this.eventManager.getComponent(EventManager);
+    const user = DataManager.instance.getUser();
+    this.goldLabel.string = user.gold.toString();
   }
 
   private closePanel(s: string) {
@@ -48,6 +56,10 @@ export class MenuManager extends Component {
 
     if (this.shopPanel.active && s != "shop") {
       this.shopPanel.active = false;
+    }
+
+    if (this.settingPanel.active && s != "setting") {
+      this.settingPanel.active = false;
     }
   }
 
@@ -72,6 +84,13 @@ export class MenuManager extends Component {
     if (!this.shopPanel.active) {
       this.shopPanel.active = true;
       this.eventComp.emitOpenShop();
+    }
+  }
+
+  clickOpenSetting() {
+    this.closePanel("setting");
+    if (!this.settingPanel.active) {
+      this.settingPanel.active = true;
     }
   }
 }

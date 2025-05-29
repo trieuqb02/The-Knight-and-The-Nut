@@ -1,17 +1,14 @@
-type User = {
-  name: string,
-  level?: string,
-  score?: number,
-  gold: number
-}
+import { GamePlay } from "./Entity/GamePlay";
 
 export class DataManager {
   private static _instance: DataManager = null;
-  private _data: any = null;
+  private _data: GamePlay = null;
 
   private missionList: any[] = null;
 
-  private user: any = null;
+  private user: User = null;
+
+  private skills: string[] = []
 
   static get instance() {
     if (!this._instance) {
@@ -44,7 +41,18 @@ export class DataManager {
     return this._data;
   }
 
+  getSkills(){
+    return this.skills;
+  }
+
+  setSkill(skill: string){
+    this.skills.push(skill);
+  }
+
   clear() {
     this._data = null;
+    this.user = null;
+    this.missionList = null;
+    this.skills = [];
   }
 }

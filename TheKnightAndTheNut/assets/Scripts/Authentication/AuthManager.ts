@@ -1,6 +1,7 @@
 import { _decorator, Button, Component, director, EditBox, Label } from "cc";
 import { SceneTransitionManager } from "../SceneTransitionManager";
 import { DataManager } from "../DataManager";
+import { SceneEnum } from "../Enum/SceneEnum";
 
 const { ccclass, property } = _decorator;
 
@@ -26,8 +27,8 @@ export class AuthManager extends Component {
     const result = await firebase.writeData(`users/${name}`, { name: name, mission: 0, score: 0 });
     if (result) {
       DataManager.instance.setUser({ name: name, gold: 0 });
-      SceneTransitionManager.setNextScene("MenuScene");
-      director.loadScene("LoadingScene");
+      SceneTransitionManager.setNextScene(SceneEnum.MENU);
+      director.loadScene(SceneEnum.LOADING);
     } else {
       this.messageLabel.node.active = true;
       this.messageLabel.string = `${name} exist!`;

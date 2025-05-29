@@ -5,6 +5,7 @@ import {
   AudioSource,
   Node,
   AudioClip,
+  Slider,
 } from "cc";
 const { ccclass } = _decorator;
 
@@ -20,7 +21,6 @@ export class AudioManager extends Component {
       this.destroy();
       return;
     }
-    console.log("AudioManager loaded");
     this.node.parent = null;
     AudioManager._instance = this;
     director.addPersistRootNode(this.node);
@@ -32,7 +32,7 @@ export class AudioManager extends Component {
       this.bgmSource = bgmNode.getComponent(AudioSource)!;
       this.sfxSource = sfxNode.getComponent(AudioSource)!;
     } else {
-      console.error("Không tìm thấy node BGM hoặc SFX!");
+      console.error("Not Found node BGM or SFX!");
     }
   }
 
@@ -55,6 +55,22 @@ export class AudioManager extends Component {
     if (this.sfxSource) {
       this.sfxSource.playOneShot(clip);
     }
+  }
+
+  setBgmVolume(volume: number) {
+    this.bgmSource.volume = volume;
+  }
+
+  setSfxVolume(volume: number) {
+    this.sfxSource.volume = volume;
+  }
+
+  getBgmVolume() {
+    return this.bgmSource.volume;
+  }
+
+  getSfxVolume() {
+    return this.sfxSource.volume;
   }
 
   stopBGM() {

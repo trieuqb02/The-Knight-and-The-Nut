@@ -2,14 +2,17 @@ import {
   _decorator,
   Component,
   instantiate,
+  JsonAsset,
   Node,
   PageView,
   Prefab,
+  resources,
   SpriteFrame,
 } from "cc";
-import { EventEnum } from "../EventManager";
-import { KeyMission, Mission } from "./Mission";
+import { Mission } from "./Mission";
 import { DataManager } from "../DataManager";
+import { EventEnum } from "../Enum/EventEnum";
+import { KeyLocalStore } from "../Enum/KeyLocalStore";
 const { ccclass, property } = _decorator;
 
 @ccclass("ImageMission")
@@ -35,38 +38,47 @@ export class MissionManager extends Component {
   @property({ type: Prefab })
   missionPrefab: Prefab = null;
 
+  private isLoadData: boolean = false;
+
   private missions: {
     key: string;
     islocked: boolean;
     score: number;
-    image: SpriteFrame;
+    image?: SpriteFrame;
     time: number;
-  }[] = [
-    {
-      key: KeyMission.MISSION_1,
-      islocked: false,
-      score: 500,
-      image: null,
-      time: 200,
-    },
-    {
-      key: KeyMission.MISSION_2,
-      islocked: true,
-      score: 700,
-      image: null,
-      time: 30,
-    },
-    {
-      key: KeyMission.MISSION_3,
-      islocked: true,
-      score: 1200,
-      image: null,
-      time: 30,
-    },
-  ];
+  }[] = [];
 
   protected onLoad(): void {
-    const finishMissionStr = localStorage.getItem("FINISH_MISSION");
+    this.eventManager.on(
+      EventEnum.EVENT_OPEN_MISSION_LIST,
+      this.openMissionList,
+      this
+    );
+  }
+
+  private async loadMissions() {
+    return new Promise<void>((resolve, reject) => {
+      resources.load("missions/data", JsonAsset, (err, jsonAsset) => {
+        if (err) {
+          reject(err);
+        } else {
+          this.missions.push(...(jsonAsset.json as any[]));
+          resolve();
+        }
+      });
+    });
+  }
+
+  async openMissionList() {
+    if (this.missionList.content.children.length > 0) {
+      this.missionList.removeAllPages()
+    }
+    if(!this.isLoadData){
+      await this.loadMissions();
+      this.isLoadData = !this.isLoadData;
+    }
+    this.init();
+    const finishMissionStr = localStorage.getItem(KeyLocalStore.FINISH_MISSION);
     const finishMission: string[] = finishMissionStr
       ? JSON.parse(finishMissionStr)
       : [];
@@ -76,19 +88,6 @@ export class MissionManager extends Component {
         this.openMissionNext(key);
       });
     }
-
-    this.eventManager.on(
-      EventEnum.EVENT_OPEN_MISSION_LIST,
-      this.openMissionList,
-      this
-    );
-  }
-
-  openMissionList() {
-    if(this.missionList.content.children.length > 0){
-      return;
-    }
-    this.init();
   }
 
   init() {

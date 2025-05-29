@@ -4,11 +4,11 @@ import { _decorator, Animation,
     director,
     debug, } from 'cc';
 import { GameManager } from '../GameManager';
-import { AudioManager } from '../AudioManager';
 import { Entity } from './Entity';
 import { RailwayManager } from '../Railway/RailwayManager';
 import { ColliderGroup } from '../ColliderGroup';
 import { PowerUp } from '../Power Ups/PowerUp';
+import { AudioManager } from '../Audio/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('PlayerCtrl')

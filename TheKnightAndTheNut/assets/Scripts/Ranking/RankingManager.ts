@@ -51,7 +51,7 @@ export class RankingManager extends Component {
         this.rankingList.content.addChild(rank);
       }
     } catch (err) {
-      console.error("Lỗi khi lấy danh sách user:", err.message);
+      console.error("Error get users", err.message);
     }
    
   }

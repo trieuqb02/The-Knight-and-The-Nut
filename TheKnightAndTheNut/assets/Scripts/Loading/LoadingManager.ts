@@ -1,6 +1,6 @@
 import { _decorator, AudioClip, Component, director, Node, ProgressBar } from "cc";
-import { SceneTransitionManager } from "./SceneTransitionManager";
-import { AudioManager } from "./AudioManager";
+import { AudioManager } from "../Audio/AudioManager";
+import { SceneTransitionManager } from "../SceneTransitionManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("LoadingManager")
