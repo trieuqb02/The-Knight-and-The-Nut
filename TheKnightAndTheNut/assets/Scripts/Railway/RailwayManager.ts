@@ -12,6 +12,9 @@ import {
 import { PoollingRailway } from "./PoollingRailway";
 import { Collectible } from "../Power Ups/Collectible";
 import { EnemyCtrl } from "../Enemy/EnemyCtrl";
+import { RuleEnum } from "../Enum/RuleEnum";
+import { DataManager } from "../DataManager";
+import { PowerUp } from "../Power Ups/PowerUp";
 const { ccclass, property } = _decorator;
 
 @ccclass("RailwayManager")
@@ -24,6 +27,12 @@ export class RailwayManager extends Component {
 
   @property(Prefab)
   private enemyPrefab: Prefab = null;
+
+  @property(Prefab)
+  private magnetPrefeb: Prefab = null;
+
+  @property(Prefab)
+  private shielPrefab: Prefab = null;
 
   @property(Prefab)
   private coinPrefab: Prefab = null;
@@ -149,6 +158,12 @@ export class RailwayManager extends Component {
 
     const enemy = railway.getComponentInChildren(EnemyCtrl) ?? null;
 
+    const po_up = railway.getComponentInChildren(PowerUp) ?? null;
+
+    if(po_up){
+      po_up.node.destroy();
+    }
+
     if (coin) {
       coin.node.destroy();
     }
@@ -157,20 +172,28 @@ export class RailwayManager extends Component {
       enemy.node.destroy();
     }
 
+
     let railwayType = this.RailwayPrefabValues.shift();
 
-    if (railwayType && railwayType.length >= 3) {
+    if (railwayType && railwayType.length >= 4) {
       const type = railwayType[0];
-      const position = railwayType[1];
+      const position = railwayType[1] + railwayType[2];
 
-      this.placeObstacle(railway, type, position);
-
+      const skills = DataManager.instance.getSkills();
+      const checkSkill = skills.find(skill => {
+        return skill === railwayType[0];
+      }) 
+      if(checkSkill){
+        this.placeObstacle(railway, type, position);
+      } else if(railwayType[0] != RuleEnum.MAGNET_PW && railwayType[0] != RuleEnum.SHIEL_PW) {
+        this.placeObstacle(railway, type, position);
+      }
       railwayType = railwayType[3];
     }
 
-    if (railwayType == "U") {
+    if (railwayType == RuleEnum.RAILWAY_ROTATION_UP) {
       railway.angle = 45;
-    } else if (railwayType == "D") {
+    } else if (railwayType == RuleEnum.RAILWAY_ROTATION_DOWN) {
       railway.angle = -45;
     } else {
       railway.angle = 0;
@@ -189,7 +212,7 @@ export class RailwayManager extends Component {
 
   private placeObstacle(railway: Node, type: string, position: string): void {
     let obstacle = null;
-    if (type == "C") {
+    if (type == RuleEnum.COINS) {
       let scaleXCoin = 7;
       let scaleYCoin = 7;
       let scaleZCoin = 7;
@@ -198,8 +221,23 @@ export class RailwayManager extends Component {
       obstacle = instantiate(this.coinPrefab);
       const parentScale = railway.getScale();
 
-      if (position == "D") {
-        yCoin *= -1;
+      switch (position) {
+        case RuleEnum.DOWN + RuleEnum.SHORT: {
+          yCoin *= -1;
+          break;
+        }
+        case RuleEnum.DOWN + RuleEnum.TALL: {
+          yCoin *= -3;
+          break;
+        }
+        case RuleEnum.UP + RuleEnum.SHORT: {
+          yCoin += 1;
+          break;
+        }
+        case RuleEnum.UP + RuleEnum.TALL: {
+          yCoin *= 3;
+          break;
+        }
       }
 
       obstacle.setScale(
@@ -208,7 +246,7 @@ export class RailwayManager extends Component {
         scaleZCoin / parentScale.z
       );
       obstacle.setPosition(0, yCoin);
-    } else if (type == "E") {
+    } else if (type == RuleEnum.ENEMY) {
       let scaleXEnemy = 3;
       let scaleYEnemy = 3;
       let scaleZEnemy = 3;
@@ -217,10 +255,13 @@ export class RailwayManager extends Component {
       obstacle = instantiate(this.enemyPrefab);
       const parentScale = railway.getScale();
 
-      if (position == "D") {
-        yEnemy *= -1;
-        obstacle.angle = -180;
-        scaleXEnemy *= -1;
+      switch (position) {
+        case RuleEnum.DOWN + RuleEnum.SHORT: {
+          yEnemy *= -1;
+          obstacle.angle = -180;
+          scaleXEnemy *= -1;
+          break;
+        }
       }
 
       obstacle.setScale(
@@ -229,8 +270,51 @@ export class RailwayManager extends Component {
         scaleZEnemy / parentScale.z
       );
       obstacle.setPosition(0, yEnemy);
+    } else if (type == RuleEnum.SHIEL_PW){
+      obstacle = instantiate(this.shielPrefab);
+      let yMagnet = 7;
+      switch (position) {
+        case RuleEnum.DOWN + RuleEnum.SHORT: {
+          yMagnet *= -1;
+          break;
+        }
+        case RuleEnum.DOWN + RuleEnum.TALL: {
+          yMagnet *= -3;
+          break;
+        }
+        case RuleEnum.UP + RuleEnum.SHORT: {
+          yMagnet += 1;
+          break;
+        }
+        case RuleEnum.UP + RuleEnum.TALL: {
+          yMagnet *= 3;
+          break;
+        }
+      }
+      obstacle.setPosition(0, yMagnet);
+    } else if (type == RuleEnum.MAGNET_PW){
+      obstacle = instantiate(this.magnetPrefeb);
+      let yShile = 7;
+      switch (position) {
+        case RuleEnum.DOWN + RuleEnum.SHORT: {
+          yShile *= -1;
+          break;
+        }
+        case RuleEnum.DOWN + RuleEnum.TALL: {
+          yShile *= -3;
+          break;
+        }
+        case RuleEnum.UP + RuleEnum.SHORT: {
+          yShile += 1;
+          break;
+        }
+        case RuleEnum.UP + RuleEnum.TALL: {
+          yShile *= 3;
+          break;
+        }
+      }
+      obstacle.setPosition(0, yShile);
     }
-
     railway.addChild(obstacle);
   }
 

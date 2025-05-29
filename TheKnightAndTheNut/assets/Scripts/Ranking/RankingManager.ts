@@ -1,8 +1,9 @@
 import { _decorator, Component, instantiate, Label, Node, Prefab, ScrollView } from "cc";
+import { ScaleUp } from "../ScaleUp/ScaleUp";
 const { ccclass, property } = _decorator;
 
 @ccclass("RankingManager")
-export class RankingManager extends Component {
+export class RankingManager extends ScaleUp {
   @property(ScrollView)
   rankingList: ScrollView = null;
 

@@ -47,6 +47,6 @@ export class Item extends Component {
     user.gold -= this.price;
     this.node.dispatchEvent(new MyEvent(EventEnum.BUY_ITEM, true, {nameItem: this.title, gold:user.gold}));
     DataManager.instance.setUser(user);
-    DataManager.instance.setSkill(this.title);
+    DataManager.instance.setSkill(this.title[0]);
   }
 }

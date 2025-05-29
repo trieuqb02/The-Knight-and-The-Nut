@@ -1,11 +1,11 @@
 [{
     "name": "MagnetPW",
-    "price": 10,
+    "price": 1,
     "description": ""
 },
 {
     "name": "ShielPW",
-    "price": 20,
+    "price": 1,
     "description": ""
 }
 ]
