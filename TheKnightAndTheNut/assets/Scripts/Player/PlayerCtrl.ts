@@ -15,6 +15,8 @@ export class PlayerCtrl extends Entity {
     public static Instance: PlayerCtrl = null; // singleton
 
     private coinNumber: number = 0;
+    @property
+    private maxSpeed: number = 500;
     
     // Manager script
     private railwayManager;
@@ -88,9 +90,11 @@ export class PlayerCtrl extends Entity {
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         super.onBeginContact(selfCollider, otherCollider, contact);
+        // check ground
         if (otherCollider.group === ColliderGroup.GROUND) {
             this._isGrounded = true;
         }
+        // check collect power ups
         if (otherCollider.group === ColliderGroup.POWER_UP) {
             const powerUp = otherCollider.getComponent(PowerUp);
             if (powerUp) {
@@ -116,7 +120,7 @@ export class PlayerCtrl extends Entity {
         this.speedUpEffect.active = true;
         let pinkAttackState = this.anim.getState("run");
         // speed up
-        this.railwayManager.runSpeedUp(500, this.timingGod);
+        this.railwayManager.runSpeedUp(this.maxSpeed, this.timingGod);
         this.gameManager.playPower(this.timingGod);
         // set speed animation
         pinkAttackState.speed = 3; 
@@ -130,9 +134,7 @@ export class PlayerCtrl extends Entity {
 
     createEffect(effect){
         let exp = instantiate(effect);
-
         exp.parent = this.node.parent;
-
         const localPos = exp.parent
             .getComponent(UITransform)
             .convertToNodeSpaceAR(this.node.worldPosition);
@@ -145,19 +147,19 @@ export class PlayerCtrl extends Entity {
         super.hurt();
     }
 
-    collect(amount)
+    collect(coinAmount, score)
     {
         AudioManager.instance.playSFX(this.coinSound);
-        this.coinNumber += amount;
+        this.coinNumber += coinAmount;
 
-        this.gameManager.updateScore(50);
-        this.gameManager.receiveGold(1);
+        this.gameManager.updateScore(score);
+        this.gameManager.receiveGold(coinAmount);
         if(this.isGodState) return;
 
         // add nitro after collect coin
 
-        // collect 5 coin will increse 1 nitro
-        if(this.coinNumber % 5 == 0){
+        // collect nitroToGod amount coin will increse 1 nitro
+        if(this.coinNumber % this.nitroToGod == 0){
             this.curNitroNumber += 1;
             this.gameManager.displayPower(this.curNitroNumber);
         }
@@ -174,7 +176,7 @@ export class PlayerCtrl extends Entity {
     }
 
     attack(){
-        if(this.isClimb) return;
+        //if(this.isClimb) return;
 
         AudioManager.instance.playSFX(this.fireSound);
         this.anim.play("attack");

@@ -23,7 +23,7 @@ export class Coin extends Component {
         this.stopTween();
     }
 
-    onMagnetOn(playerNode: Node) {
+    onMagnetOn(playerNode) {
         this.playerNode = playerNode;
         this.isMagnetActive = true;
     }

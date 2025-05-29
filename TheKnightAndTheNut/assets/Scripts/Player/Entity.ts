@@ -26,7 +26,7 @@ export class Entity extends Component implements IDamageable {
     get collider(){ return this._collider; }
     set collider(value) { this._collider = value; }
 
-    protected onLoad(): void {
+    protected onLoad() {
         this.node.setSiblingIndex(10);
         this._anim = this.getComponent(Animation);
 
@@ -74,6 +74,10 @@ export class Entity extends Component implements IDamageable {
             return;
         }
         this.hurt();
+    }
+
+    onDestroy() {
+        this.collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
     }
 }
 

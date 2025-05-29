@@ -5,7 +5,11 @@ const { ccclass, property } = _decorator;
 
 @ccclass('Collectible')
 export class Collectible extends Component {
+    @property
 	private amount: number = 1;
+    @property
+	private scoreAmount: number = 50;
+    
     private collider;
 
     protected onLoad(): void {
@@ -28,7 +32,7 @@ export class Collectible extends Component {
         // play sound
         // effect
         this.collider.enabled = false;
-        player.collect(this.amount);
+        player.collect(this.amount, this.scoreAmount);
         // destroy after collide
         this.selfDestroy();
     }

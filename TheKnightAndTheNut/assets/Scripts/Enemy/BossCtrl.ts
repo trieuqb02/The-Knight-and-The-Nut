@@ -1,4 +1,6 @@
-import { _decorator, Component, instantiate, Node, Prefab, UITransform, Animation, input, Input, KeyCode, EventKeyboard, Vec3, PhysicsSystem2D, ERaycast2DType, Graphics, Color, Vec2, PhysicsGroup, Contact2DType, IPhysics2DContact, Collider2D, AudioClip } from 'cc';
+import { _decorator, instantiate, Node, Prefab, UITransform, 
+    Animation, Vec3, PhysicsSystem2D, 
+    ERaycast2DType, Graphics, Color, AudioClip } from 'cc';
 import { PlayerCtrl } from '../Player/PlayerCtrl';
 import { Entity } from '../Player/Entity';
 import { ColliderGroup } from '../ColliderGroup';
@@ -44,8 +46,6 @@ export class BossCtrl extends Entity {
     protected onLoad(): void {
         super.onLoad();
         this.graphics = this.rayDrawerNode.getComponent(Graphics);
-
-        input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }
 
     update(deltaTime: number) {
@@ -54,12 +54,6 @@ export class BossCtrl extends Entity {
         if (this.scanTimer >= this.scanInterval) {
             this.moveTowardsPlayerY(deltaTime);
             this.checkRaycast();
-        }
-    }
-
-    onKeyDown(event: EventKeyboard){
-        if (event.keyCode == KeyCode.KEY_K) {
-            this.skill();
         }
     }
 
@@ -186,7 +180,6 @@ export class BossCtrl extends Entity {
                 //this.drawPoint(hit.point);
             }
         }
-
         //this.drawRay(originWorld, endPoint);
     }
 

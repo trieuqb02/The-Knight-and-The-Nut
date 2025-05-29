@@ -54,7 +54,8 @@ export class PlayerMovement extends Component {
         this.railCheck();
 
         if (!PlayerCtrl.Instance.isGrounded) {
-            this._velocityY += this.gravity * this._dirY * deltaTime;
+            this._velocityY += this.gravity * this._dirY * deltaTime; // v = v0 + a*t
+            // s = s0 + v*t
             this.node.setPosition(this.node.position.add3f(0, this._velocityY * deltaTime * this.speedJump, 0));
         } else {
             this._velocityY = 0; 
@@ -67,12 +68,10 @@ export class PlayerMovement extends Component {
         this.isReverse = !this.isReverse;
         this._dirY *= -1;
         PlayerCtrl.Instance.createEffect(this.reverseEffect);
-        if(this.isReverse){
+        if(this.isReverse)
             this.node.angle = 180;
-        }
-        else{
+        else
             this.node.angle = 0;
-        }
         
         this.node.setScale(-this.node.scale.x, this.node.scale.y, this.node.scale.z);
     }
@@ -80,6 +79,7 @@ export class PlayerMovement extends Component {
     jump() {
         PlayerCtrl.Instance.createEffect(this.reverseEffect);
         AudioManager.instance.playSFX(PlayerCtrl.Instance.jumpSound);
+        
         PlayerCtrl.Instance.anim.play("jump");
         PlayerCtrl.Instance.anim.once(Animation.EventType.FINISHED, () => {
             PlayerCtrl.Instance.anim.play("run");

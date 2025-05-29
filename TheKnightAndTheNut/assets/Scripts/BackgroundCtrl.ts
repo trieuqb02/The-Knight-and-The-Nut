@@ -14,6 +14,7 @@ export class BackgroundCtrl extends Component {
             const layer = this.layers[i];
             const speed = this.speeds[i] ?? 0;
 
+            // get 3 bg on layer
             for (let bgNode of layer.children) {
                 const pos = bgNode.getPosition();
                 pos.x -= speed * deltaTime;
@@ -25,29 +26,31 @@ export class BackgroundCtrl extends Component {
     }
 
     recycleOffscreen(layer: Node) {
-        const children = layer.children;
+        // get 3 bg
+        const bgChilds = layer.children;
 
-        if (children.length < 2) return;
+        if (bgChilds.length < 2) return;
 
-        const spriteWidth = children[0].getComponent(UITransform)?.contentSize.width || 0;
+        const spriteWidth = bgChilds[0].getComponent(UITransform)?.contentSize.width || 0;
 
-        for (let i = 0; i < children.length; i++) {
-            const node = children[i];
-            const worldPos = node.getWorldPosition();
+        // loop 3 bgs 
+        for (let i = 0; i < bgChilds.length; i++) {
+            const bg = bgChilds[i];
+            const worldPos = bg.getWorldPosition();
 
             if (worldPos.x + spriteWidth / 2 < -640) { 
                 // find node right most
-                let rightMostX = children[0].getWorldPosition().x;
-                for (let j = 1; j < children.length; j++) {
-                    const x = children[j].getWorldPosition().x;
+                let rightMostX = bgChilds[0].getWorldPosition().x;
+                for (let j = 1; j < bgChilds.length; j++) {
+                    const x = bgChilds[j].getWorldPosition().x;
                     if (x > rightMostX) {
                         rightMostX = x;
                     }
                 }
 
                 const newX = rightMostX + spriteWidth*2.74/2 + 145;
-                const localPos = node.getPosition();
-                node.setPosition(new Vec3(newX, localPos.y, localPos.z));
+                const localPos = bg.getPosition();
+                bg.setPosition(new Vec3(newX, localPos.y, localPos.z));
             }
         }
     }
