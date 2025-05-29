@@ -1245,7 +1245,7 @@
     "jumpForce": 70,
     "speedJump": 8,
     "reverseEffect": {
-      "__uuid__": "f6612c29-0fe8-4c68-ab16-47c2ab4d3eba",
+      "__uuid__": "a50b9392-0a02-426e-b0de-c362c864efe2",
       "__expectedType__": "cc.Prefab"
     },
     "_id": ""

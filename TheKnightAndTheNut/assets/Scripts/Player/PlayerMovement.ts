@@ -86,41 +86,42 @@ export class PlayerMovement extends Component {
         PlayerCtrl.Instance.isGrounded = false;
     }
 
-    climb(){
-        PlayerCtrl.Instance.isClimb = true;
-        PlayerCtrl.Instance.collider.enabled = false;
-        PlayerCtrl.Instance.anim.play("climb");
-    }
+    // climb(){
+    //     PlayerCtrl.Instance.isClimb = true;
+    //     PlayerCtrl.Instance.collider.enabled = false;
+    //     PlayerCtrl.Instance.anim.play("climb");
+    // }
 
     onKeyUp(event: EventKeyboard){
-        if(event.keyCode == KeyCode.SPACE){
-            PlayerCtrl.Instance.collider.enabled = true;
-            this.isHoldingSpace = false;
-            PlayerCtrl.Instance.isClimb = false;
+        // if(event.keyCode == KeyCode.SPACE){
+        //     PlayerCtrl.Instance.collider.enabled = true;
+        //     this.isHoldingSpace = false;
+        //     PlayerCtrl.Instance.isClimb = false;
 
-            if (this.spacePressTimer !== null) {
-                this.unschedule(this.spacePressTimer);
-                this.spacePressTimer = null;
-            }
+        //     if (this.spacePressTimer !== null) {
+        //         this.unschedule(this.spacePressTimer);
+        //         this.spacePressTimer = null;
+        //     }
 
-            PlayerCtrl.Instance.anim.play("run");
-            this.reverse();
-        }
+        //     PlayerCtrl.Instance.anim.play("run");
+        //     this.reverse();
+        // }
     }
 
     onKeyDown(event: EventKeyboard){
         if(event.keyCode == KeyCode.SPACE){
-            if(this.isHoldingSpace) return;
-            this.isHoldingSpace = true;
+            // if(this.isHoldingSpace) return;
+            // this.isHoldingSpace = true;
 
-            this.spacePressTimer = this.scheduleOnce(() => {
-                if (this.isHoldingSpace) {
-                    this.climb();
-                }
-            }, 0.15);
+            // this.spacePressTimer = this.scheduleOnce(() => {
+            //     if (this.isHoldingSpace) {
+            //         this.climb();
+            //     }
+            // }, 0.15);
+            this.reverse();
         }
 
-        if (event.keyCode == KeyCode.KEY_H && PlayerCtrl.Instance.isGrounded) {
+        if (event.keyCode == KeyCode.KEY_W && PlayerCtrl.Instance.isGrounded) {
             this.jump();
         }
     }

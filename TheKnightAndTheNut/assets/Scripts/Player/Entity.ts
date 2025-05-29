@@ -1,6 +1,5 @@
-import { _decorator, Component, Node, Animation, Contact2DType, Collider2D, IPhysics2DContact } from 'cc';
+import { _decorator, Component, Animation, Contact2DType, Collider2D, IPhysics2DContact } from 'cc';
 import { IDamageable } from './IDamageable';
-import { ColliderGroup } from '../ColliderGroup';
 const { ccclass, property } = _decorator;
 
 @ccclass('Entity')
