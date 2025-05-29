@@ -2,25 +2,25 @@
     {
         "key": "mission1",
         "islocked": false,
-        "score": 500,
-        "time": 20
+        "score": 0,
+        "time": 10
       },
       {
         "key": "mission2",
-        "islocked": true,
-        "score": 700,
-        "time": 30
+        "islocked": false,
+        "score": 0,
+        "time": 10
       },
       {
         "key": "mission3",
-        "islocked": true,
-        "score": 1200,
-        "time": 60
+        "islocked": false,
+        "score": 0,
+        "time": 10
       },
       {
         "key": "mission4",
-        "islocked": true,
-        "score": 1500,
-        "time": 60
+        "islocked": false,
+        "score": 0,
+        "time": 10
       }
 ]

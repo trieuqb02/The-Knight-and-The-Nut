@@ -25,6 +25,16 @@ import { KeyMission } from "./Enum/KeyMission";
 import { KeyLocalStore } from "./Enum/KeyLocalStore";
 const { ccclass, property } = _decorator;
 
+@ccclass("LevelBackground")
+class LevelBackground {
+  @property()
+  key: string = '';
+
+  @property(Prefab)
+  backgroundPrefab: Prefab = null;
+
+}
+
 @ccclass("GameManager")
 export class GameManager extends Component {
   @property(Node)
@@ -78,8 +88,17 @@ export class GameManager extends Component {
   @property(SpriteFrame)
   private power4: SpriteFrame = null;
 
+  @property(Node)
+  private tutorialNode: Node = null;
+
+  @property(Node)
+  private spawnFlyEnemyNode:Node = null;
+
   @property(AudioClip)
-  audioBGClip: AudioClip = null;
+  private audioBGClip: AudioClip = null;
+
+  @property([LevelBackground])
+  private levelBakcgroundArr: LevelBackground[] = []
 
   private powerComp = null;
 
@@ -120,6 +139,15 @@ export class GameManager extends Component {
     this.railwayComp = this.railwayManager.getComponent(RailwayManager);
     this.railwayComp.startRailway(this.key);
     this.isPlay = true;
+
+    
+    if (this.key == KeyMission.MISSION_1) {
+      this.tutorialNode.active = true;
+    }
+
+    if (this.key == KeyMission.MISSION_4) {
+      this.spawnFlyEnemyNode.active = true;
+    }
   }
 
   protected update(dt: number): void {
@@ -252,8 +280,15 @@ export class GameManager extends Component {
     this.scoreLB.string = `${this.totalScore}/${this.winScore}`;
     this.key = data.key;
 
-    const backgroundComp = this.background.getComponent(Sprite);
-    backgroundComp.spriteFrame = data.image;
+    const levelBackground = this.levelBakcgroundArr.find(element => {
+      return element.key == this.key;
+    })
+    console.log(this.levelBakcgroundArr)
+    console.log(levelBackground)
+    console.log(this.key)
+    const backgroundNode = instantiate(levelBackground.backgroundPrefab);
+    backgroundNode.setPosition(0,0);
+    this.background.addChild(backgroundNode)
   }
 
   public updateScore(score: number): void {
