@@ -32,14 +32,17 @@ export class Tutorial extends Component {
 
         switch (step) {
             case 0:
+                console.log("jump");
                 this.labelJump.active = true;
                 this.playPulseTween(this.labelJump);
                 break;
             case 1:
+                console.log("shoot");
                 this.labelShoot.active = true;
                 this.playPulseTween(this.labelShoot);
                 break;
             case 2:
+                console.log("flip");
                 this.labelFlip.active = true;
                 this.playPulseTween(this.labelFlip);
                 break;
