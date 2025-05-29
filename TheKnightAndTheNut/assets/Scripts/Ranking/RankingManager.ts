@@ -1,4 +1,4 @@
-import { _decorator, Component, instantiate, Label, Node, Prefab, ScrollView } from "cc";
+import { _decorator, instantiate, Label, Node, Prefab, ScrollView } from "cc";
 import { ScaleUp } from "../ScaleUp/ScaleUp";
 const { ccclass, property } = _decorator;
 
