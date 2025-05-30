@@ -114,6 +114,8 @@ export class PlayerMovement extends Component {
     }
 
     onKeyDown(event: EventKeyboard){
+        if(PlayerCtrl.Instance.gameManager.isPause) return;
+        
         if(event.keyCode == KeyCode.SPACE){
             // if(this.isHoldingSpace) return;
             // this.isHoldingSpace = true;

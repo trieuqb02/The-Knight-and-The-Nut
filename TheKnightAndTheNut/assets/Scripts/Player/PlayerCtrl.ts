@@ -18,7 +18,7 @@ export class PlayerCtrl extends Entity {
     
     // Manager script
     private railwayManager;
-    private gameManager;
+    gameManager;
 
     // Player state
     private isGodState: boolean = false;

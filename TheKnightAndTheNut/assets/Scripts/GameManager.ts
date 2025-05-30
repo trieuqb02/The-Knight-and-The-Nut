@@ -126,6 +126,8 @@ export class GameManager extends Component {
 
   private totalGlod: number = 0;
 
+  public isPause: boolean = false;
+
   protected onLoad(): void {
     this.init();
     this.reset();
@@ -294,7 +296,6 @@ export class GameManager extends Component {
   }
 
   protected onTimeUp(): void {
-    director.pause();
     DataManager.instance.clearSkills();
     const user = DataManager.instance.getUser();
     user.gold += this.totalGlod;
@@ -307,7 +308,7 @@ export class GameManager extends Component {
 
   private handleResult(): void {
     const result = instantiate(this.resultPrefab);
-
+    this.pauseGame();
     if (this.totalScore >= this.winScore && !this.idlPlayer) {
       result.getComponent(Sprite).spriteFrame = this.winPriteFrame;
     } else if (this.totalScore >= this.winScore && this.idlPlayer) {
@@ -413,5 +414,10 @@ export class GameManager extends Component {
         mission: missionNumber,
       });
     }
+  }
+  
+  pauseGame(){
+    this.isPause = true;
+    director.pause();
   }
 }
