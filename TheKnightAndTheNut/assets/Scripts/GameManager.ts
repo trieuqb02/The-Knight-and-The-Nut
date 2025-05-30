@@ -93,9 +93,6 @@ export class GameManager extends Component {
   @property(Node)
   private spawnFlyEnemyNode: Node = null;
 
-  @property(AudioClip)
-  private audioBGClip: AudioClip = null;
-
   @property([LevelBackground])
   private levelBakcgroundArr: LevelBackground[] = [];
 
@@ -179,7 +176,8 @@ export class GameManager extends Component {
 
   private init(): void {
     AudioManager.instance.stopBGM();
-    AudioManager.instance.playBGM(this.audioBGClip);
+    const mainClip = AudioManager.instance.getMainClip();
+    AudioManager.instance.playBGM(mainClip);
 
     this.setupUI();
 

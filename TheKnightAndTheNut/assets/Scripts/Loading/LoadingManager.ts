@@ -11,12 +11,11 @@ export class LoadingManager extends Component {
   @property(ProgressBar)
   progressBar: ProgressBar = null;
 
-  @property(AudioClip)
-  audioBGClip: AudioClip = null;
-
   protected start(): void {
     AudioManager.instance.stopBGM();
-    AudioManager.instance.playBGM(this.audioBGClip);
+    const menuClip = AudioManager.instance.getMenuClip();
+    AudioManager.instance.playBGM(menuClip);
+    
     const nextScene = SceneTransitionManager.getNextScene();
     this.loadSceneWithLoading(nextScene);
   }

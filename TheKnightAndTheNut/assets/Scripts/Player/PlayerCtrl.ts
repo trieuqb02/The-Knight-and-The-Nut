@@ -47,19 +47,6 @@ export class PlayerCtrl extends Entity {
     @property({type: Node,})
     shieldEffect: Node; 
 
-    // Audio
-    @property(AudioClip)
-    reverseSound: AudioClip = null;
-    @property(AudioClip)
-    coinSound: AudioClip = null;
-    @property(AudioClip)
-    fireSound: AudioClip = null;
-    @property(AudioClip)
-    jumpSound: AudioClip = null;
-    @property(AudioClip)
-    hurtSound: AudioClip = null;
-    @property(AudioClip)
-    pwUpsSound: AudioClip = null;
 
     onLoad(){
         super.onLoad();
@@ -96,7 +83,8 @@ export class PlayerCtrl extends Entity {
         if (otherCollider.group === ColliderGroup.POWER_UP) {
             const powerUp = otherCollider.getComponent(PowerUp);
             if (powerUp) {
-                AudioManager.instance.playSFX(this.pwUpsSound);
+                const pwUpsSound = AudioManager.instance.pwUpsSound;
+                AudioManager.instance.playSFX(pwUpsSound);
                 powerUp.pwUpActive(this.node); 
             }
         }
@@ -145,13 +133,15 @@ export class PlayerCtrl extends Entity {
     }
 
     hurt(){
-        AudioManager.instance.playSFX(this.hurtSound);
+        const hurtSound = AudioManager.instance.hurtSound;
+        AudioManager.instance.playSFX(hurtSound);
         super.hurt();
     }
 
     collect(amount)
     {
-        AudioManager.instance.playSFX(this.coinSound);
+        const coinSound = AudioManager.instance.coinSound;
+        AudioManager.instance.playSFX(coinSound);
         this.coinNumber += amount;
 
         this.gameManager.updateScore(50);
@@ -180,7 +170,8 @@ export class PlayerCtrl extends Entity {
     attack(){
         if(this.isClimb) return;
 
-        AudioManager.instance.playSFX(this.fireSound);
+        const fireSound = AudioManager.instance.fireSound;
+        AudioManager.instance.playSFX(fireSound);
         this.anim.play("attack");
 
         this.anim.once(Animation.EventType.FINISHED, () => {

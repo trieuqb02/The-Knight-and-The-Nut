@@ -30,16 +30,6 @@ export class BossCtrl extends Entity {
     private scanTimer: number = 0;
 
     private isHurting: boolean = false;
-
-    // Audio
-    @property(AudioClip)
-    fireSound: AudioClip = null;
-    @property(AudioClip)
-    hurtSound: AudioClip = null;
-    @property(AudioClip)
-    skillSound: AudioClip = null;
-    @property(AudioClip)
-    previousSkillSound: AudioClip = null;
     
     protected onLoad(): void {
         super.onLoad();
@@ -78,7 +68,8 @@ export class BossCtrl extends Entity {
     }
 
     skill(){
-        AudioManager.instance.playSFX(this.previousSkillSound);
+        const previousSkillSound = AudioManager.instance.previousSkillSound;
+        AudioManager.instance.playSFX(previousSkillSound);
         this.anim.play("bossAttack2");
 
         // play run anim after hurt anim
@@ -89,7 +80,8 @@ export class BossCtrl extends Entity {
     }
 
     instanceSkill(){
-        AudioManager.instance.playSFX(this.skillSound);
+        const skillSound = AudioManager.instance.skillSound;
+        AudioManager.instance.playSFX(skillSound);
         const skillCount = 5;
         const skillSpacing = 200; 
         const delay = 0.2; 
@@ -112,7 +104,8 @@ export class BossCtrl extends Entity {
     }
 
     hurt(){
-        AudioManager.instance.playSFX(this.hurtSound);
+        const hurtSound = AudioManager.instance.hurtSoundBoss;
+        AudioManager.instance.playSFX(hurtSound);
         this.isHurting = true;
         this.anim.play("hurt");
 
@@ -225,7 +218,8 @@ export class BossCtrl extends Entity {
     }   
 
     instanceBullet(){
-        AudioManager.instance.playSFX(this.fireSound);
+        const fireSound = AudioManager.instance.fireSoundBoss;
+        AudioManager.instance.playSFX(fireSound);
         let bullet = instantiate(this.bulletPrefab);
         bullet.parent = this.bulletParent;
 

@@ -14,9 +14,6 @@ export class FlyEnemy extends EnemyCtrl {
     private warningTime: number = 2; 
     private hasMoved: boolean = false;
 
-    @property(AudioClip)
-    flySound: AudioClip = null;
-
     onLoad() {
         super.onLoad();
         this.showWarningLine();
@@ -41,7 +38,8 @@ export class FlyEnemy extends EnemyCtrl {
         }, this.warningTime - 1);
 
         this.scheduleOnce(()=>{
-            AudioManager.instance.playSFX(this.flySound);
+            const flySound = AudioManager.instance.flySound;
+            AudioManager.instance.playSFX(flySound);
             tween(opacity).stop();
             this.hasMoved = true;
             this.warningLineNode.active = false;
