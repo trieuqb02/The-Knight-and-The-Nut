@@ -422,11 +422,15 @@
     "startingHealth": 1,
     "bodyDame": 1,
     "dirX": 1,
-    "speed": 500,
+    "speed": 600,
     "warningLineNode": {
       "__id__": 2
     },
     "warningTime": 2,
+    "flySound": {
+      "__uuid__": "7816ce14-4642-4087-9523-5715114f25d6",
+      "__expectedType__": "cc.AudioClip"
+    },
     "_id": ""
   },
   {

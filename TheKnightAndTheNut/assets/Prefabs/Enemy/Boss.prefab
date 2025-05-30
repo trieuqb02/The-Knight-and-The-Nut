@@ -369,7 +369,7 @@
     "__prefab": {
       "__id__": 17
     },
-    "startingHealth": 15,
+    "startingHealth": 5,
     "bodyDame": 1,
     "bulletPrefab": {
       "__uuid__": "bb717741-a5db-4ecd-ac21-e11cb2addd88",

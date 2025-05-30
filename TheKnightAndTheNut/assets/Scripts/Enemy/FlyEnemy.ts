@@ -1,5 +1,6 @@
-import { _decorator, Node, tween, UIOpacity, Vec3 } from 'cc';
+import { _decorator, AudioClip, Node, tween, UIOpacity, Vec3 } from 'cc';
 import { EnemyCtrl } from './EnemyCtrl';
+import { AudioManager } from '../Audio/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('FlyEnemy')
@@ -12,6 +13,9 @@ export class FlyEnemy extends EnemyCtrl {
     @property
     private warningTime: number = 2; 
     private hasMoved: boolean = false;
+
+    @property(AudioClip)
+    flySound: AudioClip = null;
 
     onLoad() {
         super.onLoad();
@@ -37,6 +41,7 @@ export class FlyEnemy extends EnemyCtrl {
         }, this.warningTime - 1);
 
         this.scheduleOnce(()=>{
+            AudioManager.instance.playSFX(this.flySound);
             tween(opacity).stop();
             this.hasMoved = true;
             this.warningLineNode.active = false;

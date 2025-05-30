@@ -1055,6 +1055,7 @@
     "bodyDame": 1,
     "timingGod": 5,
     "nitroToGod": 4,
+    "amountCoinToGod": 2,
     "speedUpEffect": {
       "__id__": 20
     },

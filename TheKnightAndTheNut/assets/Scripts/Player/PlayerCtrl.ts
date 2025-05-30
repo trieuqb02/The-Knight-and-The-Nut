@@ -28,6 +28,8 @@ export class PlayerCtrl extends Entity {
     nitroToGod: number = 5;
     private curNitroNumber: number = 0;
     private isShield = false;
+    @property
+    private amountCoinToGod: number = 2;
 
     // Check climb
     private _isClimb: boolean = false;
@@ -157,7 +159,7 @@ export class PlayerCtrl extends Entity {
         // add nitro after collect coin
 
         // collect 5 coin will increse 1 nitro
-        if(this.coinNumber % 5 == 0){
+        if(this.coinNumber % this.amountCoinToGod == 0){
             this.curNitroNumber += 1;
             this.gameManager.displayPower(this.curNitroNumber);
         }
