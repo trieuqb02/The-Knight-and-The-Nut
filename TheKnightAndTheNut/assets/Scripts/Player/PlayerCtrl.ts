@@ -97,18 +97,20 @@ export class PlayerCtrl extends Entity {
             const powerUp = otherCollider.getComponent(PowerUp);
             if (powerUp) {
                 AudioManager.instance.playSFX(this.pwUpsSound);
-                powerUp.active(this.node); 
+                powerUp.pwUpActive(this.node); 
             }
         }
     }
 
     onShieldOn(nodeData){
+        if(this.isShield) return;
         this.isShield = true;
         // effect shield
         this.shieldEffect.active = true;
     }
 
-    onShieldOff(){
+    onShieldOff(nodeData){
+        console.log("Shield ooff");
         this.isShield = false;
         this.shieldEffect.active = false;
     }
@@ -207,8 +209,8 @@ export class PlayerCtrl extends Entity {
         if (PlayerCtrl.Instance === this) 
             PlayerCtrl.Instance = null;
 
-        director.off('SHIELD_ON', this.onShieldOn, this);
-        director.off('SHIELD_OFF', this.onShieldOff, this);
+        //director.off('SHIELD_ON', this.onShieldOn, this);
+        //director.off('SHIELD_OFF', this.onShieldOff, this);
     }
 }
 
