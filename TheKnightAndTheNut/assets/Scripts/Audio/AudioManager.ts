@@ -1,16 +1,42 @@
-import {
-  _decorator,
-  Component,
-  director,
-  AudioSource,
-  Node,
-  AudioClip,
-  Slider,
-} from "cc";
-const { ccclass } = _decorator;
+import { _decorator, Component, director, AudioSource, AudioClip } from "cc";
+const { ccclass, property } = _decorator;
 
 @ccclass("AudioManager")
 export class AudioManager extends Component {
+  @property(AudioClip)
+  mainClip: AudioClip = null;
+
+  @property(AudioClip)
+  clickButtonClip: AudioClip = null;
+
+  @property(AudioClip)
+  menuClip: AudioClip = null;
+
+  @property(AudioClip)
+  reverseSound: AudioClip = null;
+  @property(AudioClip)
+  coinSound: AudioClip = null;
+  @property(AudioClip)
+  fireSound: AudioClip = null;
+  @property(AudioClip)
+  jumpSound: AudioClip = null;
+  @property(AudioClip)
+  hurtSound: AudioClip = null;
+  @property(AudioClip)
+  pwUpsSound: AudioClip = null;
+
+  @property(AudioClip)
+  fireSoundBoss: AudioClip = null;
+  @property(AudioClip)
+  hurtSoundBoss: AudioClip = null;
+  @property(AudioClip)
+  skillSound: AudioClip = null;
+  @property(AudioClip)
+  previousSkillSound: AudioClip = null;
+
+  @property(AudioClip)
+  flySound: AudioClip = null;
+
   private static _instance: AudioManager;
 
   public bgmSource: AudioSource = null!;
@@ -88,5 +114,17 @@ export class AudioManager extends Component {
   stopAll() {
     this.stopBGM();
     this.stopSFX();
+  }
+
+  getMenuClip() {
+    return this.menuClip;
+  }
+
+  getMainClip() {
+    return this.mainClip;
+  }
+
+  getClickButton() {
+    return this.clickButtonClip;
   }
 }

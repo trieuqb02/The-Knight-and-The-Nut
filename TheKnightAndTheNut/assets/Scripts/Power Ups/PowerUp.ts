@@ -3,7 +3,7 @@ const { ccclass, property } = _decorator;
 
 @ccclass('PowerUp')
 export abstract class PowerUp extends Component {
-    abstract active(nodeData);
+    abstract pwUpActive(nodeData);
 }
 
 

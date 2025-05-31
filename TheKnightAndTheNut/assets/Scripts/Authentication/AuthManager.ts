@@ -36,7 +36,7 @@ export class AuthManager extends Component {
     aim.stop()
     this.overlayNode.active = false;
     if (result) {
-      DataManager.instance.setUser({ name: name, gold: 0 });
+      DataManager.instance.setUser({ name: name, gold: 100 });
       SceneTransitionManager.setNextScene(SceneEnum.MENU);
       director.loadScene(SceneEnum.LOADING);
     } else {

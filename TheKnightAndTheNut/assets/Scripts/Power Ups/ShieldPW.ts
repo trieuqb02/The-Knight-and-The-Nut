@@ -1,4 +1,4 @@
-import { _decorator, Component, director, Node } from 'cc';
+import { _decorator, Collider2D, Component, director, Node, UIOpacity } from 'cc';
 import { PowerUp } from './PowerUp';
 const { ccclass, property } = _decorator;
 
@@ -6,16 +6,15 @@ const { ccclass, property } = _decorator;
 export class ShieldPW extends PowerUp {
     @property
     private timming: number = 5;
-    active(nodeData: any) {
+    pwUpActive(nodeData: any) {
         director.emit('SHIELD_ON', nodeData);
 
-        this.scheduleOnce(() => {
+        this.node.getComponent(UIOpacity)!.opacity = 0;
+
+        setTimeout(() => {
+            console.log("offffff");
             director.emit('SHIELD_OFF', nodeData);
-        }, this.timming);
-        
-        this.scheduleOnce(() => {
-            this.node.destroy();
-        }, 0);
+        }, this.timming * 1000);
     }
 }
 

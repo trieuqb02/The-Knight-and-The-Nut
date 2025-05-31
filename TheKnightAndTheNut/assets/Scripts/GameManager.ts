@@ -93,9 +93,6 @@ export class GameManager extends Component {
   @property(Node)
   private spawnFlyEnemyNode: Node = null;
 
-  @property(AudioClip)
-  private audioBGClip: AudioClip = null;
-
   @property([LevelBackground])
   private levelBakcgroundArr: LevelBackground[] = [];
 
@@ -128,6 +125,8 @@ export class GameManager extends Component {
   private isBoss: boolean = false;
 
   private totalGlod: number = 0;
+
+  public isPause: boolean = false;
 
   protected onLoad(): void {
     this.init();
@@ -179,7 +178,8 @@ export class GameManager extends Component {
 
   private init(): void {
     AudioManager.instance.stopBGM();
-    AudioManager.instance.playBGM(this.audioBGClip);
+    const mainClip = AudioManager.instance.getMainClip();
+    AudioManager.instance.playBGM(mainClip);
 
     this.setupUI();
 
@@ -296,7 +296,6 @@ export class GameManager extends Component {
   }
 
   protected onTimeUp(): void {
-    director.pause();
     DataManager.instance.clearSkills();
     const user = DataManager.instance.getUser();
     user.gold += this.totalGlod;
@@ -309,7 +308,7 @@ export class GameManager extends Component {
 
   private handleResult(): void {
     const result = instantiate(this.resultPrefab);
-
+    this.pauseGame();
     if (this.totalScore >= this.winScore && !this.idlPlayer) {
       result.getComponent(Sprite).spriteFrame = this.winPriteFrame;
     } else if (this.totalScore >= this.winScore && this.idlPlayer) {
@@ -415,5 +414,10 @@ export class GameManager extends Component {
         mission: missionNumber,
       });
     }
+  }
+  
+  pauseGame(){
+    this.isPause = true;
+    director.pause();
   }
 }

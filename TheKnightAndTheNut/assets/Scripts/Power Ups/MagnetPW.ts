@@ -6,7 +6,7 @@ const { ccclass, property } = _decorator;
 export class MagnetPW extends PowerUp {
     @property
     private timming: number = 5;
-    active(nodeData) {
+    pwUpActive(nodeData) {
         MagnetState.isActive = true;
         MagnetState.curNode = nodeData;
         director.emit('MAGNET_ON', nodeData);

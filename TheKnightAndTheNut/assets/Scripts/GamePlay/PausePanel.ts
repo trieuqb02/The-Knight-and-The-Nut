@@ -2,6 +2,7 @@ import { _decorator, Component, director, Node, Slider } from "cc";
 import { SceneTransitionManager } from "../SceneTransitionManager";
 import { SceneEnum } from "../Enum/SceneEnum";
 import { BaseAudio } from "../BaseAudio";
+import { GameManager } from "../GameManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("PausePanel")
@@ -15,6 +16,11 @@ export class PausePanel extends BaseAudio {
   @property(Slider)
   sliderSFX: Slider = null;
 
+  @property(Node)
+  gameManager: Node = null;
+
+  gameComp = null;
+
   protected onLoad(): void {
     this.sliderBG.progress = this.getVolumGB();
     this.sliderSFX.progress = this.getVolumSFX();
@@ -22,11 +28,13 @@ export class PausePanel extends BaseAudio {
 
   private clickPauseGame(): void {
     this.pausePanel.active = true;
-    director.pause();
+    this.gameComp = this.gameManager.getComponent(GameManager);
+    this.gameComp.pauseGame();
   }
 
   private clickResumeGame(): void {
     this.pausePanel.active = false;
+    this.gameComp.isPause = false;
     director.resume();
   }
 
@@ -39,6 +47,7 @@ export class PausePanel extends BaseAudio {
 
   private clickReplay(): void {
     this.pausePanel.active = false;
+    this.gameComp.isPause = false;
     const currentScene = director.getScene();
     const sceneName = currentScene.name;
     director.loadScene(sceneName);

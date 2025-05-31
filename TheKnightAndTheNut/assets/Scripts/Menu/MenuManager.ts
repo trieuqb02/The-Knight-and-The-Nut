@@ -14,9 +14,7 @@ const { ccclass, property } = _decorator;
 
 @ccclass("MenuManager")
 export class MenuManager extends Component {
-  @property(AudioClip)
-  audioBGClip: AudioClip = null;
-
+ 
   @property(PageView)
   missionList: PageView = null;
 
@@ -39,7 +37,9 @@ export class MenuManager extends Component {
 
   protected onLoad(): void {
     AudioManager.instance.stopBGM();
-    AudioManager.instance.playBGM(this.audioBGClip);
+    const menuClip = AudioManager.instance.getMenuClip();
+    AudioManager.instance.playBGM(menuClip);
+    
     this.eventComp = this.eventManager.getComponent(EventManager);
     const user = DataManager.instance.getUser();
     this.goldLabel.string = user.gold.toString();

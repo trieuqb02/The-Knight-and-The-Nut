@@ -20,7 +20,7 @@ export class PlayerCtrl extends Entity {
     
     // Manager script
     private railwayManager;
-    private gameManager;
+    gameManager;
 
     // Player state
     private isGodState: boolean = false;
@@ -30,6 +30,8 @@ export class PlayerCtrl extends Entity {
     nitroToGod: number = 5;
     private curNitroNumber: number = 0;
     private isShield = false;
+    @property
+    private amountCoinToGod: number = 2;
 
     // Check climb
     private _isClimb: boolean = false;
@@ -47,19 +49,6 @@ export class PlayerCtrl extends Entity {
     @property({type: Node,})
     shieldEffect: Node; 
 
-    // Audio
-    @property(AudioClip)
-    reverseSound: AudioClip = null;
-    @property(AudioClip)
-    coinSound: AudioClip = null;
-    @property(AudioClip)
-    fireSound: AudioClip = null;
-    @property(AudioClip)
-    jumpSound: AudioClip = null;
-    @property(AudioClip)
-    hurtSound: AudioClip = null;
-    @property(AudioClip)
-    pwUpsSound: AudioClip = null;
 
     onLoad(){
         super.onLoad();
@@ -98,19 +87,22 @@ export class PlayerCtrl extends Entity {
         if (otherCollider.group === ColliderGroup.POWER_UP) {
             const powerUp = otherCollider.getComponent(PowerUp);
             if (powerUp) {
-                AudioManager.instance.playSFX(this.pwUpsSound);
-                powerUp.active(this.node); 
+                const pwUpsSound = AudioManager.instance.pwUpsSound;
+                AudioManager.instance.playSFX(pwUpsSound);
+                powerUp.pwUpActive(this.node); 
             }
         }
     }
 
     onShieldOn(nodeData){
+        if(this.isShield) return;
         this.isShield = true;
         // effect shield
         this.shieldEffect.active = true;
     }
 
-    onShieldOff(){
+    onShieldOff(nodeData){
+        console.log("Shield ooff");
         this.isShield = false;
         this.shieldEffect.active = false;
     }
@@ -143,23 +135,24 @@ export class PlayerCtrl extends Entity {
     }
 
     hurt(){
-        AudioManager.instance.playSFX(this.hurtSound);
+        const hurtSound = AudioManager.instance.hurtSound;
+        AudioManager.instance.playSFX(hurtSound);
         super.hurt();
     }
 
     collect(coinAmount, score)
     {
-        AudioManager.instance.playSFX(this.coinSound);
         this.coinNumber += coinAmount;
+        const coinSound = AudioManager.instance.coinSound;
+        AudioManager.instance.playSFX(coinSound);
 
         this.gameManager.updateScore(score);
         this.gameManager.receiveGold(coinAmount);
         if(this.isGodState) return;
 
         // add nitro after collect coin
-
-        // collect nitroToGod amount coin will increse 1 nitro
-        if(this.coinNumber % this.nitroToGod == 0){
+        // collect 5 coin will increse 1 nitro
+        if(this.coinNumber % this.amountCoinToGod == 0){
             this.curNitroNumber += 1;
             this.gameManager.displayPower(this.curNitroNumber);
         }
@@ -178,7 +171,8 @@ export class PlayerCtrl extends Entity {
     attack(){
         //if(this.isClimb) return;
 
-        AudioManager.instance.playSFX(this.fireSound);
+        const fireSound = AudioManager.instance.fireSound;
+        AudioManager.instance.playSFX(fireSound);
         this.anim.play("attack");
 
         this.anim.once(Animation.EventType.FINISHED, () => {
@@ -207,8 +201,8 @@ export class PlayerCtrl extends Entity {
         if (PlayerCtrl.Instance === this) 
             PlayerCtrl.Instance = null;
 
-        director.off('SHIELD_ON', this.onShieldOn, this);
-        director.off('SHIELD_OFF', this.onShieldOff, this);
+        //director.off('SHIELD_ON', this.onShieldOn, this);
+        //director.off('SHIELD_OFF', this.onShieldOff, this);
     }
 }
 
