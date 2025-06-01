@@ -62,11 +62,11 @@ export class Tutorial extends Component {
     }
 
     private onKeyDown(event: EventKeyboard) {
-        if (this.currentStep === 0 && event.keyCode === KeyCode.KEY_W) {
-            this.showStep(1);
-        } else if (this.currentStep === 1 && event.keyCode === KeyCode.KEY_F) {
+        if (this.currentStep === 0 && event.keyCode === KeyCode.SPACE) {
+            this.showStep(1); 
+        } else if (this.currentStep === 1 && event.keyCode === KeyCode.KEY_S) {
             this.showStep(2);
-        } else if (this.currentStep === 2 && event.keyCode === KeyCode.SPACE) {
+        } else if (this.currentStep === 2 && event.keyCode === KeyCode.KEY_F) {
             this.stopAll();
         }
     }

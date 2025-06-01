@@ -338,4 +338,8 @@ export class RailwayManager extends Component {
       this.speed = this.defaultSpeed;
     }, time);
   }
+
+  setSpeed(speed){
+    this.speed = speed;
+  }
 }

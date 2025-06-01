@@ -28,7 +28,7 @@
         "__id__": 14
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 20
@@ -130,8 +130,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 620.7230915676078,
-      "height": 189.00000000000003
+      "width": 620.7599487304688,
+      "height": 189
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -166,7 +166,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "W to jump",
+    "_string": "SPACE to jump",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 126.1875,
@@ -292,8 +292,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 617.7232308692422,
-      "height": 189.00000000000003
+      "width": 617.760009765625,
+      "height": 189
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -328,7 +328,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "F to shoot",
+    "_string": "S to shoot",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 126.1875,
@@ -454,8 +454,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 791.9528347882615,
-      "height": 189.00000000000003
+      "width": 791.9999389648438,
+      "height": 189
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -490,7 +490,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "SPACE to flip",
+    "_string": "F to flip",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 126.1875,

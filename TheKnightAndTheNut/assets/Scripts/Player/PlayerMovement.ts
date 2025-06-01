@@ -33,9 +33,6 @@ export class PlayerMovement extends Component {
 
     private isReverse: boolean = false;
 
-    private isHoldingSpace: boolean = false;
-    private spacePressTimer;
-
     // effect
     @property({type: Prefab,})
     reverseEffect: Prefab; 
@@ -46,7 +43,6 @@ export class PlayerMovement extends Component {
             this.graphics = this.graphicNode.getComponent(Graphics);
 
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
-        input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
     }
     
     update(deltaTime: number) {
@@ -65,8 +61,8 @@ export class PlayerMovement extends Component {
     reverse(){
         if (!PlayerCtrl.Instance.isGrounded) return;
 
-        const reverseSound = AudioManager.instance.reverseSound;
-        AudioManager.instance.playSFX(reverseSound);
+        // const reverseSound = AudioManager.instance.reverseSoundPlayer;
+        // AudioManager.instance.playSFX(reverseSound);
         this.isReverse = !this.isReverse;
         this._dirY *= -1;
         PlayerCtrl.Instance.createEffect(this.reverseEffect);
@@ -80,8 +76,8 @@ export class PlayerMovement extends Component {
 
     jump() {
         PlayerCtrl.Instance.createEffect(this.reverseEffect);
-        const jumpSound = AudioManager.instance.jumpSound;
-        AudioManager.instance.playSFX(jumpSound);
+        // const jumpSound = AudioManager.instance.jumpSoundPlayer;
+        // AudioManager.instance.playSFX(jumpSound);
         PlayerCtrl.Instance.anim.play("jump");
         PlayerCtrl.Instance.anim.once(Animation.EventType.FINISHED, () => {
             PlayerCtrl.Instance.anim.play("run");
@@ -90,44 +86,14 @@ export class PlayerMovement extends Component {
         PlayerCtrl.Instance.isGrounded = false;
     }
 
-    // climb(){
-    //     PlayerCtrl.Instance.isClimb = true;
-    //     PlayerCtrl.Instance.collider.enabled = false;
-    //     PlayerCtrl.Instance.anim.play("climb");
-    // }
-
-    onKeyUp(event: EventKeyboard){
-        // if(event.keyCode == KeyCode.SPACE){
-        //     PlayerCtrl.Instance.collider.enabled = true;
-        //     this.isHoldingSpace = false;
-        //     PlayerCtrl.Instance.isClimb = false;
-
-        //     if (this.spacePressTimer !== null) {
-        //         this.unschedule(this.spacePressTimer);
-        //         this.spacePressTimer = null;
-        //     }
-
-        //     PlayerCtrl.Instance.anim.play("run");
-        //     this.reverse();
-        // }
-    }
-
     onKeyDown(event: EventKeyboard){
         if(PlayerCtrl.Instance.gameManager.isPause) return;
         
-        if(event.keyCode == KeyCode.SPACE){
-            // if(this.isHoldingSpace) return;
-            // this.isHoldingSpace = true;
-
-            // this.spacePressTimer = this.scheduleOnce(() => {
-            //     if (this.isHoldingSpace) {
-            //         this.climb();
-            //     }
-            // }, 0.15);
+        if(event.keyCode == KeyCode.KEY_F){
             this.reverse();
         }
 
-        if (event.keyCode == KeyCode.KEY_W && PlayerCtrl.Instance.isGrounded) {
+        if (event.keyCode == KeyCode.SPACE && PlayerCtrl.Instance.isGrounded) {
             this.jump();
         }
     }
@@ -207,7 +173,6 @@ export class PlayerMovement extends Component {
 
     onDestroy() {
         input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
-        input.off(Input.EventType.KEY_UP, this.onKeyUp, this);
     }
 }
 

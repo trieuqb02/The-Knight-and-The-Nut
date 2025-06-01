@@ -19,7 +19,7 @@ export class PlayerAttack extends Component {
     }
 
     onKeyDown(event: EventKeyboard){
-        if(event.keyCode == KeyCode.KEY_F){
+        if(event.keyCode == KeyCode.KEY_S){
             if(this.checkFireRate())
                 this.fire();
         }

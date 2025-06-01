@@ -38,7 +38,7 @@ export class FlyEnemy extends EnemyCtrl {
         }, this.warningTime - 1);
 
         this.scheduleOnce(()=>{
-            const flySound = AudioManager.instance.flySound;
+            const flySound = AudioManager.instance.flySoundEnemy;
             AudioManager.instance.playSFX(flySound);
             tween(opacity).stop();
             this.hasMoved = true;

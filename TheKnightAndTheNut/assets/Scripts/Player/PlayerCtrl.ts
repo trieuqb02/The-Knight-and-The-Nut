@@ -1,6 +1,6 @@
 import { _decorator, Animation, 
     Node, Collider2D, IPhysics2DContact,
-    UITransform, instantiate, AudioClip, find,
+    UITransform, instantiate, find,
     director, } from 'cc';
 import { GameManager } from '../GameManager';
 import { Entity } from './Entity';
@@ -8,10 +8,12 @@ import { RailwayManager } from '../Railway/RailwayManager';
 import { ColliderGroup } from '../ColliderGroup';
 import { PowerUp } from '../Power Ups/PowerUp';
 import { AudioManager } from '../Audio/AudioManager';
+import { EffectCtrl } from '../Power Ups/EffectCtrl';
+import { IShieldable } from '../Power Ups/IShieldable';
 const { ccclass, property } = _decorator;
 
 @ccclass('PlayerCtrl')
-export class PlayerCtrl extends Entity {
+export class PlayerCtrl extends Entity implements IShieldable {
     public static Instance: PlayerCtrl = null; // singleton
 
     private coinNumber: number = 0;
@@ -49,6 +51,7 @@ export class PlayerCtrl extends Entity {
     @property({type: Node,})
     shieldEffect: Node; 
 
+    private effectCtrl: EffectCtrl;
 
     onLoad(){
         super.onLoad();
@@ -70,11 +73,24 @@ export class PlayerCtrl extends Entity {
         // sub event
         director.on('SHIELD_ON', this.onShieldOn, this);
         director.on('SHIELD_OFF', this.onShieldOff, this);
-        
+
+        this.effectCtrl = new EffectCtrl(this);
     }
 
     start() {
         this.gameManager.displayHealth(this.curHealth)
+    }
+
+    protected update(dt) {
+        this.effectCtrl.update(dt);
+    }
+
+    setShield(enable) {
+        
+    }
+
+    addEffect(effect){
+        this.effectCtrl.addEffect(effect);
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
@@ -89,9 +105,13 @@ export class PlayerCtrl extends Entity {
             if (powerUp) {
                 const pwUpsSound = AudioManager.instance.pwUpsSound;
                 AudioManager.instance.playSFX(pwUpsSound);
-                powerUp.pwUpActive(this.node); 
+                powerUp.pwUpActive(this); 
             }
         }
+    }
+
+    setSpeed(speed){
+        this.railwayManager.setSpeed(speed);
     }
 
     onShieldOn(nodeData){
@@ -135,7 +155,7 @@ export class PlayerCtrl extends Entity {
     }
 
     hurt(){
-        const hurtSound = AudioManager.instance.hurtSound;
+        const hurtSound = AudioManager.instance.hurtSoundPlayer;
         AudioManager.instance.playSFX(hurtSound);
         super.hurt();
     }
@@ -169,10 +189,8 @@ export class PlayerCtrl extends Entity {
     }
 
     attack(){
-        //if(this.isClimb) return;
-
-        const fireSound = AudioManager.instance.fireSound;
-        AudioManager.instance.playSFX(fireSound);
+        // const fireSound = AudioManager.instance.fireSoundPlayer;
+        // AudioManager.instance.playSFX(fireSound);
         this.anim.play("attack");
 
         this.anim.once(Animation.EventType.FINISHED, () => {
@@ -185,6 +203,7 @@ export class PlayerCtrl extends Entity {
         this.anim.once(Animation.EventType.FINISHED, () => {
             this.gameManager.gameOver();
         });
+        this.setSpeed(0);
     }
 
     takeDame(dame){
@@ -201,8 +220,8 @@ export class PlayerCtrl extends Entity {
         if (PlayerCtrl.Instance === this) 
             PlayerCtrl.Instance = null;
 
-        //director.off('SHIELD_ON', this.onShieldOn, this);
-        //director.off('SHIELD_OFF', this.onShieldOff, this);
+        director.off('SHIELD_ON', this.onShieldOn, this);
+        director.off('SHIELD_OFF', this.onShieldOff, this);
     }
 }
 

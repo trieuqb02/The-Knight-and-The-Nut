@@ -12,19 +12,21 @@ export class AudioManager extends Component {
   @property(AudioClip)
   menuClip: AudioClip = null;
 
-  @property(AudioClip)
-  reverseSound: AudioClip = null;
+  // Player sounds
   @property(AudioClip)
   coinSound: AudioClip = null;
   @property(AudioClip)
-  fireSound: AudioClip = null;
-  @property(AudioClip)
-  jumpSound: AudioClip = null;
-  @property(AudioClip)
-  hurtSound: AudioClip = null;
-  @property(AudioClip)
   pwUpsSound: AudioClip = null;
+  @property(AudioClip)
+  reverseSoundPlayer: AudioClip = null;
+  @property(AudioClip)
+  fireSoundPlayer: AudioClip = null;
+  @property(AudioClip)
+  jumpSoundPlayer: AudioClip = null;
+  @property(AudioClip)
+  hurtSoundPlayer: AudioClip = null;
 
+  // Boss sounds
   @property(AudioClip)
   fireSoundBoss: AudioClip = null;
   @property(AudioClip)
@@ -35,7 +37,7 @@ export class AudioManager extends Component {
   previousSkillSound: AudioClip = null;
 
   @property(AudioClip)
-  flySound: AudioClip = null;
+  flySoundEnemy: AudioClip = null;
 
   private static _instance: AudioManager;
 
