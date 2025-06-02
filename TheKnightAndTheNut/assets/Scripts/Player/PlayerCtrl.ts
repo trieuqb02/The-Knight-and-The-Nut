@@ -189,8 +189,8 @@ export class PlayerCtrl extends Entity implements IShieldable {
     }
 
     attack(){
-        // const fireSound = AudioManager.instance.fireSoundPlayer;
-        // AudioManager.instance.playSFX(fireSound);
+        const fireSound = AudioManager.instance.fireSoundPlayer;
+        AudioManager.instance.playSFX(fireSound);
         this.anim.play("attack");
 
         this.anim.once(Animation.EventType.FINISHED, () => {

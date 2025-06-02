@@ -61,8 +61,8 @@ export class PlayerMovement extends Component {
     reverse(){
         if (!PlayerCtrl.Instance.isGrounded) return;
 
-        // const reverseSound = AudioManager.instance.reverseSoundPlayer;
-        // AudioManager.instance.playSFX(reverseSound);
+        const reverseSound = AudioManager.instance.reverseSoundPlayer;
+        AudioManager.instance.playSFX(reverseSound);
         this.isReverse = !this.isReverse;
         this._dirY *= -1;
         PlayerCtrl.Instance.createEffect(this.reverseEffect);
@@ -76,8 +76,8 @@ export class PlayerMovement extends Component {
 
     jump() {
         PlayerCtrl.Instance.createEffect(this.reverseEffect);
-        // const jumpSound = AudioManager.instance.jumpSoundPlayer;
-        // AudioManager.instance.playSFX(jumpSound);
+        const jumpSound = AudioManager.instance.jumpSoundPlayer;
+        AudioManager.instance.playSFX(jumpSound);
         PlayerCtrl.Instance.anim.play("jump");
         PlayerCtrl.Instance.anim.once(Animation.EventType.FINISHED, () => {
             PlayerCtrl.Instance.anim.play("run");
